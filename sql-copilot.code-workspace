@@ -1,0 +1,56 @@
+{
+  "folders": [
+    {
+      "path": "SQLBUILDER/sql-copilot",
+      "name": "Application"
+    },
+    {
+      "path": "sql-copilot/prisma",
+      "name": "Prisma"
+    },
+    {
+      "path": "sql-copilot/src",
+      "name": "Source"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "node_modules/": true,
+      "apps": true
+    },
+    "cSpell.words": [],
+    "editor.formatOnSave": true,
+    "editor.rulers": [100],
+    "editor.wordWrapColumn": 100,
+    "rewrap.autoWrap.enabled": true,
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.preferences.autoImportFileExcludePatterns": [
+      "@prisma/client",
+      "vm"
+    ],
+    "eslint.useFlatConfig": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "breadcrumbs.enabled": true,
+    "editor.hover.enabled": true,
+    "editor.autoClosingBrackets": "never",
+    "editor.autoClosingQuotes": "never",
+    "editor.suggestOnTriggerCharacters": false,
+    "sqltools.format": {
+      "linesBetweenQueries": 2,
+      "reservedWordCase": "upper",
+      "language": "sql"
+    },
+    "[sql]": {
+      "editor.defaultFormatter": "mtxr.sqltools"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
+}

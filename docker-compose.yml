@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  db:
+    container_name: sql-copilot
+    image: postgres:15-alpine3.17
+    restart: always
+    environment:
+      - POSTGRES_USER=sqlcopilot
+      - POSTGRES_PASSWORD=ilovesqlcopilot
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+  redis:
+    container_name: redis-copilot
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+
+volumes:
+  db:
+    driver: local

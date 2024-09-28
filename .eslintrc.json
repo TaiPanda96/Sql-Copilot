@@ -1,0 +1,14 @@
+{
+  "extends": ["next/core-web-vitals", "standard", "prettier"],
+  "rules": {
+    "no-redeclare": "off", // doesn't support TS overloads
+    "n/no-callback-literal": "off",
+    "n/handle-callback-err": "off", // prevents all arguments named "error"
+    "dot-notation": ["error", { "allowPattern": "^[^_]+_[^_]+$" }], // Allow if snake_case
+    "no-labels": "off", // allows break/continue with labels
+    "no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_", "args": "none", "ignoreRestSiblings": true }
+    ]
+  }
+}
