@@ -1,5 +1,5 @@
 {
-  "name": "coffee-app",
+  "name": "sql-copilot-app",
   "version": "0.1.0",
   "private": true,
   "main": "next.config.js",
