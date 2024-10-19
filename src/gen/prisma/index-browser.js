@@ -119,6 +119,28 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.MessageSchemaScalarFieldEnum = {
+  id: 'id',
+  message: 'message',
+  userId: 'userId',
+  attachment: 'attachment',
+  at: 'at',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TableSchemaScalarFieldEnum = {
+  id: 'id',
+  schemaSlug: 'schemaSlug',
+  schemaName: 'schemaName',
+  rawSqlSchema: 'rawSqlSchema',
+  zodValidationConfig: 'zodValidationConfig',
+  validAt: 'validAt',
+  expiredAt: 'expiredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -128,6 +150,10 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -140,8 +166,16 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
+  MessageSchema: 'MessageSchema',
+  TableSchema: 'TableSchema',
   User: 'User'
 };
 

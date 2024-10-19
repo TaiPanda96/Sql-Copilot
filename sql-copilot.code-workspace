@@ -1,16 +1,8 @@
 {
   "folders": [
     {
-      "path": "SQLBUILDER/sql-copilot",
-      "name": "Application"
-    },
-    {
-      "path": "sql-copilot/prisma",
-      "name": "Prisma"
-    },
-    {
-      "path": "sql-copilot/src",
-      "name": "Source"
+      "path": ".",
+      "name": "sql-copilot"
     }
   ],
   "settings": {

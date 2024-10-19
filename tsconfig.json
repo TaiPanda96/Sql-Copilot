@@ -33,7 +33,7 @@
     "types": ["next", "next/types/global", "next/image-types/global"],
     "baseUrl": ".",
     "paths": {
-      "@sql-copilot/*": ["src/*", "src/lib/*"]
+      "@sql-copilot/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
