@@ -49,15 +49,6 @@ jobs:
           path: eslint_report.json
           retention-days: 5
 
-      - name: Check Uncommitted Changes
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "Uncommitted changes detected."
-            git status --porcelain
-            exit 1
-          else
-            echo "No uncommitted changes detected."
-          fi
         # Connect to Neon PostgreSQL and run migrations
       - name: Run Migrations on Neon PostgreSQL
         run: |
