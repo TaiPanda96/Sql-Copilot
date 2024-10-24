@@ -235,8 +235,8 @@ if (
 ) {
   Debug.enable(
     (typeof globalThis !== "undefined" && globalThis["DEBUG"]) ||
-      (typeof process !== "undefined" && process.env && process.env.DEBUG) ||
-      undefined,
+    (typeof process !== "undefined" && process.env && process.env.DEBUG) ||
+    undefined,
   );
 }
 

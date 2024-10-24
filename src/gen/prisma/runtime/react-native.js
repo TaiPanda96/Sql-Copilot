@@ -22,14 +22,14 @@ var ge = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports),
     return e;
   };
 var he = (e, t, r) => (
-    (r = e != null ? zs(Xs(e)) : {}),
-    Un(
-      t || !e || !e.__esModule
-        ? Zt(r, "default", { value: e, enumerable: !0 })
-        : r,
-      e,
-    )
-  ),
+  (r = e != null ? zs(Xs(e)) : {}),
+  Un(
+    t || !e || !e.__esModule
+      ? Zt(r, "default", { value: e, enumerable: !0 })
+      : r,
+    e,
+  )
+),
   ta = (e) => Un(Zt({}, "__esModule", { value: !0 }), e);
 var y,
   c = _e(() => {
@@ -60,7 +60,7 @@ var v,
 var E,
   d = _e(() => {
     "use strict";
-    E = () => {};
+    E = () => { };
     E.prototype = E;
   });
 var b,
@@ -83,8 +83,8 @@ var ai = ge((et) => {
   d();
   f();
   var Wn = (e, t) => () => (
-      t || e((t = { exports: {} }).exports, t), t.exports
-    ),
+    t || e((t = { exports: {} }).exports, t), t.exports
+  ),
     ra = Wn((e) => {
       "use strict";
       (e.byteLength = l), (e.toByteArray = g), (e.fromByteArray = S);
@@ -134,13 +134,13 @@ var ai = ge((et) => {
             (M[O++] = A & 255);
         return (
           N === 2 &&
-            ((A = (r[C.charCodeAt(q)] << 2) | (r[C.charCodeAt(q + 1)] >> 4)),
+          ((A = (r[C.charCodeAt(q)] << 2) | (r[C.charCodeAt(q + 1)] >> 4)),
             (M[O++] = A & 255)),
           N === 1 &&
-            ((A =
-              (r[C.charCodeAt(q)] << 10) |
-              (r[C.charCodeAt(q + 1)] << 4) |
-              (r[C.charCodeAt(q + 2)] >> 2)),
+          ((A =
+            (r[C.charCodeAt(q)] << 10) |
+            (r[C.charCodeAt(q + 1)] << 4) |
+            (r[C.charCodeAt(q + 2)] >> 2)),
             (M[O++] = (A >> 8) & 255),
             (M[O++] = A & 255)),
           M
@@ -171,7 +171,7 @@ var ai = ge((et) => {
           I === 1
             ? ((A = C[F - 1]), N.push(t[A >> 2] + t[(A << 4) & 63] + "=="))
             : I === 2 &&
-              ((A = (C[F - 2] << 8) + C[F - 1]),
+            ((A = (C[F - 2] << 8) + C[F - 1]),
               N.push(t[A >> 10] + t[(A >> 4) & 63] + t[(A << 2) & 63] + "=")),
           N.join("")
         );
@@ -218,18 +218,18 @@ var ai = ge((et) => {
             F = r < 0 || (r === 0 && 1 / r < 0) ? 1 : 0;
           for (
             r = Math.abs(r),
-              isNaN(r) || r === 1 / 0
-                ? ((l = isNaN(r) ? 1 : 0), (a = h))
-                : ((a = Math.floor(Math.log(r) / Math.LN2)),
-                  r * (u = Math.pow(2, -a)) < 1 && (a--, (u *= 2)),
-                  a + x >= 1 ? (r += S / u) : (r += S * Math.pow(2, 1 - x)),
-                  r * u >= 2 && (a++, (u /= 2)),
-                  a + x >= h
-                    ? ((l = 0), (a = h))
-                    : a + x >= 1
-                      ? ((l = (r * u - 1) * Math.pow(2, o)), (a = a + x))
-                      : ((l = r * Math.pow(2, x - 1) * Math.pow(2, o)),
-                        (a = 0)));
+            isNaN(r) || r === 1 / 0
+              ? ((l = isNaN(r) ? 1 : 0), (a = h))
+              : ((a = Math.floor(Math.log(r) / Math.LN2)),
+                r * (u = Math.pow(2, -a)) < 1 && (a--, (u *= 2)),
+                a + x >= 1 ? (r += S / u) : (r += S * Math.pow(2, 1 - x)),
+                r * u >= 2 && (a++, (u /= 2)),
+                a + x >= h
+                  ? ((l = 0), (a = h))
+                  : a + x >= 1
+                    ? ((l = (r * u - 1) * Math.pow(2, o)), (a = a + x))
+                    : ((l = r * Math.pow(2, x - 1) * Math.pow(2, o)),
+                      (a = 0)));
             o >= 8;
             t[n + C] = l & 255, C += A, l /= 256, o -= 8
           );
@@ -313,7 +313,7 @@ var ai = ge((et) => {
     if (e == null)
       throw new TypeError(
         "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " +
-          typeof e,
+        typeof e,
       );
     if (
       ye(e, ArrayBuffer) ||
@@ -338,7 +338,7 @@ var ai = ge((et) => {
       return T.from(e[Symbol.toPrimitive]("string"), t, r);
     throw new TypeError(
       "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " +
-        typeof e,
+      typeof e,
     );
   }
   T.from = function (e, t, r) {
@@ -429,8 +429,8 @@ var ai = ge((et) => {
     if (e >= Xt)
       throw new RangeError(
         "Attempt to allocate Buffer larger than maximum size: 0x" +
-          Xt.toString(16) +
-          " bytes",
+        Xt.toString(16) +
+        " bytes",
       );
     return e | 0;
   }
@@ -443,8 +443,8 @@ var ai = ge((et) => {
   T.compare = function (e, t) {
     if (
       (ye(e, Uint8Array) && (e = T.from(e, e.offset, e.byteLength)),
-      ye(t, Uint8Array) && (t = T.from(t, t.offset, t.byteLength)),
-      !T.isBuffer(e) || !T.isBuffer(t))
+        ye(t, Uint8Array) && (t = T.from(t, t.offset, t.byteLength)),
+        !T.isBuffer(e) || !T.isBuffer(t))
     )
       throw new TypeError(
         'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array',
@@ -503,13 +503,13 @@ var ai = ge((et) => {
     if (typeof e != "string")
       throw new TypeError(
         'The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' +
-          typeof e,
+        typeof e,
       );
     let r = e.length,
       n = arguments.length > 2 && arguments[2] === !0;
     if (!n && r === 0) return 0;
     let i = !1;
-    for (;;)
+    for (; ;)
       switch (t) {
         case "ascii":
         case "latin1":
@@ -537,12 +537,12 @@ var ai = ge((et) => {
     let n = !1;
     if (
       ((t === void 0 || t < 0) && (t = 0),
-      t > this.length ||
+        t > this.length ||
         ((r === void 0 || r > this.length) && (r = this.length), r <= 0) ||
         ((r >>>= 0), (t >>>= 0), r <= t))
     )
       return "";
-    for (e || (e = "utf8"); ; )
+    for (e || (e = "utf8"); ;)
       switch (e) {
         case "hex":
           return Ea(this, t, r);
@@ -624,18 +624,18 @@ var ai = ge((et) => {
   T.prototype.compare = function (e, t, r, n, i) {
     if (
       (ye(e, Uint8Array) && (e = T.from(e, e.offset, e.byteLength)),
-      !T.isBuffer(e))
+        !T.isBuffer(e))
     )
       throw new TypeError(
         'The "target" argument must be one of type Buffer or Uint8Array. Received type ' +
-          typeof e,
+        typeof e,
       );
     if (
       (t === void 0 && (t = 0),
-      r === void 0 && (r = e ? e.length : 0),
-      n === void 0 && (n = 0),
-      i === void 0 && (i = this.length),
-      t < 0 || r > e.length || n < 0 || i > this.length)
+        r === void 0 && (r = e ? e.length : 0),
+        n === void 0 && (n = 0),
+        i === void 0 && (i = this.length),
+        t < 0 || r > e.length || n < 0 || i > this.length)
     )
       throw new RangeError("out of range index");
     if (n >= i && t >= r) return 0;
@@ -662,10 +662,10 @@ var ai = ge((et) => {
         : r > 2147483647
           ? (r = 2147483647)
           : r < -2147483648 && (r = -2147483648),
-      (r = +r),
-      Kr(r) && (r = i ? 0 : e.length - 1),
-      r < 0 && (r = e.length + r),
-      r >= e.length)
+        (r = +r),
+        Kr(r) && (r = i ? 0 : e.length - 1),
+        r < 0 && (r = e.length + r),
+        r >= e.length)
     ) {
       if (i) return -1;
       r = e.length - 1;
@@ -692,7 +692,7 @@ var ai = ge((et) => {
     if (
       n !== void 0 &&
       ((n = String(n).toLowerCase()),
-      n === "ucs2" || n === "ucs-2" || n === "utf16le" || n === "utf-16le")
+        n === "ucs2" || n === "ucs-2" || n === "utf16le" || n === "utf-16le")
     ) {
       if (e.length < 2 || t.length < 2) return -1;
       (o = 2), (s /= 2), (a /= 2), (r /= 2);
@@ -770,12 +770,12 @@ var ai = ge((et) => {
     let i = this.length - t;
     if (
       ((r === void 0 || r > i) && (r = i),
-      (e.length > 0 && (r < 0 || t < 0)) || t > this.length)
+        (e.length > 0 && (r < 0 || t < 0)) || t > this.length)
     )
       throw new RangeError("Attempt to write outside buffer bounds");
     n || (n = "utf8");
     let o = !1;
-    for (;;)
+    for (; ;)
       switch (n) {
         case "hex":
           return pa(this, e, t, r);
@@ -813,7 +813,7 @@ var ai = ge((et) => {
     r = Math.min(e.length, r);
     let n = [],
       i = t;
-    for (; i < r; ) {
+    for (; i < r;) {
       let o = e[i],
         s = null,
         a = o > 239 ? 4 : o > 223 ? 3 : o > 191 ? 2 : 1;
@@ -826,14 +826,14 @@ var ai = ge((et) => {
           case 2:
             (l = e[i + 1]),
               (l & 192) === 128 &&
-                ((h = ((o & 31) << 6) | (l & 63)), h > 127 && (s = h));
+              ((h = ((o & 31) << 6) | (l & 63)), h > 127 && (s = h));
             break;
           case 3:
             (l = e[i + 1]),
               (u = e[i + 2]),
               (l & 192) === 128 &&
-                (u & 192) === 128 &&
-                ((h = ((o & 15) << 12) | ((l & 63) << 6) | (u & 63)),
+              (u & 192) === 128 &&
+              ((h = ((o & 15) << 12) | ((l & 63) << 6) | (u & 63)),
                 h > 2047 && (h < 55296 || h > 57343) && (s = h));
             break;
           case 4:
@@ -841,20 +841,20 @@ var ai = ge((et) => {
               (u = e[i + 2]),
               (g = e[i + 3]),
               (l & 192) === 128 &&
-                (u & 192) === 128 &&
-                (g & 192) === 128 &&
-                ((h =
-                  ((o & 15) << 18) |
-                  ((l & 63) << 12) |
-                  ((u & 63) << 6) |
-                  (g & 63)),
+              (u & 192) === 128 &&
+              (g & 192) === 128 &&
+              ((h =
+                ((o & 15) << 18) |
+                ((l & 63) << 12) |
+                ((u & 63) << 6) |
+                (g & 63)),
                 h > 65535 && h < 1114112 && (s = h));
         }
       }
       s === null
         ? ((s = 65533), (a = 1))
         : s > 65535 &&
-          ((s -= 65536),
+        ((s -= 65536),
           n.push(((s >>> 10) & 1023) | 55296),
           (s = 56320 | (s & 1023))),
         n.push(s),
@@ -868,7 +868,7 @@ var ai = ge((et) => {
     if (t <= Jn) return String.fromCharCode.apply(String, e);
     let r = "",
       n = 0;
-    for (; n < t; )
+    for (; n < t;)
       r += String.fromCharCode.apply(String, e.slice(n, (n += Jn)));
     return r;
   }
@@ -918,14 +918,14 @@ var ai = ge((et) => {
     let n = this[e],
       i = 1,
       o = 0;
-    for (; ++o < t && (i *= 256); ) n += this[e + o] * i;
+    for (; ++o < t && (i *= 256);) n += this[e + o] * i;
     return n;
   };
   T.prototype.readUintBE = T.prototype.readUIntBE = function (e, t, r) {
     (e = e >>> 0), (t = t >>> 0), r || G(e, t, this.length);
     let n = this[e + --t],
       i = 1;
-    for (; t > 0 && (i *= 256); ) n += this[e + --t] * i;
+    for (; t > 0 && (i *= 256);) n += this[e + --t] * i;
     return n;
   };
   T.prototype.readUint8 = T.prototype.readUInt8 = function (e, t) {
@@ -946,7 +946,7 @@ var ai = ge((et) => {
       (e = e >>> 0),
       t || G(e, 4, this.length),
       (this[e] | (this[e + 1] << 8) | (this[e + 2] << 16)) +
-        this[e + 3] * 16777216
+      this[e + 3] * 16777216
     );
   };
   T.prototype.readUint32BE = T.prototype.readUInt32BE = function (e, t) {
@@ -954,7 +954,7 @@ var ai = ge((et) => {
       (e = e >>> 0),
       t || G(e, 4, this.length),
       this[e] * 16777216 +
-        ((this[e + 1] << 16) | (this[e + 2] << 8) | this[e + 3])
+      ((this[e + 1] << 16) | (this[e + 2] << 8) | this[e + 3])
     );
   };
   T.prototype.readBigUInt64LE = Ie(function (e) {
@@ -980,7 +980,7 @@ var ai = ge((et) => {
     let n = this[e],
       i = 1,
       o = 0;
-    for (; ++o < t && (i *= 256); ) n += this[e + o] * i;
+    for (; ++o < t && (i *= 256);) n += this[e + o] * i;
     return (i *= 128), n >= i && (n -= Math.pow(2, 8 * t)), n;
   };
   T.prototype.readIntBE = function (e, t, r) {
@@ -988,7 +988,7 @@ var ai = ge((et) => {
     let n = t,
       i = 1,
       o = this[e + --n];
-    for (; n > 0 && (i *= 256); ) o += this[e + --n] * i;
+    for (; n > 0 && (i *= 256);) o += this[e + --n] * i;
     return (i *= 128), o >= i && (o -= Math.pow(2, 8 * t)), o;
   };
   T.prototype.readInt8 = function (e, t) {
@@ -1079,7 +1079,7 @@ var ai = ge((et) => {
     }
     let i = 1,
       o = 0;
-    for (this[t] = e & 255; ++o < r && (i *= 256); )
+    for (this[t] = e & 255; ++o < r && (i *= 256);)
       this[t + o] = (e / i) & 255;
     return t + r;
   };
@@ -1090,7 +1090,7 @@ var ai = ge((et) => {
     }
     let i = r - 1,
       o = 1;
-    for (this[t + i] = e & 255; --i >= 0 && (o *= 256); )
+    for (this[t + i] = e & 255; --i >= 0 && (o *= 256);)
       this[t + i] = (e / o) & 255;
     return t + r;
   };
@@ -1205,7 +1205,7 @@ var ai = ge((et) => {
     let i = 0,
       o = 1,
       s = 0;
-    for (this[t] = e & 255; ++i < r && (o *= 256); )
+    for (this[t] = e & 255; ++i < r && (o *= 256);)
       e < 0 && s === 0 && this[t + i - 1] !== 0 && (s = 1),
         (this[t + i] = (((e / o) >> 0) - s) & 255);
     return t + r;
@@ -1218,7 +1218,7 @@ var ai = ge((et) => {
     let i = r - 1,
       o = 1,
       s = 0;
-    for (this[t + i] = e & 255; --i >= 0 && (o *= 256); )
+    for (this[t + i] = e & 255; --i >= 0 && (o *= 256);)
       e < 0 && s === 0 && this[t + i + 1] !== 0 && (s = 1),
         (this[t + i] = (((e / o) >> 0) - s) & 255);
     return t + r;
@@ -1334,11 +1334,11 @@ var ai = ge((et) => {
     if (!T.isBuffer(e)) throw new TypeError("argument should be a Buffer");
     if (
       (r || (r = 0),
-      !n && n !== 0 && (n = this.length),
-      t >= e.length && (t = e.length),
-      t || (t = 0),
-      n > 0 && n < r && (n = r),
-      n === r || e.length === 0 || this.length === 0)
+        !n && n !== 0 && (n = this.length),
+        t >= e.length && (t = e.length),
+        t || (t = 0),
+        n > 0 && n < r && (n = r),
+        n === r || e.length === 0 || this.length === 0)
     )
       return 0;
     if (t < 0) throw new RangeError("targetStart out of bounds");
@@ -1360,7 +1360,7 @@ var ai = ge((et) => {
         (typeof t == "string"
           ? ((n = t), (t = 0), (r = this.length))
           : typeof r == "string" && ((n = r), (r = this.length)),
-        n !== void 0 && typeof n != "string")
+          n !== void 0 && typeof n != "string")
       )
         throw new TypeError("encoding must be a string");
       if (typeof n == "string" && !T.isEncoding(n))
@@ -1445,9 +1445,9 @@ var ai = ge((et) => {
         Number.isInteger(r) && Math.abs(r) > 2 ** 32
           ? (i = Gn(String(r)))
           : typeof r == "bigint" &&
-            ((i = String(r)),
+          ((i = String(r)),
             (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) &&
-              (i = Gn(i)),
+            (i = Gn(i)),
             (i += "n")),
         (n += ` It must be ${t}. Received ${i}`),
         n
@@ -1476,7 +1476,7 @@ var ai = ge((et) => {
             ? (a = `>= 0${s} and < 2${s} ** ${(o + 1) * 8}${s}`)
             : (a = `>= -(2${s} ** ${(o + 1) * 8 - 1}${s}) and < 2 ** ${(o + 1) * 8 - 1}${s}`)
           : (a = `>= ${t}${s} and <= ${r}${s}`),
-        new Ye.ERR_OUT_OF_RANGE("value", a, e))
+          new Ye.ERR_OUT_OF_RANGE("value", a, e))
       );
     }
     va(n, i, o);
@@ -1490,16 +1490,16 @@ var ai = ge((et) => {
       : t < 0
         ? new Ye.ERR_BUFFER_OUT_OF_BOUNDS()
         : new Ye.ERR_OUT_OF_RANGE(
-            r || "offset",
-            `>= ${r ? 1 : 0} and <= ${t}`,
-            e,
-          );
+          r || "offset",
+          `>= ${r ? 1 : 0} and <= ${t}`,
+          e,
+        );
   }
   var Pa = /[^+/0-9A-Za-z-_]/g;
   function Ta(e) {
     if (((e = e.split("=")[0]), (e = e.trim().replace(Pa, "")), e.length < 2))
       return "";
-    for (; e.length % 4 !== 0; ) e = e + "=";
+    for (; e.length % 4 !== 0;) e = e + "=";
     return e;
   }
   function Qr(e, t) {
@@ -1688,8 +1688,8 @@ var nr,
       emit(t, ...r) {
         return this.events[t]
           ? (this.events[t].forEach((n) => {
-              n(...r);
-            }),
+            n(...r);
+          }),
             !0)
           : !1;
       }
@@ -1837,7 +1837,7 @@ var In = ge((sA, ns) => {
 
       )
         i--, o--;
-      for (var s = 0; s < i && t.charCodeAt(s) === r.charCodeAt(s); ) s++;
+      for (var s = 0; s < i && t.charCodeAt(s) === r.charCodeAt(s);) s++;
       if (((i -= s), (o -= s), i === 0 || o < 3)) return o;
       var a = 0,
         l,
@@ -1854,14 +1854,14 @@ var In = ge((sA, ns) => {
         M,
         O = [];
       for (l = 0; l < i; l++) O.push(l + 1), O.push(t.charCodeAt(s + l));
-      for (var Y = O.length - 1; a < o - 3; )
+      for (var Y = O.length - 1; a < o - 3;)
         for (
           F = r.charCodeAt(s + (u = a)),
-            I = r.charCodeAt(s + (g = a + 1)),
-            N = r.charCodeAt(s + (h = a + 2)),
-            M = r.charCodeAt(s + (x = a + 3)),
-            S = a += 4,
-            l = 0;
+          I = r.charCodeAt(s + (g = a + 1)),
+          N = r.charCodeAt(s + (h = a + 2)),
+          M = r.charCodeAt(s + (x = a + 3)),
+          S = a += 4,
+          l = 0;
           l < Y;
           l += 2
         )
@@ -1876,7 +1876,7 @@ var In = ge((sA, ns) => {
             (h = g),
             (g = u),
             (u = C);
-      for (; a < o; )
+      for (; a < o;)
         for (F = r.charCodeAt(s + (u = a)), S = ++a, l = 0; l < Y; l += 2)
           (C = O[l]), (O[l] = S = e(C, u, S, F, O[l + 1])), (u = C);
       return S;
@@ -2011,7 +2011,7 @@ typeof y < "u" &&
     NO_COLOR: di,
     TERM: fi,
   } = y.env || {}),
-  (mi = y.stdout && y.stdout.isTTY));
+    (mi = y.stdout && y.stdout.isTTY));
 var gi = {
   enabled:
     !pi && di == null && fi !== "dumb" && ((Zr != null && Zr !== "0") || mi),
@@ -2075,8 +2075,8 @@ var St = {
   },
   enabled(e) {
     let t = globalThis.DEBUG.split(",").map((i) =>
-        i.replace(/[.+?^${}()|[\]\\]/g, "\\$&"),
-      ),
+      i.replace(/[.+?^${}()|[\]\\]/g, "\\$&"),
+    ),
       r = t.some((i) =>
         i === "" || i[0] === "-"
           ? !1
@@ -2097,18 +2097,18 @@ var St = {
 };
 function Ya(e) {
   let t = {
-      color: hi[za++ % hi.length],
-      enabled: St.enabled(e),
-      namespace: e,
-      log: St.log,
-      extend: () => {},
-    },
+    color: hi[za++ % hi.length],
+    enabled: St.enabled(e),
+    namespace: e,
+    log: St.log,
+    extend: () => { },
+  },
     r = (...n) => {
       let { enabled: i, namespace: o, color: s, log: a } = t;
       if (
         (n.length !== 0 && Rt.push([o, ...n]),
-        Rt.length > Ha && Rt.shift(),
-        St.enabled(o) || i)
+          Rt.length > Ha && Rt.shift(),
+          St.enabled(o) || i)
       ) {
         let l = n.map((g) => (typeof g == "string" ? g : Za(g))),
           u = `+${Date.now() - yi}ms`;
@@ -2269,11 +2269,11 @@ p();
 d();
 f();
 var kt = {
-    error: Qe("prisma:error"),
-    warn: Ct("prisma:warn"),
-    info: Se("prisma:info"),
-    query: Je("prisma:query"),
-  },
+  error: Qe("prisma:error"),
+  warn: Ct("prisma:warn"),
+  info: Se("prisma:info"),
+  query: Je("prisma:query"),
+},
   Oi = { warn: () => !y.env.PRISMA_DISABLE_WARNINGS };
 function ol(...e) {
   console.log(...e);
@@ -2520,9 +2520,9 @@ var sr = Symbol(),
       t === sr
         ? pn.set(this, `Prisma.${this._getName()}`)
         : pn.set(
-            this,
-            `new Prisma.${this._getNamespace()}.${this._getName()}()`,
-          );
+          this,
+          `new Prisma.${this._getNamespace()}.${this._getName()}()`,
+        );
     }
     _getName() {
       return this.constructor.name;
@@ -2536,11 +2536,11 @@ var sr = Symbol(),
       return "NullTypes";
     }
   },
-  Lt = class extends It {};
+  Lt = class extends It { };
 dn(Lt, "DbNull");
-var Nt = class extends It {};
+var Nt = class extends It { };
 dn(Nt, "JsonNull");
-var Dt = class extends It {};
+var Dt = class extends It { };
 dn(Dt, "AnyNull");
 var ar = {
   classes: { DbNull: Lt, JsonNull: Nt, AnyNull: Dt },
@@ -2602,18 +2602,18 @@ function Bt(e) {
   };
 }
 var mn = class {
-    constructor() {
-      this.registeredErrors = [];
-    }
-    consumeError(t) {
-      return this.registeredErrors[t];
-    }
-    registerNewError(t) {
-      let r = 0;
-      for (; this.registeredErrors[r] !== void 0; ) r++;
-      return (this.registeredErrors[r] = { error: t }), r;
-    }
-  },
+  constructor() {
+    this.registeredErrors = [];
+  }
+  consumeError(t) {
+    return this.registeredErrors[t];
+  }
+  registerNewError(t) {
+    let r = 0;
+    for (; this.registeredErrors[r] !== void 0;) r++;
+    return (this.registeredErrors[r] = { error: t }), r;
+  }
+},
   gn = (e) => {
     let t = new mn(),
       r = Ge(t, e.startTransaction.bind(e)),
@@ -2627,7 +2627,7 @@ var mn = class {
       };
     return (
       e.getConnectionInfo &&
-        (n.getConnectionInfo = dl(t, e.getConnectionInfo.bind(e))),
+      (n.getConnectionInfo = dl(t, e.getConnectionInfo.bind(e))),
       n
     );
   },
@@ -2676,21 +2676,21 @@ var se = class e {
       throw t.length === 0
         ? new TypeError("Expected at least 1 string")
         : new TypeError(
-            `Expected ${t.length} strings to have ${t.length - 1} values`,
-          );
+          `Expected ${t.length} strings to have ${t.length - 1} values`,
+        );
     let n = r.reduce((s, a) => s + (a instanceof e ? a.values.length : 1), 0);
     (this.values = new Array(n)),
       (this.strings = new Array(n + 1)),
       (this.strings[0] = t[0]);
     let i = 0,
       o = 0;
-    for (; i < r.length; ) {
+    for (; i < r.length;) {
       let s = r[i++],
         a = t[i];
       if (s instanceof e) {
         this.strings[o] += s.strings[0];
         let l = 0;
-        for (; l < s.values.length; )
+        for (; l < s.values.length;)
           (this.values[o++] = s.values[l++]), (this.strings[o] = s.strings[l]);
         this.strings[o] += a;
       } else (this.values[o++] = s), (this.strings[o] = a);
@@ -2700,21 +2700,21 @@ var se = class e {
     let t = this.strings.length,
       r = 1,
       n = this.strings[0];
-    for (; r < t; ) n += `?${this.strings[r++]}`;
+    for (; r < t;) n += `?${this.strings[r++]}`;
     return n;
   }
   get statement() {
     let t = this.strings.length,
       r = 1,
       n = this.strings[0];
-    for (; r < t; ) n += `:${r}${this.strings[r++]}`;
+    for (; r < t;) n += `:${r}${this.strings[r++]}`;
     return n;
   }
   get text() {
     let t = this.strings.length,
       r = 1,
       n = this.strings[0];
-    for (; r < t; ) n += `$${r}${this.strings[r++]}`;
+    for (; r < t;) n += `$${r}${this.strings[r++]}`;
     return n;
   }
   inspect() {
@@ -2907,7 +2907,7 @@ function nt(e) {
     has() {
       return !1;
     },
-    getPropertyValue() {},
+    getPropertyValue() { },
   };
 }
 m();
@@ -3130,30 +3130,30 @@ R.cubeRoot = R.cbrt = function () {
   if (!g.isFinite() || g.isZero()) return new h(g);
   for (
     L = !1,
-      o = g.s * J(g.s * g, 1 / 3),
-      !o || Math.abs(o) == 1 / 0
-        ? ((r = Z(g.d)),
-          (e = g.e),
-          (o = (e - r.length + 1) % 3) && (r += o == 1 || o == -2 ? "0" : "00"),
-          (o = J(r, 1 / 3)),
-          (e = te((e + 1) / 3) - (e % 3 == (e < 0 ? -1 : 2))),
-          o == 1 / 0
-            ? (r = "5e" + e)
-            : ((r = o.toExponential()),
-              (r = r.slice(0, r.indexOf("e") + 1) + e)),
-          (n = new h(r)),
-          (n.s = g.s))
-        : (n = new h(o.toString())),
-      s = (e = h.precision) + 3;
+    o = g.s * J(g.s * g, 1 / 3),
+    !o || Math.abs(o) == 1 / 0
+      ? ((r = Z(g.d)),
+        (e = g.e),
+        (o = (e - r.length + 1) % 3) && (r += o == 1 || o == -2 ? "0" : "00"),
+        (o = J(r, 1 / 3)),
+        (e = te((e + 1) / 3) - (e % 3 == (e < 0 ? -1 : 2))),
+        o == 1 / 0
+          ? (r = "5e" + e)
+          : ((r = o.toExponential()),
+            (r = r.slice(0, r.indexOf("e") + 1) + e)),
+        (n = new h(r)),
+        (n.s = g.s))
+      : (n = new h(o.toString())),
+    s = (e = h.precision) + 3;
     ;
 
   )
     if (
       ((a = n),
-      (l = a.times(a).times(a)),
-      (u = l.plus(g)),
-      (n = j(u.plus(g).times(a), u.plus(l), s + 2, 1)),
-      Z(a.d).slice(0, s) === (r = Z(n.d)).slice(0, s))
+        (l = a.times(a).times(a)),
+        (u = l.plus(g)),
+        (n = j(u.plus(g).times(a), u.plus(l), s + 2, 1)),
+        Z(a.d).slice(0, s) === (r = Z(n.d)).slice(0, s))
     )
       if (((r = r.slice(s - 3, s + 1)), r == "9999" || (!i && r == "4999"))) {
         if (!i && (k(a, e + 1, 0), a.times(a).times(a).eq(g))) {
@@ -3220,7 +3220,7 @@ R.hyperbolicCosine = R.cosh = function () {
       ? ((e = Math.ceil(i / 3)), (t = (1 / wr(4, e)).toString()))
       : ((e = 16), (t = "2.3283064365386962890625e-10")),
     (o = at(s, 1, o.times(t), new s(1), !0));
-  for (var l, u = e, g = new s(8); u--; )
+  for (var l, u = e, g = new s(8); u--;)
     (l = o.times(o)), (o = a.minus(l.times(g.minus(l.times(g)))));
   return k(o, (s.precision = r), (s.rounding = n), !0);
 };
@@ -3234,11 +3234,11 @@ R.hyperbolicSine = R.sinh = function () {
   if (!i.isFinite() || i.isZero()) return new o(i);
   if (
     ((t = o.precision),
-    (r = o.rounding),
-    (o.precision = t + Math.max(i.e, i.sd()) + 4),
-    (o.rounding = 1),
-    (n = i.d.length),
-    n < 3)
+      (r = o.rounding),
+      (o.precision = t + Math.max(i.e, i.sd()) + 4),
+      (o.rounding = 1),
+      (n = i.d.length),
+      n < 3)
   )
     i = at(o, 2, i, i, !0);
   else {
@@ -3246,7 +3246,7 @@ R.hyperbolicSine = R.sinh = function () {
       (e = e > 16 ? 16 : e | 0),
       (i = i.times(1 / wr(5, e))),
       (i = at(o, 2, i, i, !0));
-    for (var s, a = new o(5), l = new o(16), u = new o(20); e--; )
+    for (var s, a = new o(5), l = new o(16), u = new o(20); e--;)
       (s = i.times(i)), (i = i.times(a.plus(s.times(l.times(s).plus(u)))));
   }
   return (o.precision = t), (o.rounding = r), k(i, t, r, !0);
@@ -3399,9 +3399,9 @@ R.inverseTangent = R.atan = function () {
   }
   for (
     g.precision = a = h + 10,
-      g.rounding = 1,
-      r = Math.min(28, (a / _ + 2) | 0),
-      e = r;
+    g.rounding = 1,
+    r = Math.min(28, (a / _ + 2) | 0),
+    e = r;
     e;
     --e
   )
@@ -3413,12 +3413,12 @@ R.inverseTangent = R.atan = function () {
   )
     if (
       ((i = i.times(l)),
-      (o = s.minus(i.div((n += 2)))),
-      (i = i.times(l)),
-      (s = o.plus(i.div((n += 2)))),
-      s.d[t] !== void 0)
+        (o = s.minus(i.div((n += 2)))),
+        (i = i.times(l)),
+        (s = o.plus(i.div((n += 2)))),
+        s.d[t] !== void 0)
     )
-      for (e = t; s.d[e] === o.d[e] && e--; );
+      for (e = t; s.d[e] === o.d[e] && e--;);
   return (
     r && (s = s.times(2 << (r - 1))),
     (L = !0),
@@ -3474,24 +3474,24 @@ R.logarithm = R.log = function (e) {
   if (t)
     if (r.length > 1) o = !0;
     else {
-      for (i = r[0]; i % 10 === 0; ) i /= 10;
+      for (i = r[0]; i % 10 === 0;) i /= 10;
       o = i !== 1;
     }
   if (
     ((L = !1),
-    (a = h + S),
-    (s = De(u, a)),
-    (n = t ? gr(g, a + 10) : De(e, a)),
-    (l = j(s, n, a, 1)),
-    qt(l.d, (i = h), x))
+      (a = h + S),
+      (s = De(u, a)),
+      (n = t ? gr(g, a + 10) : De(e, a)),
+      (l = j(s, n, a, 1)),
+      qt(l.d, (i = h), x))
   )
     do
       if (
         ((a += 10),
-        (s = De(u, a)),
-        (n = t ? gr(g, a + 10) : De(e, a)),
-        (l = j(s, n, a, 1)),
-        !o)
+          (s = De(u, a)),
+          (n = t ? gr(g, a + 10) : De(e, a)),
+          (l = j(s, n, a, 1)),
+          !o)
       ) {
         +Z(l.d).slice(i + 1, i + 15) + 1 == 1e14 && (l = k(l, h + 1, 0));
         break;
@@ -3535,13 +3535,13 @@ R.minus = R.sub = function (e) {
   if (((r = te(e.e / _)), (g = te(S.e / _)), (u = u.slice()), (o = g - r), o)) {
     for (
       h = o < 0,
-        h
-          ? ((t = u), (o = -o), (s = x.length))
-          : ((t = x), (r = g), (s = u.length)),
-        n = Math.max(Math.ceil(a / _), s) + 2,
-        o > n && ((o = n), (t.length = 1)),
-        t.reverse(),
-        n = o;
+      h
+        ? ((t = u), (o = -o), (s = x.length))
+        : ((t = x), (r = g), (s = u.length)),
+      n = Math.max(Math.ceil(a / _), s) + 2,
+      o > n && ((o = n), (t.length = 1)),
+      t.reverse(),
+      n = o;
       n--;
 
     )
@@ -3557,20 +3557,20 @@ R.minus = R.sub = function (e) {
   }
   for (
     h && ((t = u), (u = x), (x = t), (e.s = -e.s)),
-      s = u.length,
-      n = x.length - s;
+    s = u.length,
+    n = x.length - s;
     n > 0;
     --n
   )
     u[s++] = 0;
-  for (n = x.length; n > o; ) {
+  for (n = x.length; n > o;) {
     if (u[--n] < x[n]) {
-      for (i = n; i && u[--i] === 0; ) u[i] = fe - 1;
+      for (i = n; i && u[--i] === 0;) u[i] = fe - 1;
       --u[i], (u[n] += fe);
     }
     u[n] -= x[n];
   }
-  for (; u[--s] === 0; ) u.pop();
+  for (; u[--s] === 0;) u.pop();
   for (; u[0] === 0; u.shift()) --r;
   return u[0]
     ? ((e.d = u), (e.e = yr(u, r)), L ? k(e, a, l) : e)
@@ -3635,10 +3635,10 @@ R.plus = R.add = function (e) {
       i < 0
         ? ((r = u), (i = -i), (s = g.length))
         : ((r = g), (n = o), (s = u.length)),
-        o = Math.ceil(a / _),
-        s = o > s ? o + 1 : s + 1,
-        i > s && ((i = s), (r.length = 1)),
-        r.reverse();
+      o = Math.ceil(a / _),
+      s = o > s ? o + 1 : s + 1,
+      i > s && ((i = s), (r.length = 1)),
+      r.reverse();
       i--;
 
     )
@@ -3647,14 +3647,14 @@ R.plus = R.add = function (e) {
   }
   for (
     s = u.length,
-      i = g.length,
-      s - i < 0 && ((i = s), (r = g), (g = u), (u = r)),
-      t = 0;
+    i = g.length,
+    s - i < 0 && ((i = s), (r = g), (g = u), (u = r)),
+    t = 0;
     i;
 
   )
     (t = ((u[--i] = u[i] + g[i] + t) / fe) | 0), (u[i] %= fe);
-  for (t && (u.unshift(t), ++n), s = u.length; u[--s] == 0; ) u.pop();
+  for (t && (u.unshift(t), ++n), s = u.length; u[--s] == 0;) u.pop();
   return (e.d = u), (e.e = yr(u, n)), L ? k(e, a, l) : e;
 };
 R.precision = R.sd = function (e) {
@@ -3704,26 +3704,26 @@ R.squareRoot = R.sqrt = function () {
     return new g(!u || (u < 0 && (!a || a[0])) ? NaN : a ? s : 1 / 0);
   for (
     L = !1,
-      u = Math.sqrt(+s),
-      u == 0 || u == 1 / 0
-        ? ((t = Z(a)),
-          (t.length + l) % 2 == 0 && (t += "0"),
-          (u = Math.sqrt(t)),
-          (l = te((l + 1) / 2) - (l < 0 || l % 2)),
-          u == 1 / 0
-            ? (t = "5e" + l)
-            : ((t = u.toExponential()),
-              (t = t.slice(0, t.indexOf("e") + 1) + l)),
-          (n = new g(t)))
-        : (n = new g(u.toString())),
-      r = (l = g.precision) + 3;
+    u = Math.sqrt(+s),
+    u == 0 || u == 1 / 0
+      ? ((t = Z(a)),
+        (t.length + l) % 2 == 0 && (t += "0"),
+        (u = Math.sqrt(t)),
+        (l = te((l + 1) / 2) - (l < 0 || l % 2)),
+        u == 1 / 0
+          ? (t = "5e" + l)
+          : ((t = u.toExponential()),
+            (t = t.slice(0, t.indexOf("e") + 1) + l)),
+        (n = new g(t)))
+      : (n = new g(u.toString())),
+    r = (l = g.precision) + 3;
     ;
 
   )
     if (
       ((o = n),
-      (n = o.plus(j(s, o, r + 2, 1)).times(0.5)),
-      Z(o.d).slice(0, r) === (t = Z(n.d)).slice(0, r))
+        (n = o.plus(j(s, o, r + 2, 1)).times(0.5)),
+        Z(o.d).slice(0, r) === (t = Z(n.d)).slice(0, r))
     )
       if (((t = t.slice(r - 3, r + 1)), t == "9999" || (!i && t == "4999"))) {
         if (!i && (k(o, l + 1, 0), o.times(o).eq(s))) {
@@ -3782,24 +3782,24 @@ R.times = R.mul = function (e) {
     );
   for (
     r = te(g.e / _) + te(e.e / _),
-      l = x.length,
-      u = S.length,
-      l < u && ((o = x), (x = S), (S = o), (s = l), (l = u), (u = s)),
-      o = [],
-      s = l + u,
-      n = s;
+    l = x.length,
+    u = S.length,
+    l < u && ((o = x), (x = S), (S = o), (s = l), (l = u), (u = s)),
+    o = [],
+    s = l + u,
+    n = s;
     n--;
 
   )
     o.push(0);
-  for (n = u; --n >= 0; ) {
-    for (t = 0, i = l + n; i > n; )
+  for (n = u; --n >= 0;) {
+    for (t = 0, i = l + n; i > n;)
       (a = o[i] + S[n] * x[i - n - 1] + t),
         (o[i--] = a % fe | 0),
         (t = (a / fe) | 0);
     o[i] = (o[i] + t) % fe | 0;
   }
-  for (; !o[--s]; ) o.pop();
+  for (; !o[--s];) o.pop();
   return (
     t ? ++r : o.shift(),
     (e.d = o),
@@ -3870,12 +3870,12 @@ R.toFraction = function (e) {
   if (!C) return new A(S);
   if (
     ((u = r = new A(1)),
-    (n = l = new A(0)),
-    (t = new A(n)),
-    (o = t.e = Xi(C) - S.e - 1),
-    (s = o % _),
-    (t.d[0] = J(10, s < 0 ? _ + s : s)),
-    e == null)
+      (n = l = new A(0)),
+      (t = new A(n)),
+      (o = t.e = Xi(C) - S.e - 1),
+      (s = o % _),
+      (t.d[0] = J(10, s < 0 ? _ + s : s)),
+      e == null)
   )
     e = o > 0 ? t : u;
   else {
@@ -3884,9 +3884,9 @@ R.toFraction = function (e) {
   }
   for (
     L = !1,
-      a = new A(Z(C)),
-      g = A.precision,
-      A.precision = o = C.length * _ * 2;
+    a = new A(Z(C)),
+    g = A.precision,
+    A.precision = o = C.length * _ * 2;
     (h = j(a, t, 0, 1, 1)), (i = r.plus(h.times(n))), i.cmp(e) != 1;
 
   )
@@ -3975,9 +3975,9 @@ R.toPower = R.pow = function (e) {
         (r = Math.min(12, (t + "").length)),
         (i = xn(e.times(De(a, n + r)), n)),
         i.d &&
-          ((i = k(i, n + 5, 1)),
+        ((i = k(i, n + 5, 1)),
           qt(i.d, n, o) &&
-            ((t = n + 10),
+          ((t = n + 10),
             (i = k(xn(e.times(De(a, t + r)), t), t + 5, 1)),
             +Z(i.d).slice(n + 1, n + 15) + 1 == 1e14 && (i = k(i, n + 1, 0)))),
         (i.s = s),
@@ -4037,7 +4037,7 @@ function Z(e) {
       (n = e[t] + ""), (r = _ - n.length), r && (o += Ne(r)), (o += n);
     (s = e[t]), (n = s + ""), (r = _ - n.length), r && (o += Ne(r));
   } else if (s === 0) return "0";
-  for (; s % 10 === 0; ) s /= 10;
+  for (; s % 10 === 0;) s /= 10;
   return o + s;
 }
 function ae(e, t, r) {
@@ -4059,30 +4059,30 @@ function qt(e, t, r, n) {
             a == 5e4 ||
             a == 0))
         : (s =
-            (((r < 4 && a + 1 == o) || (r > 3 && a + 1 == o / 2)) &&
-              ((e[i + 1] / o / 100) | 0) == J(10, t - 2) - 1) ||
-            ((a == o / 2 || a == 0) && ((e[i + 1] / o / 100) | 0) == 0))
+          (((r < 4 && a + 1 == o) || (r > 3 && a + 1 == o / 2)) &&
+            ((e[i + 1] / o / 100) | 0) == J(10, t - 2) - 1) ||
+          ((a == o / 2 || a == 0) && ((e[i + 1] / o / 100) | 0) == 0))
       : t < 4
         ? (t == 0
-            ? (a = (a / 1e3) | 0)
-            : t == 1
-              ? (a = (a / 100) | 0)
-              : t == 2 && (a = (a / 10) | 0),
+          ? (a = (a / 1e3) | 0)
+          : t == 1
+            ? (a = (a / 100) | 0)
+            : t == 2 && (a = (a / 10) | 0),
           (s = ((n || r < 4) && a == 9999) || (!n && r > 3 && a == 4999)))
         : (s =
-            (((n || r < 4) && a + 1 == o) || (!n && r > 3 && a + 1 == o / 2)) &&
-            ((e[i + 1] / o / 1e3) | 0) == J(10, t - 3) - 1),
+          (((n || r < 4) && a + 1 == o) || (!n && r > 3 && a + 1 == o / 2)) &&
+          ((e[i + 1] / o / 1e3) | 0) == J(10, t - 3) - 1),
     s
   );
 }
 function dr(e, t, r) {
-  for (var n, i = [0], o, s = 0, a = e.length; s < a; ) {
-    for (o = i.length; o--; ) i[o] *= t;
+  for (var n, i = [0], o, s = 0, a = e.length; s < a;) {
+    for (o = i.length; o--;) i[o] *= t;
     for (i[0] += wn.indexOf(e.charAt(s++)), n = 0; n < i.length; n++)
       i[n] > r - 1 &&
         (i[n + 1] === void 0 && (i[n + 1] = 0),
-        (i[n + 1] += (i[n] / r) | 0),
-        (i[n] %= r));
+          (i[n + 1] += (i[n] / r) | 0),
+          (i[n] %= r));
   }
   return i.reverse();
 }
@@ -4095,7 +4095,7 @@ function El(e, t) {
       : ((r = 16), (i = "2.3283064365386962890625e-10")),
     (e.precision += r),
     (t = at(e, 1, t.times(i), new e(1)));
-  for (var o = r; o--; ) {
+  for (var o = r; o--;) {
     var s = t.times(t);
     t = s.times(s).minus(s).times(8).plus(1);
   }
@@ -4106,7 +4106,7 @@ var j = (function () {
     var s,
       a = 0,
       l = n.length;
-    for (n = n.slice(); l--; )
+    for (n = n.slice(); l--;)
       (s = n[l] * i + a), (n[l] = s % o | 0), (a = (s / o) | 0);
     return a && n.unshift(a), n;
   }
@@ -4122,9 +4122,9 @@ var j = (function () {
     return l;
   }
   function r(n, i, o, s) {
-    for (var a = 0; o--; )
+    for (var a = 0; o--;)
       (n[o] -= a), (a = n[o] < i[o] ? 1 : 0), (n[o] = a * s + n[o] - i[o]);
-    for (; !n[0] && n.length > 1; ) n.shift();
+    for (; !n[0] && n.length > 1;) n.shift();
   }
   return function (n, i, o, s, a, l) {
     var u,
@@ -4163,22 +4163,22 @@ var j = (function () {
       l
         ? ((S = 1), (g = n.e - i.e))
         : ((l = fe), (S = _), (g = te(n.e / S) - te(i.e / S))),
-        X = $.length,
-        ie = ee.length,
-        I = new Yt(qr),
-        N = I.d = [],
-        h = 0;
+      X = $.length,
+      ie = ee.length,
+      I = new Yt(qr),
+      N = I.d = [],
+      h = 0;
       $[h] == (ee[h] || 0);
       h++
     );
     if (
       ($[h] > (ee[h] || 0) && g--,
-      o == null
-        ? ((q = o = Yt.precision), (s = Yt.rounding))
-        : a
-          ? (q = o + (n.e - i.e) + 1)
-          : (q = o),
-      q < 0)
+        o == null
+          ? ((q = o = Yt.precision), (s = Yt.rounding))
+          : a
+            ? (q = o + (n.e - i.e) + 1)
+            : (q = o),
+        q < 0)
     )
       N.push(1), (C = !0);
     else {
@@ -4189,14 +4189,14 @@ var j = (function () {
       } else {
         for (
           x = (l / ($[0] + 1)) | 0,
-            x > 1 &&
-              (($ = e($, x, l)),
-              (ee = e(ee, x, l)),
-              (X = $.length),
-              (ie = ee.length)),
-            Q = X,
-            M = ee.slice(0, X),
-            O = M.length;
+          x > 1 &&
+          (($ = e($, x, l)),
+            (ee = e(ee, x, l)),
+            (X = $.length),
+            (ie = ee.length)),
+          Q = X,
+          M = ee.slice(0, X),
+          O = M.length;
           O < X;
 
         )
@@ -4221,7 +4221,7 @@ var j = (function () {
                 F < O && A.unshift(0),
                 r(M, A, O, l),
                 u == -1 &&
-                  ((O = M.length),
+                ((O = M.length),
                   (u = t($, M, X, O)),
                   u < 1 && (x++, r(M, X < O ? ze : $, O, l))),
                 (O = M.length))
@@ -4262,7 +4262,7 @@ function k(e, t, r, n) {
         (l = (g / J(10, i - s - 1)) % 10 | 0);
     else if (((x = Math.ceil((o + 1) / _)), (a = h.length), x >= a))
       if (n) {
-        for (; a++ <= x; ) h.push(0);
+        for (; a++ <= x;) h.push(0);
         (g = l = 0), (i = 1), (o %= _), (s = o - _ + 1);
       } else break e;
     else {
@@ -4277,18 +4277,18 @@ function k(e, t, r, n) {
         t < 0 ||
         h[x + 1] !== void 0 ||
         (s < 0 ? g : g % J(10, i - s - 1))),
-      (u =
-        r < 4
-          ? (l || n) && (r == 0 || r == (e.s < 0 ? 3 : 2))
-          : l > 5 ||
+        (u =
+          r < 4
+            ? (l || n) && (r == 0 || r == (e.s < 0 ? 3 : 2))
+            : l > 5 ||
             (l == 5 &&
               (r == 4 ||
                 n ||
                 (r == 6 &&
                   (o > 0 ? (s > 0 ? g / J(10, i - s) : 0) : h[x - 1]) % 10 &
-                    1) ||
+                  1) ||
                 r == (e.s < 0 ? 8 : 7)))),
-      t < 1 || !h[0])
+        t < 1 || !h[0])
     )
       return (
         (h.length = 0),
@@ -4303,9 +4303,9 @@ function k(e, t, r, n) {
         : ((h.length = x + 1),
           (a = J(10, _ - o)),
           (h[x] = s > 0 ? ((g / J(10, i - s)) % J(10, s) | 0) * a : 0)),
-      u)
+        u)
     )
-      for (;;)
+      for (; ;)
         if (x == 0) {
           for (o = 1, s = h[0]; s >= 10; s /= 10) o++;
           for (s = h[0] += a, a = 1; s >= 10; s /= 10) a++;
@@ -4315,13 +4315,13 @@ function k(e, t, r, n) {
           if (((h[x] += a), h[x] != fe)) break;
           (h[x--] = 0), (a = 1);
         }
-    for (o = h.length; h[--o] === 0; ) h.pop();
+    for (o = h.length; h[--o] === 0;) h.pop();
   }
   return (
     L &&
-      (e.e > S.maxE
-        ? ((e.d = null), (e.e = NaN))
-        : e.e < S.minE && ((e.e = 0), (e.d = [0]))),
+    (e.e > S.maxE
+      ? ((e.d = null), (e.e = NaN))
+      : e.e < S.minE && ((e.e = 0), (e.d = [0]))),
     e
   );
 }
@@ -4334,8 +4334,8 @@ function xe(e, t, r) {
   return (
     t
       ? (r && (n = r - s) > 0
-          ? (o = o.charAt(0) + "." + o.slice(1) + Ne(n))
-          : s > 1 && (o = o.charAt(0) + "." + o.slice(1)),
+        ? (o = o.charAt(0) + "." + o.slice(1) + Ne(n))
+        : s > 1 && (o = o.charAt(0) + "." + o.slice(1)),
         (o = o + (e.e < 0 ? "e" : "e+") + e.e))
       : i < 0
         ? ((o = "0." + Ne(-i - 1) + o), r && (n = r - s) > 0 && (o += Ne(n)))
@@ -4370,18 +4370,18 @@ function Xi(e) {
   return r;
 }
 function Ne(e) {
-  for (var t = ""; e--; ) t += "0";
+  for (var t = ""; e--;) t += "0";
   return t;
 }
 function eo(e, t, r, n) {
   var i,
     o = new e(1),
     s = Math.ceil(n / _ + 4);
-  for (L = !1; ; ) {
+  for (L = !1; ;) {
     if (
       (r % 2 && ((o = o.times(t)), Gi(o.d, s) && (i = !0)),
-      (r = te(r / 2)),
-      r === 0)
+        (r = te(r / 2)),
+        r === 0)
     ) {
       (r = o.d.length - 1), i && o.d[r] === 0 && ++o.d[r];
       break;
@@ -4394,7 +4394,7 @@ function Ji(e) {
   return e.d[e.d.length - 1] & 1;
 }
 function to(e, t, r) {
-  for (var n, i = new e(t[0]), o = 0; ++o < t.length; )
+  for (var n, i = new e(t[0]), o = 0; ++o < t.length;)
     if (((n = new e(t[o])), n.s)) i[r](n) && (i = n);
     else {
       i = n;
@@ -4438,19 +4438,19 @@ function xn(e, t) {
     (e = e.times(a)), (h += 5);
   for (
     n = ((Math.log(J(2, h)) / Math.LN10) * 2 + 5) | 0,
-      l += n,
-      r = o = s = new x(1),
-      x.precision = l;
+    l += n,
+    r = o = s = new x(1),
+    x.precision = l;
     ;
 
   ) {
     if (
       ((o = k(o.times(e), l, 1)),
-      (r = r.times(++g)),
-      (a = s.plus(j(o, r, l, 1))),
-      Z(a.d).slice(0, l) === Z(s.d).slice(0, l))
+        (r = r.times(++g)),
+        (a = s.plus(j(o, r, l, 1))),
+        Z(a.d).slice(0, l) === Z(s.d).slice(0, l))
     ) {
-      for (i = h; i--; ) s = k(s.times(s), l, 1);
+      for (i = h; i--;) s = k(s.times(s), l, 1);
       if (t == null)
         if (u < 3 && qt(s.d, l - n, S, u))
           (x.precision = l += 10), (r = o = a = new x(1)), (g = 0), u++;
@@ -4483,12 +4483,12 @@ function De(e, t) {
     return new I(F && !F[0] ? -1 / 0 : A.s != 1 ? NaN : F ? 0 : A);
   if (
     (t == null ? ((L = !1), (g = M)) : (g = t),
-    (I.precision = g += C),
-    (r = Z(F)),
-    (n = r.charAt(0)),
-    Math.abs((o = A.e)) < 15e14)
+      (I.precision = g += C),
+      (r = Z(F)),
+      (n = r.charAt(0)),
+      Math.abs((o = A.e)) < 15e14)
   ) {
-    for (; (n < 7 && n != 1) || (n == 1 && r.charAt(1) > 3); )
+    for (; (n < 7 && n != 1) || (n == 1 && r.charAt(1) > 3);)
       (A = A.times(e)), (r = Z(A.d)), (n = r.charAt(0)), S++;
     (o = A.e),
       n > 1 ? ((A = new I("0." + r)), o++) : (A = new I(n + "." + r.slice(1)));
@@ -4501,22 +4501,22 @@ function De(e, t) {
     );
   for (
     h = A,
-      l = s = A = j(A.minus(1), A.plus(1), g, 1),
-      x = k(A.times(A), g, 1),
-      i = 3;
+    l = s = A = j(A.minus(1), A.plus(1), g, 1),
+    x = k(A.times(A), g, 1),
+    i = 3;
     ;
 
   ) {
     if (
       ((s = k(s.times(x), g, 1)),
-      (u = l.plus(j(s, new I(i), g, 1))),
-      Z(u.d).slice(0, g) === Z(l.d).slice(0, g))
+        (u = l.plus(j(s, new I(i), g, 1))),
+        Z(u.d).slice(0, g) === Z(l.d).slice(0, g))
     )
       if (
         ((l = l.times(2)),
-        o !== 0 && (l = l.plus(gr(I, g + 2, M).times(o + ""))),
-        (l = j(l, new I(S), g, 1)),
-        t == null)
+          o !== 0 && (l = l.plus(gr(I, g + 2, M).times(o + ""))),
+          (l = j(l, new I(S), g, 1)),
+          t == null)
       )
         if (qt(l.d, g - C, N, a))
           (I.precision = g += C),
@@ -4535,10 +4535,10 @@ function vn(e, t) {
   var r, n, i;
   for (
     (r = t.indexOf(".")) > -1 && (t = t.replace(".", "")),
-      (n = t.search(/e/i)) > 0
-        ? (r < 0 && (r = n), (r += +t.slice(n + 1)), (t = t.substring(0, n)))
-        : r < 0 && (r = t.length),
-      n = 0;
+    (n = t.search(/e/i)) > 0
+      ? (r < 0 && (r = n), (r += +t.slice(n + 1)), (t = t.substring(0, n)))
+      : r < 0 && (r = t.length),
+    n = 0;
     t.charCodeAt(n) === 48;
     n++
   );
@@ -4546,22 +4546,22 @@ function vn(e, t) {
   if (((t = t.slice(n, i)), t)) {
     if (
       ((i -= n),
-      (e.e = r = r - n - 1),
-      (e.d = []),
-      (n = (r + 1) % _),
-      r < 0 && (n += _),
-      n < i)
+        (e.e = r = r - n - 1),
+        (e.d = []),
+        (n = (r + 1) % _),
+        r < 0 && (n += _),
+        n < i)
     ) {
-      for (n && e.d.push(+t.slice(0, n)), i -= _; n < i; )
+      for (n && e.d.push(+t.slice(0, n)), i -= _; n < i;)
         e.d.push(+t.slice(n, (n += _)));
       (t = t.slice(n)), (n = _ - t.length);
     } else n -= i;
-    for (; n--; ) t += "0";
+    for (; n--;) t += "0";
     e.d.push(+t),
       L &&
-        (e.e > e.constructor.maxE
-          ? ((e.d = null), (e.e = NaN))
-          : e.e < e.constructor.minE && ((e.e = 0), (e.d = [0])));
+      (e.e > e.constructor.maxE
+        ? ((e.d = null), (e.e = NaN))
+        : e.e < e.constructor.minE && ((e.e = 0), (e.d = [0])));
   } else (e.e = 0), (e.d = [0]);
   return e;
 }
@@ -4577,20 +4577,20 @@ function xl(e, t) {
   else throw Error($e + t);
   for (
     o = t.search(/p/i),
-      o > 0
-        ? ((l = +t.slice(o + 1)), (t = t.substring(2, o)))
-        : (t = t.slice(2)),
-      o = t.indexOf("."),
-      s = o >= 0,
-      n = e.constructor,
-      s &&
-        ((t = t.replace(".", "")),
-        (a = t.length),
-        (o = a - o),
-        (i = eo(n, new n(r), o, o * 2))),
-      u = dr(t, r, fe),
-      g = u.length - 1,
-      o = g;
+    o > 0
+      ? ((l = +t.slice(o + 1)), (t = t.substring(2, o)))
+      : (t = t.slice(2)),
+    o = t.indexOf("."),
+    s = o >= 0,
+    n = e.constructor,
+    s &&
+    ((t = t.replace(".", "")),
+      (a = t.length),
+      (o = a - o),
+      (i = eo(n, new n(r), o, o * 2))),
+    u = dr(t, r, fe),
+    g = u.length - 1,
+    o = g;
     u[o] === 0;
     --o
   )
@@ -4613,7 +4613,7 @@ function vl(e, t) {
     (r = r > 16 ? 16 : r | 0),
     (t = t.times(1 / wr(5, r))),
     (t = at(e, 2, t, t));
-  for (var i, o = new e(5), s = new e(16), a = new e(20); r--; )
+  for (var i, o = new e(5), s = new e(16), a = new e(20); r--;)
     (i = t.times(t)), (t = t.times(o.plus(i.times(s.times(i).minus(a)))));
   return t;
 }
@@ -4625,15 +4625,15 @@ function at(e, t, r, n, i) {
     u = 1,
     g = e.precision,
     h = Math.ceil(g / _);
-  for (L = !1, l = r.times(r), a = new e(n); ; ) {
+  for (L = !1, l = r.times(r), a = new e(n); ;) {
     if (
       ((s = j(a.times(l), new e(t++ * t++), g, 1)),
-      (a = i ? n.plus(s) : n.minus(s)),
-      (n = j(s.times(l), new e(t++ * t++), g, 1)),
-      (s = a.plus(n)),
-      s.d[h] !== void 0)
+        (a = i ? n.plus(s) : n.minus(s)),
+        (n = j(s.times(l), new e(t++ * t++), g, 1)),
+        (s = a.plus(n)),
+        s.d[h] !== void 0)
     ) {
-      for (o = h; s.d[o] === a.d[o] && o--; );
+      for (o = h; s.d[o] === a.d[o] && o--;);
       if (o == -1) break;
     }
     (o = a), (a = n), (n = s), (s = o), u++;
@@ -4641,7 +4641,7 @@ function at(e, t, r, n, i) {
   return (L = !0), (s.d.length = h + 1), s;
 }
 function wr(e, t) {
-  for (var r = e; --t; ) r *= e;
+  for (var r = e; --t;) r *= e;
   return r;
 }
 function no(e, t) {
@@ -4674,24 +4674,24 @@ function Pn(e, t, r, n) {
     (C
       ? (ae(r, 1, Be), n === void 0 ? (n = S.rounding) : ae(n, 0, 8))
       : ((r = S.precision), (n = S.rounding)),
-    !e.isFinite())
+      !e.isFinite())
   )
     g = ro(e);
   else {
     for (
       g = xe(e),
-        s = g.indexOf("."),
-        C
-          ? ((i = 2), t == 16 ? (r = r * 4 - 3) : t == 8 && (r = r * 3 - 2))
-          : (i = t),
-        s >= 0 &&
-          ((g = g.replace(".", "")),
-          (x = new S(1)),
-          (x.e = g.length - s),
-          (x.d = dr(xe(x), 10, i)),
-          (x.e = x.d.length)),
-        h = dr(g, 10, i),
-        o = l = h.length;
+      s = g.indexOf("."),
+      C
+        ? ((i = 2), t == 16 ? (r = r * 4 - 3) : t == 8 && (r = r * 3 - 2))
+        : (i = t),
+      s >= 0 &&
+      ((g = g.replace(".", "")),
+        (x = new S(1)),
+        (x.e = g.length - s),
+        (x.d = dr(xe(x), 10, i)),
+        (x.e = x.d.length)),
+      h = dr(g, 10, i),
+      o = l = h.length;
       h[--l] == 0;
 
     )
@@ -4708,22 +4708,22 @@ function Pn(e, t, r, n) {
             (h = e.d),
             (o = e.e),
             (u = Ki)),
-        (s = h[r]),
-        (a = i / 2),
-        (u = u || h[r + 1] !== void 0),
-        (u =
-          n < 4
-            ? (s !== void 0 || u) && (n === 0 || n === (e.s < 0 ? 3 : 2))
-            : s > a ||
+          (s = h[r]),
+          (a = i / 2),
+          (u = u || h[r + 1] !== void 0),
+          (u =
+            n < 4
+              ? (s !== void 0 || u) && (n === 0 || n === (e.s < 0 ? 3 : 2))
+              : s > a ||
               (s === a &&
                 (n === 4 ||
                   u ||
                   (n === 6 && h[r - 1] & 1) ||
                   n === (e.s < 0 ? 8 : 7)))),
-        (h.length = r),
-        u)
+          (h.length = r),
+          u)
       )
-        for (; ++h[--r] > i - 1; ) (h[r] = 0), r || (++o, h.unshift(1));
+        for (; ++h[--r] > i - 1;) (h[r] = 0), r || (++o, h.unshift(1));
       for (l = h.length; !h[l - 1]; --l);
       for (s = 0, g = ""; s < l; s++) g += wn.charAt(h[s]);
       if (C) {
@@ -4735,9 +4735,9 @@ function Pn(e, t, r, n) {
           } else g = g.charAt(0) + "." + g.slice(1);
         g = g + (o < 0 ? "p" : "p+") + o;
       } else if (o < 0) {
-        for (; ++o; ) g = "0" + g;
+        for (; ++o;) g = "0" + g;
         g = "0." + g;
-      } else if (++o > l) for (o -= l; o--; ) g += "0";
+      } else if (++o > l) for (o -= l; o--;) g += "0";
       else o < l && (g = g.slice(0, o) + "." + g.slice(o));
     }
     g = (t == 16 ? "0x" : t == 2 ? "0b" : t == 8 ? "0o" : "") + g;
@@ -4909,59 +4909,59 @@ function io(e) {
   }
   if (
     ((i.prototype = R),
-    (i.ROUND_UP = 0),
-    (i.ROUND_DOWN = 1),
-    (i.ROUND_CEIL = 2),
-    (i.ROUND_FLOOR = 3),
-    (i.ROUND_HALF_UP = 4),
-    (i.ROUND_HALF_DOWN = 5),
-    (i.ROUND_HALF_EVEN = 6),
-    (i.ROUND_HALF_CEIL = 7),
-    (i.ROUND_HALF_FLOOR = 8),
-    (i.EUCLID = 9),
-    (i.config = i.set = Ll),
-    (i.clone = io),
-    (i.isDecimal = Wi),
-    (i.abs = Pl),
-    (i.acos = Tl),
-    (i.acosh = Cl),
-    (i.add = Al),
-    (i.asin = Rl),
-    (i.asinh = Sl),
-    (i.atan = Ol),
-    (i.atanh = kl),
-    (i.atan2 = Fl),
-    (i.cbrt = Ml),
-    (i.ceil = _l),
-    (i.clamp = Il),
-    (i.cos = Nl),
-    (i.cosh = Dl),
-    (i.div = $l),
-    (i.exp = Bl),
-    (i.floor = jl),
-    (i.hypot = ql),
-    (i.ln = Ul),
-    (i.log = Vl),
-    (i.log10 = Jl),
-    (i.log2 = Ql),
-    (i.max = Gl),
-    (i.min = Wl),
-    (i.mod = Kl),
-    (i.mul = Hl),
-    (i.pow = zl),
-    (i.random = Yl),
-    (i.round = Zl),
-    (i.sign = Xl),
-    (i.sin = eu),
-    (i.sinh = tu),
-    (i.sqrt = ru),
-    (i.sub = nu),
-    (i.sum = iu),
-    (i.tan = ou),
-    (i.tanh = su),
-    (i.trunc = au),
-    e === void 0 && (e = {}),
-    e && e.defaults !== !0)
+      (i.ROUND_UP = 0),
+      (i.ROUND_DOWN = 1),
+      (i.ROUND_CEIL = 2),
+      (i.ROUND_FLOOR = 3),
+      (i.ROUND_HALF_UP = 4),
+      (i.ROUND_HALF_DOWN = 5),
+      (i.ROUND_HALF_EVEN = 6),
+      (i.ROUND_HALF_CEIL = 7),
+      (i.ROUND_HALF_FLOOR = 8),
+      (i.EUCLID = 9),
+      (i.config = i.set = Ll),
+      (i.clone = io),
+      (i.isDecimal = Wi),
+      (i.abs = Pl),
+      (i.acos = Tl),
+      (i.acosh = Cl),
+      (i.add = Al),
+      (i.asin = Rl),
+      (i.asinh = Sl),
+      (i.atan = Ol),
+      (i.atanh = kl),
+      (i.atan2 = Fl),
+      (i.cbrt = Ml),
+      (i.ceil = _l),
+      (i.clamp = Il),
+      (i.cos = Nl),
+      (i.cosh = Dl),
+      (i.div = $l),
+      (i.exp = Bl),
+      (i.floor = jl),
+      (i.hypot = ql),
+      (i.ln = Ul),
+      (i.log = Vl),
+      (i.log10 = Jl),
+      (i.log2 = Ql),
+      (i.max = Gl),
+      (i.min = Wl),
+      (i.mod = Kl),
+      (i.mul = Hl),
+      (i.pow = zl),
+      (i.random = Yl),
+      (i.round = Zl),
+      (i.sign = Xl),
+      (i.sin = eu),
+      (i.sinh = tu),
+      (i.sqrt = ru),
+      (i.sub = nu),
+      (i.sum = iu),
+      (i.tan = ou),
+      (i.tanh = su),
+      (i.trunc = au),
+      e === void 0 && (e = {}),
+      e && e.defaults !== !0)
   )
     for (
       n = [
@@ -4974,7 +4974,7 @@ function io(e) {
         "modulo",
         "crypto",
       ],
-        t = 0;
+      t = 0;
       t < n.length;
 
     )
@@ -4994,7 +4994,7 @@ function ql() {
   var e,
     t,
     r = new this(0);
-  for (L = !1, e = 0; e < arguments.length; )
+  for (L = !1, e = 0; e < arguments.length;)
     if (((t = new this(arguments[e++])), t.d)) r.d && (r = r.plus(t.times(t)));
     else {
       if (t.s) return (L = !0), new this(1 / 0);
@@ -5042,17 +5042,17 @@ function Yl(e) {
     a = [];
   if (
     (e === void 0 ? (e = this.precision) : ae(e, 1, Be),
-    (n = Math.ceil(e / _)),
-    this.crypto)
+      (n = Math.ceil(e / _)),
+      this.crypto)
   )
     if (crypto.getRandomValues)
-      for (t = crypto.getRandomValues(new Uint32Array(n)); o < n; )
+      for (t = crypto.getRandomValues(new Uint32Array(n)); o < n;)
         (i = t[o]),
           i >= 429e7
             ? (t[o] = crypto.getRandomValues(new Uint32Array(1))[0])
             : (a[o++] = i % 1e7);
     else if (crypto.randomBytes) {
-      for (t = crypto.randomBytes((n *= 4)); o < n; )
+      for (t = crypto.randomBytes((n *= 4)); o < n;)
         (i =
           t[o] + (t[o + 1] << 8) + (t[o + 2] << 16) + ((t[o + 3] & 127) << 24)),
           i >= 214e7
@@ -5060,11 +5060,11 @@ function Yl(e) {
             : (a.push(i % 1e7), (o += 4));
       o = n / 4;
     } else throw Error(zi);
-  else for (; o < n; ) a[o++] = (Math.random() * 1e7) | 0;
+  else for (; o < n;) a[o++] = (Math.random() * 1e7) | 0;
   for (
     n = a[--o],
-      e %= _,
-      n && e && ((i = J(10, _ - e)), (a[o] = ((n / i) | 0) * i));
+    e %= _,
+    n && e && ((i = J(10, _ - e)), (a[o] = ((n / i) | 0) * i));
     a[o] === 0;
     o--
   )
@@ -5099,7 +5099,7 @@ function iu() {
   var e = 0,
     t = arguments,
     r = new this(t[e]);
-  for (L = !1; r.s && ++e < t.length; ) r = r.plus(t[e]);
+  for (L = !1; r.s && ++e < t.length;) r = r.plus(t[e]);
   return (L = !0), k(r, this.precision, this.rounding);
 }
 function ou(e) {
@@ -5121,11 +5121,11 @@ function lt(e) {
   return Ke.isDecimal(e)
     ? !0
     : e !== null &&
-        typeof e == "object" &&
-        typeof e.s == "number" &&
-        typeof e.e == "number" &&
-        typeof e.toFixed == "function" &&
-        Array.isArray(e.d);
+    typeof e == "object" &&
+    typeof e.s == "number" &&
+    typeof e.e == "number" &&
+    typeof e.toFixed == "function" &&
+    Array.isArray(e.d);
 }
 m();
 c();
@@ -5204,11 +5204,11 @@ var Pe = class {
     let r = t.getCurrentLineLength();
     t.write(this.color(this.contents)),
       this.isUnderlined &&
-        t.afterNextNewline(() => {
-          t.write(" ".repeat(r)).writeLine(
-            this.color("~".repeat(this.contents.length)),
-          );
-        });
+      t.afterNextNewline(() => {
+        t.write(" ".repeat(r)).writeLine(
+          this.color("~".repeat(this.contents.length)),
+        );
+      });
   }
 };
 m();
@@ -5258,11 +5258,11 @@ var pt = class extends je {
       .withIndent(() => r.writeJoined(ct, this.items).newLine())
       .write("]"),
       this.hasError &&
-        r.afterNextNewline(() => {
-          r.writeLine(n.red("~".repeat(this.getPrintWidth())));
-        });
+      r.afterNextNewline(() => {
+        r.writeLine(n.red("~".repeat(this.getPrintWidth())));
+      });
   }
-  asObject() {}
+  asObject() { }
 };
 m();
 c();
@@ -5319,7 +5319,7 @@ var dt = class e extends je {
         (s.value instanceof e
           ? (l = s.value.getField(a))
           : s.value instanceof pt && (l = s.value.getField(Number(a))),
-        !l)
+          !l)
       )
         return;
       s = l;
@@ -5404,9 +5404,9 @@ var dt = class e extends je {
     }),
       r.write("}"),
       this.hasError &&
-        r.afterNextNewline(() => {
-          r.writeLine(r.context.colors.red("~".repeat(this.getPrintWidth())));
-        });
+      r.afterNextNewline(() => {
+        r.writeLine(r.context.colors.red("~".repeat(this.getPrintWidth())));
+      });
   }
 };
 m();
@@ -5426,7 +5426,7 @@ var z = class extends je {
     let n = new Pe(this.text);
     this.hasError && n.underline().setColor(r.context.colors.red), r.write(n);
   }
-  asObject() {}
+  asObject() { }
 };
 var Tn = class {
   constructor(t) {
@@ -5505,19 +5505,19 @@ var cu = "P2037";
 function Tr({ error: e, user_facing_error: t }, r, n) {
   return t.error_code
     ? new W(pu(t, n), {
-        code: t.error_code,
-        clientVersion: r,
-        meta: t.meta,
-        batchRequestIdx: t.batch_request_idx,
-      })
+      code: t.error_code,
+      clientVersion: r,
+      meta: t.meta,
+      batchRequestIdx: t.batch_request_idx,
+    })
     : new K(e, { clientVersion: r, batchRequestIdx: t.batch_request_idx });
 }
 function pu(e, t) {
   let r = e.message;
   return (
     (t === "postgresql" || t === "postgres" || t === "mysql") &&
-      e.error_code === cu &&
-      (r += `
+    e.error_code === cu &&
+    (r += `
 Prisma Accelerate has built-in connection pooling to prevent such errors: https://pris.ly/client/error-accelerate`),
     r
   );
@@ -5557,7 +5557,7 @@ function co(e) {
   }, []);
 }
 var du =
-    /^\s*at (.*?) ?\(((?:file|https?|blob|chrome-extension|native|eval|webpack|<anonymous>|\/|[a-z]:\\|\\\\).*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i,
+  /^\s*at (.*?) ?\(((?:file|https?|blob|chrome-extension|native|eval|webpack|<anonymous>|\/|[a-z]:\\|\\\\).*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i,
   fu = /\((\S*)(?::(\d+))(?::(\d+))\)/;
 function mu(e) {
   var t = du.exec(e);
@@ -5582,16 +5582,16 @@ function hu(e) {
   var t = gu.exec(e);
   return t
     ? {
-        file: t[2],
-        methodName: t[1] || Vt,
-        arguments: [],
-        lineNumber: +t[3],
-        column: t[4] ? +t[4] : null,
-      }
+      file: t[2],
+      methodName: t[1] || Vt,
+      arguments: [],
+      lineNumber: +t[3],
+      column: t[4] ? +t[4] : null,
+    }
     : null;
 }
 var yu =
-    /^\s*(.*?)(?:\((.*?)\))?(?:^|@)((?:file|https?|blob|chrome|webpack|resource|\[native).*?|[^@]*bundle)(?::(\d+))?(?::(\d+))?\s*$/i,
+  /^\s*(.*?)(?:\((.*?)\))?(?:^|@)((?:file|https?|blob|chrome|webpack|resource|\[native).*?|[^@]*bundle)(?::(\d+))?(?::(\d+))?\s*$/i,
   wu = /(\S+) line (\d+)(?: > eval line \d+)* > eval/i;
 function bu(e) {
   var t = yu.exec(e);
@@ -5614,12 +5614,12 @@ function xu(e) {
   var t = Eu.exec(e);
   return t
     ? {
-        file: t[3],
-        methodName: t[1] || Vt,
-        arguments: [],
-        lineNumber: +t[4],
-        column: t[5] ? +t[5] : null,
-      }
+      file: t[3],
+      methodName: t[1] || Vt,
+      arguments: [],
+      lineNumber: +t[4],
+      column: t[5] ? +t[5] : null,
+    }
     : null;
 }
 var vu =
@@ -5628,19 +5628,19 @@ function Pu(e) {
   var t = vu.exec(e);
   return t
     ? {
-        file: t[2],
-        methodName: t[1] || Vt,
-        arguments: [],
-        lineNumber: +t[3],
-        column: t[4] ? +t[4] : null,
-      }
+      file: t[2],
+      methodName: t[1] || Vt,
+      arguments: [],
+      lineNumber: +t[3],
+      column: t[4] ? +t[4] : null,
+    }
     : null;
 }
 var Cn = class {
-    getLocation() {
-      return null;
-    }
-  },
+  getLocation() {
+    return null;
+  }
+},
   An = class {
     constructor() {
       this._error = new Error();
@@ -5669,10 +5669,10 @@ var Cn = class {
       return !n || !n.file
         ? null
         : {
-            fileName: n.file,
-            lineNumber: n.lineNumber,
-            columnNumber: n.column,
-          };
+          fileName: n.file,
+          lineNumber: n.lineNumber,
+          columnNumber: n.column,
+        };
     }
   };
 function qe(e) {
@@ -5753,9 +5753,9 @@ function Su(e = {}) {
 function Ou(e = {}) {
   return (t) => (
     typeof e?._count == "boolean" &&
-      t.forEach((r) => {
-        r._count = r._count._all;
-      }),
+    t.forEach((r) => {
+      r._count = r._count._all;
+    }),
     t
   );
 }
@@ -5898,9 +5898,9 @@ var _u = (e) => e,
           return Array.isArray(e)
             ? e.map(D.util.encode)
             : e
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/\u00a0/g, " ");
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/\u00a0/g, " ");
       },
       type: function (e) {
         return Object.prototype.toString.call(e).slice(8, -1);
@@ -6043,10 +6043,10 @@ var _u = (e) => e,
             let ze = new me(A, M ? D.tokenize(h, M) : h, bt, h, Y);
             if (
               (X.push(ze),
-              C && X.push(C),
-              Array.prototype.splice.apply(t, X),
-              u != 1 && D.matchGrammar(e, t, r, Q, ie, !0, A),
-              o)
+                C && X.push(C),
+                Array.prototype.splice.apply(t, X),
+                u != 1 && D.matchGrammar(e, t, r, Q, ie, !0, A),
+                o)
             )
               break;
           }
@@ -6070,7 +6070,7 @@ var _u = (e) => e,
       },
       run: function (e, t) {
         let r = D.hooks.all[e];
-        if (!(!r || !r.length)) for (var n = 0, i; (i = r[n++]); ) i(t);
+        if (!(!r || !r.length)) for (var n = 0, i; (i = r[n++]);) i(t);
       },
     },
     Token: me,
@@ -6182,10 +6182,10 @@ me.stringify = function (e, t) {
     ? e
     : Array.isArray(e)
       ? e
-          .map(function (r) {
-            return me.stringify(r, t);
-          })
-          .join("")
+        .map(function (r) {
+          return me.stringify(r, t);
+        })
+        .join("")
       : Lu(e.type)(e.content);
 };
 function Lu(e) {
@@ -6273,13 +6273,13 @@ var Rr = class e {
   }
 };
 var Du = {
-    red: Qe,
-    gray: At,
-    dim: vt,
-    bold: pe,
-    underline: Pt,
-    highlightSource: (e) => e.highlight(),
-  },
+  red: Qe,
+  gray: At,
+  dim: vt,
+  bold: pe,
+  underline: Pt,
+  highlightSource: (e) => e.highlight(),
+},
   $u = {
     red: (e) => e,
     gray: (e) => e,
@@ -6314,7 +6314,7 @@ function ju(
     (s.functionName = `${x.code})`),
       (s.location = a),
       n ||
-        (u = u.mapLineAt(a.lineNumber, (C) => C.slice(0, x.openingBraceIndex))),
+      (u = u.mapLineAt(a.lineNumber, (C) => C.slice(0, x.openingBraceIndex))),
       (u = o.highlightSource(u));
     let S = String(u.lastLineNumber).length;
     if (
@@ -6322,7 +6322,7 @@ function ju(
         .mapLines((C, A) => o.gray(String(A).padStart(S)) + " " + C)
         .mapLines((C) => o.dim(C))
         .prependSymbolAt(a.lineNumber, o.bold(o.red("\u2192")))),
-      i)
+        i)
     ) {
       let C = h + S + 1;
       (C += 2), (s.callArguments = (0, To.default)(i, C).slice(C));
@@ -6364,16 +6364,16 @@ function Vu(
   if (
     (n
       ? (a.push(
-          s.red(
-            `Oops, an unknown error occurred! This is ${s.bold("on us")}, you did nothing wrong.`,
-          ),
+        s.red(
+          `Oops, an unknown error occurred! This is ${s.bold("on us")}, you did nothing wrong.`,
         ),
+      ),
         a.push(
           s.red(`It occurred in the ${s.bold(`\`${e}\``)} invocation${l}`),
         ))
       : a.push(s.red(`Invalid ${s.bold(`\`${e}\``)} invocation${l}`)),
-    t && a.push(s.underline(Qu(t))),
-    i)
+      t && a.push(s.underline(Qu(t))),
+      i)
   ) {
     a.push("");
     let u = [i.toString()];
@@ -6430,15 +6430,15 @@ function Te(e) {
   return e.replace(/^./, (t) => t.toLowerCase());
 }
 var Gu = [
-    "findUnique",
-    "findUniqueOrThrow",
-    "findFirst",
-    "findFirstOrThrow",
-    "create",
-    "update",
-    "upsert",
-    "delete",
-  ],
+  "findUnique",
+  "findUniqueOrThrow",
+  "findFirst",
+  "findFirstOrThrow",
+  "create",
+  "update",
+  "upsert",
+  "delete",
+],
   Wu = ["aggregate", "count", "groupBy"];
 function On(e, t) {
   let r = e._extensions.getAllModelExtensions(t) ?? {},
@@ -6606,21 +6606,21 @@ function Sr({
   let o = e(t, i, r) ?? t;
   return (
     r.include &&
-      ko({
-        includeOrSelect: r.include,
-        result: o,
-        parentModelName: i,
-        runtimeDataModel: n,
-        visitor: e,
-      }),
+    ko({
+      includeOrSelect: r.include,
+      result: o,
+      parentModelName: i,
+      runtimeDataModel: n,
+      visitor: e,
+    }),
     r.select &&
-      ko({
-        includeOrSelect: r.select,
-        result: o,
-        parentModelName: i,
-        runtimeDataModel: n,
-        visitor: e,
-      }),
+    ko({
+      includeOrSelect: r.select,
+      result: o,
+      parentModelName: i,
+      runtimeDataModel: n,
+      visitor: e,
+    }),
     o
   );
 }
@@ -6656,21 +6656,21 @@ function Fo({
   return n.isEmpty() || e == null || typeof e != "object" || !i.models[t]
     ? e
     : Sr({
-        result: e,
-        args: r ?? {},
-        modelName: t,
-        runtimeDataModel: i,
-        visitor: (a, l, u) => {
-          let g = Te(l);
-          return Oo({
-            result: a,
-            modelName: g,
-            select: u.select,
-            omit: u.select ? void 0 : { ...o?.[g], ...u.omit },
-            extensions: n,
-          });
-        },
-      });
+      result: e,
+      args: r ?? {},
+      modelName: t,
+      runtimeDataModel: i,
+      visitor: (a, l, u) => {
+        let g = Te(l);
+        return Oo({
+          result: a,
+          modelName: g,
+          select: u.select,
+          omit: u.select ? void 0 : { ...o?.[g], ...u.omit },
+          extensions: n,
+        });
+      },
+    });
 }
 m();
 c();
@@ -6704,7 +6704,7 @@ function Jt(e) {
   if (Array.isArray(e)) {
     let t = e.length,
       r;
-    for (r = Array(t); t--; ) r[t] = Jt(e[t]);
+    for (r = Array(t); t--;) r[t] = Jt(e[t]);
     return r;
   }
   if (typeof e == "object") {
@@ -6712,11 +6712,11 @@ function Jt(e) {
     for (let r in e)
       r === "__proto__"
         ? Object.defineProperty(t, r, {
-            value: Jt(e[r]),
-            configurable: !0,
-            enumerable: !0,
-            writable: !0,
-          })
+          value: Jt(e[r]),
+          configurable: !0,
+          enumerable: !0,
+          writable: !0,
+        })
         : (t[r] = Jt(e[r]));
     return t;
   }
@@ -6727,25 +6727,25 @@ function Io(e, t, r, n = 0) {
     let o = t.customDataProxyFetch;
     return (
       "transaction" in t &&
-        i !== void 0 &&
-        (t.transaction?.kind === "batch" && t.transaction.lock.then(),
+      i !== void 0 &&
+      (t.transaction?.kind === "batch" && t.transaction.lock.then(),
         (t.transaction = i)),
       n === r.length
         ? e._executeRequest(t)
         : r[n]({
-            model: t.model,
-            operation: t.model ? t.action : t.clientMethod,
-            args: Mo(t.args ?? {}),
-            __internalParams: t,
-            query: (s, a = t) => {
-              let l = a.customDataProxyFetch;
-              return (
-                (a.customDataProxyFetch = $o(o, l)),
-                (a.args = s),
-                Io(e, a, r, n + 1)
-              );
-            },
-          })
+          model: t.model,
+          operation: t.model ? t.action : t.clientMethod,
+          args: Mo(t.args ?? {}),
+          __internalParams: t,
+          query: (s, a = t) => {
+            let l = a.customDataProxyFetch;
+            return (
+              (a.customDataProxyFetch = $o(o, l)),
+              (a.args = s),
+              Io(e, a, r, n + 1)
+            );
+          },
+        })
     );
   });
 }
@@ -6804,10 +6804,10 @@ function jo(e, t, r) {
   return !t.result || !(t.result.$allModels || t.result[n])
     ? e
     : tc({
-        ...e,
-        ...Bo(t.name, e, t.result.$allModels),
-        ...Bo(t.name, e, t.result[n]),
-      });
+      ...e,
+      ...Bo(t.name, e, t.result.$allModels),
+      ...Bo(t.name, e, t.result[n]),
+    });
 }
 function tc(e) {
   let t = new be(),
@@ -6822,10 +6822,10 @@ function tc(e) {
 function Bo(e, t, r) {
   return r
     ? tt(r, ({ needs: n, compute: i }, o) => ({
-        name: o,
-        needs: n ? Object.keys(n).filter((s) => n[s]) : [],
-        compute: rc(t, o, i),
-      }))
+      name: o,
+      needs: n ? Object.keys(n).filter((s) => n[s]) : [],
+      compute: rc(t, o, i),
+    }))
     : {};
 }
 function rc(e, t, r) {
@@ -6847,71 +6847,71 @@ function Uo(e, t) {
   return r;
 }
 var Or = class {
-    constructor(t, r) {
-      this.extension = t;
-      this.previous = r;
-      this.computedFieldsCache = new be();
-      this.modelExtensionsCache = new be();
-      this.queryCallbacksCache = new be();
-      this.clientExtensions = _t(() =>
-        this.extension.client
-          ? {
-              ...this.previous?.getAllClientExtensions(),
-              ...this.extension.client,
-            }
-          : this.previous?.getAllClientExtensions(),
-      );
-      this.batchCallbacks = _t(() => {
-        let t = this.previous?.getAllBatchQueryCallbacks() ?? [],
-          r = this.extension.query?.$__internalBatch;
-        return r ? t.concat(r) : t;
-      });
-    }
-    getAllComputedFields(t) {
-      return this.computedFieldsCache.getOrCreate(t, () =>
-        jo(this.previous?.getAllComputedFields(t), this.extension, t),
-      );
-    }
-    getAllClientExtensions() {
-      return this.clientExtensions.get();
-    }
-    getAllModelExtensions(t) {
-      return this.modelExtensionsCache.getOrCreate(t, () => {
-        let r = Te(t);
-        return !this.extension.model ||
-          !(this.extension.model[r] || this.extension.model.$allModels)
-          ? this.previous?.getAllModelExtensions(t)
-          : {
-              ...this.previous?.getAllModelExtensions(t),
-              ...this.extension.model.$allModels,
-              ...this.extension.model[r],
-            };
-      });
-    }
-    getAllQueryCallbacks(t, r) {
-      return this.queryCallbacksCache.getOrCreate(`${t}:${r}`, () => {
-        let n = this.previous?.getAllQueryCallbacks(t, r) ?? [],
-          i = [],
-          o = this.extension.query;
-        return !o || !(o[t] || o.$allModels || o[r] || o.$allOperations)
-          ? n
-          : (o[t] !== void 0 &&
-              (o[t][r] !== void 0 && i.push(o[t][r]),
-              o[t].$allOperations !== void 0 && i.push(o[t].$allOperations)),
-            t !== "$none" &&
-              o.$allModels !== void 0 &&
-              (o.$allModels[r] !== void 0 && i.push(o.$allModels[r]),
-              o.$allModels.$allOperations !== void 0 &&
-                i.push(o.$allModels.$allOperations)),
-            o[r] !== void 0 && i.push(o[r]),
-            o.$allOperations !== void 0 && i.push(o.$allOperations),
-            n.concat(i));
-      });
-    }
-    getAllBatchQueryCallbacks() {
-      return this.batchCallbacks.get();
-    }
-  },
+  constructor(t, r) {
+    this.extension = t;
+    this.previous = r;
+    this.computedFieldsCache = new be();
+    this.modelExtensionsCache = new be();
+    this.queryCallbacksCache = new be();
+    this.clientExtensions = _t(() =>
+      this.extension.client
+        ? {
+          ...this.previous?.getAllClientExtensions(),
+          ...this.extension.client,
+        }
+        : this.previous?.getAllClientExtensions(),
+    );
+    this.batchCallbacks = _t(() => {
+      let t = this.previous?.getAllBatchQueryCallbacks() ?? [],
+        r = this.extension.query?.$__internalBatch;
+      return r ? t.concat(r) : t;
+    });
+  }
+  getAllComputedFields(t) {
+    return this.computedFieldsCache.getOrCreate(t, () =>
+      jo(this.previous?.getAllComputedFields(t), this.extension, t),
+    );
+  }
+  getAllClientExtensions() {
+    return this.clientExtensions.get();
+  }
+  getAllModelExtensions(t) {
+    return this.modelExtensionsCache.getOrCreate(t, () => {
+      let r = Te(t);
+      return !this.extension.model ||
+        !(this.extension.model[r] || this.extension.model.$allModels)
+        ? this.previous?.getAllModelExtensions(t)
+        : {
+          ...this.previous?.getAllModelExtensions(t),
+          ...this.extension.model.$allModels,
+          ...this.extension.model[r],
+        };
+    });
+  }
+  getAllQueryCallbacks(t, r) {
+    return this.queryCallbacksCache.getOrCreate(`${t}:${r}`, () => {
+      let n = this.previous?.getAllQueryCallbacks(t, r) ?? [],
+        i = [],
+        o = this.extension.query;
+      return !o || !(o[t] || o.$allModels || o[r] || o.$allOperations)
+        ? n
+        : (o[t] !== void 0 &&
+          (o[t][r] !== void 0 && i.push(o[t][r]),
+            o[t].$allOperations !== void 0 && i.push(o[t].$allOperations)),
+          t !== "$none" &&
+          o.$allModels !== void 0 &&
+          (o.$allModels[r] !== void 0 && i.push(o.$allModels[r]),
+            o.$allModels.$allOperations !== void 0 &&
+            i.push(o.$allModels.$allOperations)),
+          o[r] !== void 0 && i.push(o[r]),
+          o.$allOperations !== void 0 && i.push(o.$allOperations),
+          n.concat(i));
+    });
+  }
+  getAllBatchQueryCallbacks() {
+    return this.batchCallbacks.get();
+  }
+},
   kr = class e {
     constructor(t) {
       this.head = t;
@@ -6954,8 +6954,8 @@ var Vo = le("prisma:client"),
 function Jo({ postinstall: e, ciName: t, clientVersion: r }) {
   if (
     (Vo("checkPlatformCaching:postinstall", e),
-    Vo("checkPlatformCaching:ciName", t),
-    e === !0 && t && t in Qo)
+      Vo("checkPlatformCaching:ciName", t),
+      e === !0 && t && t in Qo)
   ) {
     let n = `Prisma has detected that this project was built on ${t}, which caches dependencies. This leads to an outdated Prisma Client because Prisma's auto-generation isn't triggered. To fix this, make sure to run the \`prisma generate\` command during the build process.
 
@@ -7048,8 +7048,8 @@ f();
 function Ho(e) {
   return e
     ? e
-        .replace(/".*"/g, '"X"')
-        .replace(/[\s:\[]([+-]?([0-9]*[.])?[0-9]+)/g, (t) => `${t[0]}5`)
+      .replace(/".*"/g, '"X"')
+      .replace(/[\s:\[]([+-]?([0-9]*[.])?[0-9]+)/g, (t) => `${t[0]}5`)
     : "";
 }
 m();
@@ -7106,7 +7106,7 @@ ${n}
 \`\`\``
       : "",
     g = (0,
-    Fn.default)(`Hi Prisma Team! My Prisma Client just crashed. This is the report:
+      Fn.default)(`Hi Prisma Team! My Prisma Client just crashed. This is the report:
 ## Versions
 
 | Name            | Version            |
@@ -7174,7 +7174,7 @@ function Fr({
         : s?.value
           ? (i = s.value)
           : s?.fromEnvVar && (i = r[s.fromEnvVar]),
-    s?.fromEnvVar !== void 0 && i === void 0)
+      s?.fromEnvVar !== void 0 && i === void 0)
   )
     throw new V(`error: Environment variable not found: ${s.fromEnvVar}.`, n);
   if (i === void 0)
@@ -7203,48 +7203,48 @@ p();
 d();
 f();
 var Mn = class {
-    constructor(t, r, n) {
-      this.engineObject = __PrismaProxy.create({
-        datamodel: t.datamodel,
-        env: y.env,
-        ignoreEnvVarErrors: !0,
-        datasourceOverrides: t.datasourceOverrides ?? {},
-        logLevel: t.logLevel,
-        logQueries: t.logQueries ?? !1,
-        logCallback: r,
-      });
-    }
-    async connect(t) {
-      return __PrismaProxy.connect(this.engineObject, t);
-    }
-    async disconnect(t) {
-      return __PrismaProxy.disconnect(this.engineObject, t);
-    }
-    query(t, r, n) {
-      return __PrismaProxy.execute(this.engineObject, t, r, n);
-    }
-    sdlSchema() {
-      return Promise.resolve("{}");
-    }
-    dmmf(t) {
-      return Promise.resolve("{}");
-    }
-    async startTransaction(t, r) {
-      return __PrismaProxy.startTransaction(this.engineObject, t, r);
-    }
-    async commitTransaction(t, r) {
-      return __PrismaProxy.commitTransaction(this.engineObject, t, r);
-    }
-    async rollbackTransaction(t, r) {
-      return __PrismaProxy.rollbackTransaction(this.engineObject, t, r);
-    }
-    metrics(t) {
-      return Promise.resolve("{}");
-    }
-    async applyPendingMigrations() {
-      return __PrismaProxy.applyPendingMigrations(this.engineObject);
-    }
-  },
+  constructor(t, r, n) {
+    this.engineObject = __PrismaProxy.create({
+      datamodel: t.datamodel,
+      env: y.env,
+      ignoreEnvVarErrors: !0,
+      datasourceOverrides: t.datasourceOverrides ?? {},
+      logLevel: t.logLevel,
+      logQueries: t.logQueries ?? !1,
+      logCallback: r,
+    });
+  }
+  async connect(t) {
+    return __PrismaProxy.connect(this.engineObject, t);
+  }
+  async disconnect(t) {
+    return __PrismaProxy.disconnect(this.engineObject, t);
+  }
+  query(t, r, n) {
+    return __PrismaProxy.execute(this.engineObject, t, r, n);
+  }
+  sdlSchema() {
+    return Promise.resolve("{}");
+  }
+  dmmf(t) {
+    return Promise.resolve("{}");
+  }
+  async startTransaction(t, r) {
+    return __PrismaProxy.startTransaction(this.engineObject, t, r);
+  }
+  async commitTransaction(t, r) {
+    return __PrismaProxy.commitTransaction(this.engineObject, t, r);
+  }
+  async rollbackTransaction(t, r) {
+    return __PrismaProxy.rollbackTransaction(this.engineObject, t, r);
+  }
+  metrics(t) {
+    return Promise.resolve("{}");
+  }
+  async applyPendingMigrations() {
+    return __PrismaProxy.applyPendingMigrations(this.engineObject);
+  }
+},
   ts = {
     async loadLibrary(e) {
       if (!__PrismaProxy)
@@ -7309,17 +7309,17 @@ var wC = [...tn, "native"],
         t === "commit"
           ? (o = await this.engine?.commitTransaction(n.id, i))
           : t === "rollback" &&
-            (o = await this.engine?.rollbackTransaction(n.id, i));
+          (o = await this.engine?.rollbackTransaction(n.id, i));
       let s = this.parseEngineResponse(o);
       if (uc(s)) {
         let a = this.getExternalAdapterError(s);
         throw a
           ? a.error
           : new W(s.message, {
-              code: s.error_code,
-              clientVersion: this.config.clientVersion,
-              meta: s.meta,
-            });
+            code: s.error_code,
+            clientVersion: this.config.clientVersion,
+            meta: s.meta,
+          });
       }
       return s;
     }
@@ -7330,7 +7330,7 @@ var wC = [...tn, "native"],
         await this.loadEngine(),
         this.version();
     }
-    async getCurrentBinaryTarget() {}
+    async getCurrentBinaryTarget() { }
     parseEngineResponse(t) {
       if (!t)
         throw new K("Response from the Engine was empty", {
@@ -7348,7 +7348,7 @@ var wC = [...tn, "native"],
       if (!this.engine) {
         this.QueryEngineConstructor ||
           ((this.library = await this.libraryLoader.loadLibrary(this.config)),
-          (this.QueryEngineConstructor = this.library.QueryEngine));
+            (this.QueryEngineConstructor = this.library.QueryEngine));
         try {
           let t = new b(this),
             { adapter: r } = this.config;
@@ -7388,37 +7388,37 @@ var wC = [...tn, "native"],
         (r.level = r?.level.toLowerCase() ?? "unknown"),
           ac(r)
             ? this.logEmitter.emit("query", {
-                timestamp: new Date(),
-                query: r.query,
-                params: r.params,
-                duration: Number(r.duration_ms),
-                target: r.module_path,
-              })
+              timestamp: new Date(),
+              query: r.query,
+              params: r.params,
+              duration: Number(r.duration_ms),
+              target: r.module_path,
+            })
             : lc(r)
               ? (this.loggerRustPanic = new ue(
-                  _n(
-                    this,
-                    `${r.message}: ${r.reason} in ${r.file}:${r.line}:${r.column}`,
-                  ),
-                  this.config.clientVersion,
-                ))
+                _n(
+                  this,
+                  `${r.message}: ${r.reason} in ${r.file}:${r.line}:${r.column}`,
+                ),
+                this.config.clientVersion,
+              ))
               : this.logEmitter.emit(r.level, {
-                  timestamp: new Date(),
-                  message: r.message,
-                  target: r.module_path,
-                });
+                timestamp: new Date(),
+                message: r.message,
+                target: r.module_path,
+              });
       }
     }
     parseInitError(t) {
       try {
         return JSON.parse(t);
-      } catch {}
+      } catch { }
       return t;
     }
     parseRequestError(t) {
       try {
         return JSON.parse(t);
-      } catch {}
+      } catch { }
       return t;
     }
     onBeforeExit() {
@@ -7429,8 +7429,8 @@ var wC = [...tn, "native"],
     async start() {
       if (
         (await this.libraryInstantiationPromise,
-        await this.libraryStoppingPromise,
-        this.libraryStartingPromise)
+          await this.libraryStoppingPromise,
+          this.libraryStartingPromise)
       )
         return (
           Ce(
@@ -7466,8 +7466,8 @@ var wC = [...tn, "native"],
     async stop() {
       if (
         (await this.libraryStartingPromise,
-        await this.executingQueryPromise,
-        this.libraryStoppingPromise)
+          await this.executingQueryPromise,
+          this.libraryStoppingPromise)
       )
         return Ce("library is already stopping"), this.libraryStoppingPromise;
       if (!this.libraryStarted) return;
@@ -7509,8 +7509,8 @@ var wC = [...tn, "native"],
           throw s.errors.length === 1
             ? this.buildQueryError(s.errors[0])
             : new K(JSON.stringify(s.errors), {
-                clientVersion: this.config.clientVersion,
-              });
+              clientVersion: this.config.clientVersion,
+            });
         if (this.loggerRustPanic) throw this.loggerRustPanic;
         return { data: s, elapsed: 0 };
       } catch (s) {
@@ -7521,10 +7521,10 @@ var wC = [...tn, "native"],
         throw typeof a == "string"
           ? s
           : new K(
-              `${a.message}
+            `${a.message}
 ${a.backtrace}`,
-              { clientVersion: this.config.clientVersion },
-            );
+            { clientVersion: this.config.clientVersion },
+          );
       }
     }
     async requestBatch(t, { transaction: r, traceparent: n }) {
@@ -7543,8 +7543,8 @@ ${a.backtrace}`,
         throw s.errors.length === 1
           ? this.buildQueryError(s.errors[0])
           : new K(JSON.stringify(s.errors), {
-              clientVersion: this.config.clientVersion,
-            });
+            clientVersion: this.config.clientVersion,
+          });
       let { batchResult: a, errors: l } = s;
       if (Array.isArray(a))
         return a.map((u) =>
@@ -7606,7 +7606,7 @@ function rs({ copyEngine: e = !0 }, t) {
       env: { ...t.env, ...y.env },
       clientVersion: t.clientVersion,
     });
-  } catch {}
+  } catch { }
   e &&
     r?.startsWith("prisma://") &&
     Mt(
@@ -7624,21 +7624,21 @@ function rs({ copyEngine: e = !0 }, t) {
       (e
         ? r?.startsWith("prisma://")
           ? (l = [
-              "Prisma Client was configured to use the `adapter` option but the URL was a `prisma://` URL.",
-              "Please either use the `prisma://` URL or remove the `adapter` from the Prisma Client constructor.",
-            ])
+            "Prisma Client was configured to use the `adapter` option but the URL was a `prisma://` URL.",
+            "Please either use the `prisma://` URL or remove the `adapter` from the Prisma Client constructor.",
+          ])
           : (l = [
-              "Prisma Client was configured to use both the `adapter` and Accelerate, please chose one.",
-            ])
+            "Prisma Client was configured to use both the `adapter` and Accelerate, please chose one.",
+          ])
         : (l = [
-            "Prisma Client was configured to use the `adapter` option but `prisma generate` was run with `--no-engine`.",
-            "Please run `prisma generate` without `--no-engine` to be able to use Prisma Client with the adapter.",
-          ]),
-      new H(
-        l.join(`
+          "Prisma Client was configured to use the `adapter` option but `prisma generate` was run with `--no-engine`.",
+          "Please run `prisma generate` without `--no-engine` to be able to use Prisma Client with the adapter.",
+        ]),
+        new H(
+          l.join(`
 `),
-        { clientVersion: t.clientVersion },
-      ))
+          { clientVersion: t.clientVersion },
+        ))
     );
   }
   return new Gt(t);
@@ -7701,12 +7701,12 @@ function cc(e) {
       o = t.get(i);
     o
       ? t.set(i, {
-          ...n,
-          argument: {
-            ...n.argument,
-            typeNames: pc(o.argument.typeNames, n.argument.typeNames),
-          },
-        })
+        ...n,
+        argument: {
+          ...n.argument,
+          typeNames: pc(o.argument.typeNames, n.argument.typeNames),
+        },
+      })
       : t.set(i, n);
   }
   return r.push(...t.values()), r;
@@ -7850,7 +7850,7 @@ function fc(e, t) {
   let r = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
   r &&
     (r.getField(e.firstField)?.markAsError(),
-    r.getField(e.secondField)?.markAsError()),
+      r.getField(e.secondField)?.markAsError()),
     t.addErrorMessage(
       (n) =>
         `Please ${n.bold("either")} use ${n.green(`\`${e.firstField}\``)} or ${n.green(`\`${e.secondField}\``)}, but ${n.red("not both")} at the same time.`,
@@ -7945,7 +7945,7 @@ function bc(e, t) {
       : a?.hasField(n)
         ? ((o = "include"), a.getField(n)?.markAsError(), Sc(a, e.outputType))
         : l?.hasField(n) &&
-          ((o = "omit"), l.getField(n)?.markAsError(), Oc(l, e.outputType));
+        ((o = "omit"), l.getField(n)?.markAsError(), Oc(l, e.outputType));
   }
   t.addErrorMessage((s) => {
     let a = [`Unknown field ${s.red(`\`${n}\``)}`];
@@ -8009,8 +8009,8 @@ function vc(e, t) {
   if (a)
     if (
       ((r = a.getField(o)),
-      r && a.removeField(o),
-      e.inputTypes.length === 1 && e.inputTypes[0].kind === "object")
+        r && a.removeField(o),
+        e.inputTypes.length === 1 && e.inputTypes[0].kind === "object")
     ) {
       for (let l of e.inputTypes[0].fields)
         s.addField(l.name, l.typeNames.join(" | "));
@@ -8043,8 +8043,8 @@ function Tc(e, t) {
       let o = [`Invalid value for argument \`${i.bold(r)}\``];
       if (
         (e.underlyingError && o.push(`: ${e.underlyingError}`),
-        o.push("."),
-        e.argument.typeNames.length > 0)
+          o.push("."),
+          e.argument.typeNames.length > 0)
       ) {
         let s = Ir(
           "or",
@@ -8087,15 +8087,15 @@ function Ac(e, t) {
       e.constraints.minFieldCount === 1
         ? e.constraints.requiredFields
           ? o.push(
-              `${i.green("at least one of")} ${Ir(
-                "or",
-                e.constraints.requiredFields.map((s) => `\`${i.bold(s)}\``),
-              )} arguments.`,
-            )
+            `${i.green("at least one of")} ${Ir(
+              "or",
+              e.constraints.requiredFields.map((s) => `\`${i.bold(s)}\``),
+            )} arguments.`,
+          )
           : o.push(`${i.green("at least one")} argument.`)
         : o.push(
-            `${i.green(`at least ${e.constraints.minFieldCount}`)} arguments.`,
-          ),
+          `${i.green(`at least ${e.constraints.minFieldCount}`)} arguments.`,
+        ),
       o.push(Ht(i)),
       o.join(" ")
     );
@@ -8119,8 +8119,8 @@ function Rc(e, t) {
         : e.constraints.maxFieldCount == 1
           ? s.push(`${o.green("at most one")} argument,`)
           : s.push(
-              `${o.green(`at most ${e.constraints.maxFieldCount}`)} arguments,`,
-            ),
+            `${o.green(`at most ${e.constraints.maxFieldCount}`)} arguments,`,
+          ),
       s.push(
         `but you provided ${Ir(
           "and",
@@ -8274,20 +8274,20 @@ function zt({ select: e, include: t, ...r } = {}, n) {
 function Ic(e, t, r, n) {
   return e
     ? (t
-        ? n.throwValidationError({
-            kind: "MutuallyExclusiveFields",
-            firstField: "include",
-            secondField: "select",
-            selectionPath: n.getSelectionPath(),
-          })
-        : r &&
-          n.isPreviewFeatureOn("omitApi") &&
-          n.throwValidationError({
-            kind: "MutuallyExclusiveFields",
-            firstField: "omit",
-            secondField: "select",
-            selectionPath: n.getSelectionPath(),
-          }),
+      ? n.throwValidationError({
+        kind: "MutuallyExclusiveFields",
+        firstField: "include",
+        secondField: "select",
+        selectionPath: n.getSelectionPath(),
+      })
+      : r &&
+      n.isPreviewFeatureOn("omitApi") &&
+      n.throwValidationError({
+        kind: "MutuallyExclusiveFields",
+        firstField: "omit",
+        secondField: "select",
+        selectionPath: n.getSelectionPath(),
+      }),
       $c(e, n))
     : Lc(n, t, r);
 }
@@ -8295,8 +8295,8 @@ function Lc(e, t, r) {
   let n = {};
   return (
     e.modelOrType &&
-      !e.isRawAction() &&
-      ((n.$composites = !0), (n.$scalars = !0)),
+    !e.isRawAction() &&
+    ((n.$composites = !0), (n.$scalars = !0)),
     t && Nc(n, t, e),
     e.isPreviewFeatureOn("omitApi") && Dc(n, r, e),
     n
@@ -8317,7 +8317,7 @@ function Nc(e, t, r) {
           selectionPath: r.getSelectionPath().concat(n),
           outputType: r.getOutputTypeDescription(),
         }),
-      o)
+        o)
     ) {
       e[n] = zt(i === !0 ? {} : i, r.nestSelection(n));
       continue;
@@ -8586,9 +8586,9 @@ function Es(e, t) {
             ? { prisma__type: "bytes", prisma__value: e.toString("base64") }
             : Uc(e) || ArrayBuffer.isView(e)
               ? {
-                  prisma__type: "bytes",
-                  prisma__value: w.Buffer.from(e).toString("base64"),
-                }
+                prisma__type: "bytes",
+                prisma__value: w.Buffer.from(e).toString("base64"),
+              }
               : typeof e == "object" && t === "slow"
                 ? xs(e)
                 : e;
@@ -8598,7 +8598,7 @@ function Uc(e) {
     ? !0
     : typeof e == "object" && e !== null
       ? e[Symbol.toStringTag] === "ArrayBuffer" ||
-        e[Symbol.toStringTag] === "SharedArrayBuffer"
+      e[Symbol.toStringTag] === "SharedArrayBuffer"
       : !1;
 }
 function xs(e) {
@@ -8637,7 +8637,7 @@ More Information: https://pris.ly/d/execute-raw
 `);
 }
 var Dn =
-    ({ clientMethod: e, activeProvider: t }) =>
+  ({ clientMethod: e, activeProvider: t }) =>
     (r) => {
       let n = "",
         i;
@@ -8738,18 +8738,18 @@ p();
 d();
 f();
 var Rs = {
-    isEnabled() {
-      return !1;
-    },
-    getTraceParent() {
-      return "00-10-10-00";
-    },
-    async createEngineSpan() {},
-    getActiveContext() {},
-    runInChildSpan(e, t) {
-      return t();
-    },
+  isEnabled() {
+    return !1;
   },
+  getTraceParent() {
+    return "00-10-10-00";
+  },
+  async createEngineSpan() { },
+  getActiveContext() { },
+  runInChildSpan(e, t) {
+    return t();
+  },
+},
   Bn = class {
     isEnabled() {
       return this.getGlobalTracingHelper().isEnabled();
@@ -8778,7 +8778,7 @@ c();
 p();
 d();
 f();
-function Os(e, t = () => {}) {
+function Os(e, t = () => { }) {
   let r,
     n = new Promise((i) => (r = i));
   return {
@@ -8796,16 +8796,16 @@ function ks(e) {
   return typeof e == "string"
     ? e
     : e.reduce(
-        (t, r) => {
-          let n = typeof r == "string" ? r : r.level;
-          return n === "query"
-            ? t
-            : t && (r === "info" || t === "info")
-              ? "info"
-              : n;
-        },
-        void 0,
-      );
+      (t, r) => {
+        let n = typeof r == "string" ? r : r.level;
+        return n === "query"
+          ? t
+          : t && (r === "info" || t === "info")
+            ? "info"
+            : n;
+      },
+      void 0,
+    );
 }
 m();
 c();
@@ -8947,9 +8947,9 @@ var Br = class {
     let r = this.options.batchBy(t);
     return r
       ? (this.batches[r] ||
-          ((this.batches[r] = []),
+        ((this.batches[r] = []),
           this.tickActive ||
-            ((this.tickActive = !0),
+          ((this.tickActive = !0),
             y.nextTick(() => {
               this.dispatchBatches(), (this.tickActive = !1);
             }))),
@@ -8964,13 +8964,13 @@ var Br = class {
       delete this.batches[t],
         r.length === 1
           ? this.options
-              .singleLoader(r[0].request)
-              .then((n) => {
-                n instanceof Error ? r[0].reject(n) : r[0].resolve(n);
-              })
-              .catch((n) => {
-                r[0].reject(n);
-              })
+            .singleLoader(r[0].request)
+            .then((n) => {
+              n instanceof Error ? r[0].reject(n) : r[0].resolve(n);
+            })
+            .catch((n) => {
+              r[0].reject(n);
+            })
           : (r.sort((n, i) => this.options.batchOrder(n.request, i.request)),
             this.options
               .batchLoader(r.map((n) => n.request))
@@ -9131,7 +9131,7 @@ var Hc = le("prisma:client:request_handler"),
               target: t.clientMethod,
               timestamp: new Date(),
             }),
-          r)
+            r)
         );
       }
     }
@@ -9167,8 +9167,8 @@ var Hc = le("prisma:client:request_handler"),
             showColors: this.client._errorFormat === "pretty",
             message: l,
           })),
-        (l = this.sanitizeMessage(l)),
-        t.code)
+          (l = this.sanitizeMessage(l)),
+          t.code)
       ) {
         let u = s ? { modelName: s, ...t.meta } : t.meta;
         throw new W(l, {
@@ -9254,7 +9254,7 @@ var B = class extends Error {
   constructor(t) {
     super(
       t +
-        `
+      `
 Read more at https://pris.ly/d/client-constructor`,
     ),
       (this.name = "PrismaClientConstructorValidationError");
@@ -9265,15 +9265,15 @@ Read more at https://pris.ly/d/client-constructor`,
 };
 re(B, "PrismaClientConstructorValidationError");
 var $s = [
-    "datasources",
-    "datasourceUrl",
-    "errorFormat",
-    "adapter",
-    "log",
-    "transactionOptions",
-    "omit",
-    "__internal",
-  ],
+  "datasources",
+  "datasourceUrl",
+  "errorFormat",
+  "adapter",
+  "log",
+  "transactionOptions",
+  "omit",
+  "__internal",
+],
   Bs = ["pretty", "colorless", "minimal"],
   js = ["info", "query", "warn", "error"],
   ep = {
@@ -9509,37 +9509,37 @@ function Qs(e) {
   return e.length === 0
     ? Promise.resolve([])
     : new Promise((t, r) => {
-        let n = new Array(e.length),
-          i = null,
-          o = !1,
-          s = 0,
-          a = () => {
-            o || (s++, s === e.length && ((o = !0), i ? r(i) : t(n)));
+      let n = new Array(e.length),
+        i = null,
+        o = !1,
+        s = 0,
+        a = () => {
+          o || (s++, s === e.length && ((o = !0), i ? r(i) : t(n)));
+        },
+        l = (u) => {
+          o || ((o = !0), r(u));
+        };
+      for (let u = 0; u < e.length; u++)
+        e[u].then(
+          (g) => {
+            (n[u] = g), a();
           },
-          l = (u) => {
-            o || ((o = !0), r(u));
-          };
-        for (let u = 0; u < e.length; u++)
-          e[u].then(
-            (g) => {
-              (n[u] = g), a();
-            },
-            (g) => {
-              if (!Dr(g)) {
-                l(g);
-                return;
-              }
-              g.batchRequestIdx === u ? l(g) : (i || (i = g), a());
-            },
-          );
-      });
+          (g) => {
+            if (!Dr(g)) {
+              l(g);
+              return;
+            }
+            g.batchRequestIdx === u ? l(g) : (i || (i = g), a());
+          },
+        );
+    });
 }
 var Ue = le("prisma:client");
 typeof globalThis == "object" && (globalThis.NODE_CLIENT = !0);
 var ip = {
-    requestArgsToMiddlewareArgs: (e) => e,
-    middlewareArgsToRequestArgs: (e) => e,
-  },
+  requestArgsToMiddlewareArgs: (e) => e,
+  middlewareArgsToRequestArgs: (e) => e,
+},
   op = Symbol.for("prisma.client.transaction.id"),
   sp = {
     id: 0,
@@ -9555,7 +9555,7 @@ function Ws(e) {
       this._createPrismaPromise = $n();
       this.$extends = So;
       (e = n?.__internal?.configOverride?.(e) ?? e), Jo(e), n && Vs(n, e);
-      let i = new nr().on("error", () => {});
+      let i = new nr().on("error", () => { });
       (this._extensions = kr.empty()),
         (this._previewFeatures = Mr(e)),
         (this._clientVersion = e.clientVersion ?? Ds),
@@ -9563,13 +9563,13 @@ function Ws(e) {
         (this._globalOmit = n?.omit),
         (this._tracingHelper = Ss(this._previewFeatures));
       let o = {
-          rootEnvPath:
-            e.relativeEnvPaths.rootEnvPath &&
-            we.resolve(e.dirname, e.relativeEnvPaths.rootEnvPath),
-          schemaEnvPath:
-            e.relativeEnvPaths.schemaEnvPath &&
-            we.resolve(e.dirname, e.relativeEnvPaths.schemaEnvPath),
-        },
+        rootEnvPath:
+          e.relativeEnvPaths.rootEnvPath &&
+          we.resolve(e.dirname, e.relativeEnvPaths.rootEnvPath),
+        schemaEnvPath:
+          e.relativeEnvPaths.schemaEnvPath &&
+          we.resolve(e.dirname, e.relativeEnvPaths.schemaEnvPath),
+      },
         s;
       if (n?.adapter) {
         s = gn(n.adapter);
@@ -9606,64 +9606,64 @@ function Ws(e) {
               : y.env.NO_COLOR
                 ? (this._errorFormat = "colorless")
                 : (this._errorFormat = "colorless"),
-          (this._runtimeDataModel = e.runtimeDataModel),
-          (this._engineConfig = {
-            cwd: h,
-            dirname: e.dirname,
-            enableDebugLogs: g,
-            allowTriggerPanic: x.allowTriggerPanic,
-            datamodelPath: we.join(e.dirname, e.filename ?? "schema.prisma"),
-            prismaPath: x.binaryPath ?? void 0,
-            engineEndpoint: x.endpoint,
-            generator: e.generator,
-            showColors: this._errorFormat === "pretty",
-            logLevel: l.log && ks(l.log),
-            logQueries:
-              l.log &&
-              !!(typeof l.log == "string"
-                ? l.log === "query"
-                : l.log.find((S) =>
+            (this._runtimeDataModel = e.runtimeDataModel),
+            (this._engineConfig = {
+              cwd: h,
+              dirname: e.dirname,
+              enableDebugLogs: g,
+              allowTriggerPanic: x.allowTriggerPanic,
+              datamodelPath: we.join(e.dirname, e.filename ?? "schema.prisma"),
+              prismaPath: x.binaryPath ?? void 0,
+              engineEndpoint: x.endpoint,
+              generator: e.generator,
+              showColors: this._errorFormat === "pretty",
+              logLevel: l.log && ks(l.log),
+              logQueries:
+                l.log &&
+                !!(typeof l.log == "string"
+                  ? l.log === "query"
+                  : l.log.find((S) =>
                     typeof S == "string" ? S === "query" : S.level === "query",
                   )),
-            env: a?.parsed ?? {},
-            flags: [],
-            engineWasm: e.engineWasm,
-            clientVersion: e.clientVersion,
-            engineVersion: e.engineVersion,
-            previewFeatures: this._previewFeatures,
-            activeProvider: e.activeProvider,
-            inlineSchema: e.inlineSchema,
-            overrideDatasources: Go(l, e.datasourceNames),
-            inlineDatasources: e.inlineDatasources,
-            inlineSchemaHash: e.inlineSchemaHash,
-            tracingHelper: this._tracingHelper,
-            transactionOptions: {
-              maxWait: l.transactionOptions?.maxWait ?? 2e3,
-              timeout: l.transactionOptions?.timeout ?? 5e3,
-              isolationLevel: l.transactionOptions?.isolationLevel,
-            },
-            logEmitter: i,
-            isBundled: e.isBundled,
-            adapter: s,
-          }),
-          (this._accelerateEngineConfig = {
-            ...this._engineConfig,
-            accelerateUtils: {
-              resolveDatasourceUrl: Fr,
-              getBatchRequestPayload: cr,
-              prismaGraphQLToJSError: Tr,
-              PrismaClientUnknownRequestError: K,
-              PrismaClientInitializationError: V,
-              PrismaClientKnownRequestError: W,
-              debug: le("prisma:client:accelerateEngine"),
-              engineVersion: Gs.version,
+              env: a?.parsed ?? {},
+              flags: [],
+              engineWasm: e.engineWasm,
               clientVersion: e.clientVersion,
-            },
-          }),
-          Ue("clientVersion", e.clientVersion),
-          (this._engine = rs(e, this._engineConfig)),
-          (this._requestHandler = new jr(this, i)),
-          l.log)
+              engineVersion: e.engineVersion,
+              previewFeatures: this._previewFeatures,
+              activeProvider: e.activeProvider,
+              inlineSchema: e.inlineSchema,
+              overrideDatasources: Go(l, e.datasourceNames),
+              inlineDatasources: e.inlineDatasources,
+              inlineSchemaHash: e.inlineSchemaHash,
+              tracingHelper: this._tracingHelper,
+              transactionOptions: {
+                maxWait: l.transactionOptions?.maxWait ?? 2e3,
+                timeout: l.transactionOptions?.timeout ?? 5e3,
+                isolationLevel: l.transactionOptions?.isolationLevel,
+              },
+              logEmitter: i,
+              isBundled: e.isBundled,
+              adapter: s,
+            }),
+            (this._accelerateEngineConfig = {
+              ...this._engineConfig,
+              accelerateUtils: {
+                resolveDatasourceUrl: Fr,
+                getBatchRequestPayload: cr,
+                prismaGraphQLToJSError: Tr,
+                PrismaClientUnknownRequestError: K,
+                PrismaClientInitializationError: V,
+                PrismaClientKnownRequestError: W,
+                debug: le("prisma:client:accelerateEngine"),
+                engineVersion: Gs.version,
+                clientVersion: e.clientVersion,
+              },
+            }),
+            Ue("clientVersion", e.clientVersion),
+            (this._engine = rs(e, this._engineConfig)),
+            (this._requestHandler = new jr(this, i)),
+            l.log)
         )
           for (let S of l.log) {
             let C =
@@ -9819,8 +9819,8 @@ function Ws(e) {
               "All elements of the array need to be Prisma Client promises. Hint: Please make sure you are not awaiting the Prisma client calls you intended to pass in the $transaction function.",
             );
           let g =
-              i?.isolationLevel ??
-              this._engineConfig.transactionOptions.isolationLevel,
+            i?.isolationLevel ??
+            this._engineConfig.transactionOptions.isolationLevel,
             h = { kind: "batch", id: o, index: u, isolationLevel: g, lock: s };
           return l.requestTransaction?.(h) ?? l;
         });
@@ -9843,7 +9843,7 @@ function Ws(e) {
           await this._engine.transaction("commit", o, a);
       } catch (u) {
         throw (
-          (await this._engine.transaction("rollback", o, a).catch(() => {}), u)
+          (await this._engine.transaction("rollback", o, a).catch(() => { }), u)
         );
       }
       return l;
@@ -9863,12 +9863,12 @@ function Ws(e) {
       typeof n == "function"
         ? this._engineConfig.adapter?.adapterName === "@prisma/adapter-d1"
           ? (o = () => {
-              throw new Error(
-                "Cloudflare D1 does not support interactive transactions. We recommend you to refactor your queries with that limitation in mind, and use batch transactions with `prisma.$transactions([])` where applicable.",
-              );
-            })
+            throw new Error(
+              "Cloudflare D1 does not support interactive transactions. We recommend you to refactor your queries with that limitation in mind, and use batch transactions with `prisma.$transactions([])` where applicable.",
+            );
+          })
           : (o = () =>
-              this._transactionWithCallback({ callback: n, options: i }))
+            this._transactionWithCallback({ callback: n, options: i }))
         : (o = () => this._transactionWithArray({ promises: n, options: i }));
       let s = { name: "transaction", attributes: { method: "$transaction" } };
       return this._tracingHelper.runInChildSpan(s, o);
@@ -9913,13 +9913,13 @@ function Ws(e) {
           let A = await Lo(this, C);
           return C.model
             ? Fo({
-                result: A,
-                modelName: C.model,
-                args: C.args,
-                extensions: this._extensions,
-                runtimeDataModel: this._runtimeDataModel,
-                globalOmit: this._globalOmit,
-              })
+              result: A,
+              modelName: C.model,
+              args: C.args,
+              extensions: this._extensions,
+              runtimeDataModel: this._runtimeDataModel,
+              globalOmit: this._globalOmit,
+            })
             : A;
         };
       return this._tracingHelper.runInChildSpan(s.operation, () => l(o));
@@ -9957,12 +9957,12 @@ function Ws(e) {
           );
         return (
           le.enabled("prisma:client") &&
-            (Ue("Prisma Client call:"),
+          (Ue("Prisma Client call:"),
             Ue(`prisma.${i}(${uo(n)})`),
             Ue("Generated request:"),
             Ue(
               JSON.stringify(A, null, 2) +
-                `
+              `
 `,
             )),
           g?.kind === "batch" && (await g.lock),
