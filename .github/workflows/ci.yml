@@ -29,7 +29,6 @@ jobs:
         run: npm ci
 
       - name: Prisma Generate
-        working-directory: prisma/
         run: npx prisma generate
 
       - name: Type Check
@@ -62,5 +61,5 @@ jobs:
       - name: Run Migrations on Neon PostgreSQL
         run: |
           export DATABASE_URL=postgresql://${{ secrets.NEON_USER }}:${{ secrets.NEON_PASSWORD }}@${{ secrets.NEON_HOST }}/${{ secrets.NEON_DB }}?sslmode=require
-          npx prisma migrate deploy --schema sql-copilot/prisma/schema.prisma
+          npx prisma migrate deploy --schema sql-copilot/prisma/schema/schema.prisma
         working-directory: sql-copilot/
