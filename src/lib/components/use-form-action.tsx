@@ -27,7 +27,7 @@ interface ZodErrorNode {
 
 export function validateActionInput<TSchema extends z.AnyZodObject>(
   input: z.input<TSchema>,
-  schema: TSchema
+  schema: TSchema,
 ):
   | { success: true; data: z.output<TSchema> }
   | { success: false; errors: UseFormFieldError<TSchema> } {
@@ -47,7 +47,7 @@ export function validateActionInput<TSchema extends z.AnyZodObject>(
  */
 export function zodToFieldErrors<TSchema extends z.AnyZodObject>(
   error?: z.SafeParseError<TSchema["_input"]>["error"],
-  dirty?: Partial<Record<keyof TSchema["_input"], boolean>>
+  dirty?: Partial<Record<keyof TSchema["_input"], boolean>>,
 ) {
   if (!error) {
     return {};
@@ -56,7 +56,7 @@ export function zodToFieldErrors<TSchema extends z.AnyZodObject>(
   // Zod returns the wrong type here, so we have to cast it
   const zodFormat = error.format() as { [key: string]: { _errors: string[] } };
   const zodEntries = Object.entries(zodFormat).filter(
-    ([field]) => field !== "_errors"
+    ([field]) => field !== "_errors",
   );
 
   return Object.fromEntries(
@@ -64,7 +64,7 @@ export function zodToFieldErrors<TSchema extends z.AnyZodObject>(
       .filter(([field]) => !dirty || dirty[field as keyof TSchema["_input"]])
       .flatMap(([field, fieldErrors]) => {
         return flattenFieldErrors(field, fieldErrors);
-      })
+      }),
   );
 }
 
@@ -73,24 +73,24 @@ export function zodToFieldErrors<TSchema extends z.AnyZodObject>(
  */
 function flattenFieldErrors(
   field: string,
-  fieldErrors: ZodErrorNode
+  fieldErrors: ZodErrorNode,
 ): [string, string][] {
   const errors = [] as [string, string][];
   if (fieldErrors["_errors"].length > 0) {
     errors.push([field, fieldErrors._errors[0]]);
   }
   const filteredFieldErrors = Object.entries(fieldErrors).filter(
-    ([key]) => key !== "_errors"
+    ([key]) => key !== "_errors",
   );
   if (filteredFieldErrors.length > 0) {
     for (const [key, value] of filteredFieldErrors) {
       if (!isNaN(parseInt(key))) {
         errors.push(
-          ...flattenFieldErrors(`${field}[${key}]`, value as ZodErrorNode)
+          ...flattenFieldErrors(`${field}[${key}]`, value as ZodErrorNode),
         );
       } else {
         errors.push(
-          ...flattenFieldErrors(`${field}.${key}`, value as ZodErrorNode)
+          ...flattenFieldErrors(`${field}.${key}`, value as ZodErrorNode),
         );
       }
     }
@@ -112,7 +112,7 @@ export type UseFormFieldError<TSchema extends z.AnyZodObject = z.AnyZodObject> =
  */
 export function handleActionInputError<TSchema extends z.AnyZodObject, TResult>(
   error: unknown,
-  inputSchema: TSchema
+  inputSchema: TSchema,
 ): UseFormActionResult<TSchema, TResult> {
   if (error instanceof InputError && error.inputKey in inputSchema.shape) {
     return {

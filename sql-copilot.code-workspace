@@ -2,13 +2,13 @@
   "folders": [
     {
       "path": ".",
-      "name": "sql-copilot"
-    }
+      "name": "sql-copilot",
+    },
   ],
   "settings": {
     "files.exclude": {
       "node_modules/": true,
-      "apps": true
+      "apps": true,
     },
     "cSpell.words": [],
     "editor.formatOnSave": true,
@@ -19,11 +19,11 @@
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.preferences.autoImportFileExcludePatterns": [
       "@prisma/client",
-      "vm"
+      "vm",
     ],
     "eslint.useFlatConfig": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "explicit",
     },
     "breadcrumbs.enabled": true,
     "editor.hover.enabled": true,
@@ -33,16 +33,16 @@
     "sqltools.format": {
       "linesBetweenQueries": 2,
       "reservedWordCase": "upper",
-      "language": "sql"
+      "language": "sql",
     },
     "[sql]": {
-      "editor.defaultFormatter": "mtxr.sqltools"
+      "editor.defaultFormatter": "mtxr.sqltools",
     },
     "[css]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
-  }
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+  },
 }

@@ -42,7 +42,7 @@ interface UseFormOptions<TSchema extends z.AnyZodObject, TResult> {
   initialValues: Partial<TSchema["_input"]>;
   updateOnInitialValuesChange?: boolean;
   onValidSubmit: (
-    values: TSchema["_output"]
+    values: TSchema["_output"],
   ) =>
     | TResult
     | Promise<TResult>
@@ -110,16 +110,16 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
   isValid: boolean;
   setValue: <TField extends keyof TSchema["_input"]>(
     field: TField,
-    value: TSchema["_input"][TField]
+    value: TSchema["_input"][TField],
   ) => void;
   setValues: (values: Partial<TSchema["_input"]>) => void;
   setError: <TField extends keyof TSchema["_input"]>(
     field: TField,
-    error: string
+    error: string,
   ) => void;
   handleSubmit: (
     e?: FormEvent<HTMLFormElement>,
-    extraValues?: Partial<TSchema["_input"]>
+    extraValues?: Partial<TSchema["_input"]>,
   ) => Promise<void>;
   reset: () => void;
 } {
@@ -132,13 +132,13 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
 
   const isValid = useMemo(
     () => Object.keys(state.errors).length === 0,
-    [state.errors]
+    [state.errors],
   );
 
   const setValue = useCallback(
     <TField extends keyof TSchema["_input"]>(
       field: TField,
-      value: TSchema["_input"][TField]
+      value: TSchema["_input"][TField],
     ) => {
       setState((state) => {
         const values = {
@@ -166,7 +166,7 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
         };
       });
     },
-    [onChange, schema]
+    [onChange, schema],
   );
 
   const setValues = useCallback(
@@ -174,11 +174,11 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
       for (const [field, value] of Object.entries(values)) {
         setValue(
           field as keyof TSchema["_input"],
-          value as TSchema["_input"][keyof TSchema["_input"]]
+          value as TSchema["_input"][keyof TSchema["_input"]],
         );
       }
     },
-    [setValue]
+    [setValue],
   );
 
   const setError = useCallback(
@@ -191,13 +191,13 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
         },
       }));
     },
-    []
+    [],
   );
 
   const handleSubmit = useCallback(
     async (
       e?: FormEvent<HTMLFormElement>,
-      extraValues?: Partial<TSchema["_input"]>
+      extraValues?: Partial<TSchema["_input"]>,
     ) => {
       e?.preventDefault();
 
@@ -231,7 +231,7 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
           const data = trpcError.data as ApiErrorOutput;
           const errors = data.issues
             ? (Object.fromEntries(
-                data.issues.map((issue) => [last(issue.path), issue.message])
+                data.issues.map((issue) => [last(issue.path), issue.message]),
               ) as ReturnType<typeof zodToFieldErrors<TSchema>>)
             : {};
           setState((state) => ({ ...state, errors }));
@@ -242,7 +242,7 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
 
       setState((state) => ({ ...state, loading: false }));
     },
-    [schema, state.values, onValidSubmit, onSuccess]
+    [schema, state.values, onValidSubmit, onSuccess],
   );
 
   const handleReset = useCallback(() => {
@@ -274,7 +274,7 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
 }
 
 function resultIsUseFormActionResult<TSchema extends z.AnyZodObject, TResult>(
-  result: unknown
+  result: unknown,
 ): result is UseFormActionResult<TSchema, TResult> {
   return result !== null && typeof result === "object" && "success" in result;
 }

@@ -36,7 +36,7 @@ export function Inline({
           "items-start": align === "top",
           "flex-grow": grow,
         },
-        className
+        className,
       )}
     >
       {children}

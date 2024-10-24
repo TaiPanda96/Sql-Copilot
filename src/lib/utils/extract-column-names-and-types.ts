@@ -6,7 +6,7 @@ import { AST } from "node-sql-parser";
  * Extracts column names and types from a parsed SQL query.
  */
 export function extractColumnNamesAndTypes(
-  parsedSqlQuery: AST | AST[]
+  parsedSqlQuery: AST | AST[],
 ): UserSqlDataValidationInput {
   const columnNames: string[] = [];
   const columnTypes: string[] = [];
@@ -19,7 +19,7 @@ export function extractColumnNamesAndTypes(
     extractColumnNamesAndTypesFromQuery(
       parsedSqlQuery,
       columnNames,
-      columnTypes
+      columnTypes,
     );
   }
 
@@ -38,7 +38,7 @@ export function extractColumnNamesAndTypes(
 function extractColumnNamesAndTypesFromQuery(
   query: AST,
   columnNames: string[],
-  columnTypes: string[]
+  columnTypes: string[],
 ) {
   if (query.type === "select") {
     query.columns.forEach((column: any) => {

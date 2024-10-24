@@ -26,7 +26,7 @@ export function SectionCard({
         "px-4",
         "py-6",
         "shadow-md brown-shadow",
-        className
+        className,
       )}
       gap={5}
     >
@@ -37,7 +37,7 @@ export function SectionCard({
               className={classNames(
                 `text-2xl font-semibold`,
                 titleLeft ? `text-left` : `text-center`,
-                className
+                className,
               )}
             >
               {title}

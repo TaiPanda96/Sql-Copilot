@@ -20,21 +20,21 @@ export type DefaultContext = ContextWith<"prisma" | "config" | "model">;
  * @param withKeys
  */
 export async function createContext<TWithKeys extends Array<keyof Context>>(
-  withKeys: TWithKeys
+  withKeys: TWithKeys,
 ): Promise<ContextWith<TWithKeys[number]>>;
 export async function createContext<
   TWithKeys extends Array<keyof Context>,
-  TContext extends Partial<Context>
+  TContext extends Partial<Context>,
 >(
   withKeys: TWithKeys,
-  overrides: TContext
+  overrides: TContext,
 ): Promise<ContextWith<TWithKeys[number]> & TContext>;
 export async function createContext<
   TWithKeys extends Array<keyof Context>,
-  TContext extends Partial<Context>
+  TContext extends Partial<Context>,
 >(
   withKeys: TWithKeys,
-  overrides?: TContext
+  overrides?: TContext,
 ): Promise<ContextWith<TWithKeys[number]> & TContext> {
   const ctx: Context = {};
 

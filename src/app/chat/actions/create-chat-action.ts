@@ -44,7 +44,7 @@ type CreateChatResultWithErrors<TSchema extends z.AnyZodObject> =
  * A message is stored in the database and can be retrieved later.
  */
 export async function createChatAction(
-  input: z.input<typeof createChatSchema>
+  input: z.input<typeof createChatSchema>,
 ): Promise<
   CreateChatResult | CreateChatResultWithErrors<typeof createChatSchema>
 > {

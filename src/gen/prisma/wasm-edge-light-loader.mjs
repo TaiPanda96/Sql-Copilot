@@ -1,1 +1,1 @@
-export default import('./query_engine_bg.wasm?module')
+export default import("./query_engine_bg.wasm?module");
