@@ -22,8 +22,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check Secrets Passed
+        run: printenv | grep NEON_ || echo "Secrets not available"
+
       - name: List Directory
         run: ls -R
+
+      - name: Print Environment Variables (without secrets)
+        run: printenv | grep NEON_ || echo "Secrets not available"
 
       - name: NPM Install
         run: npm ci
