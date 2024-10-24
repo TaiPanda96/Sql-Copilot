@@ -29,18 +29,17 @@ jobs:
         run: npm ci
 
       - name: Prisma Generate
-        working-directory: sql-copilot/
+        working-directory: prisma/
         run: npx prisma generate
 
       - name: Type Check
-        working-directory: sql-copilot/
         run: npm run typecheck
 
       - name: Prettier
         run: npx prettier --check .
 
       - name: ESLint
-        working-directory: sql-copilot/
+        working-directory: src/
         run: npx eslint . --output-file ../../eslint_report.json --format json
         continue-on-error: true
 
