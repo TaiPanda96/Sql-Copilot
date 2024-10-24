@@ -12,10 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: America/New_York # Set the timezone to America/New York
-      NEON_HOST: ${{ secrets.NEON_HOST }}
-      NEON_DB: ${{ secrets.NEON_DB }}
-      NEON_USER: ${{ secrets.NEON_USER }}
-      NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -54,9 +50,3 @@ jobs:
           name: eslint_report.json
           path: eslint_report.json
           retention-days: 5
-
-        # Connect to Neon PostgreSQL and run migrations
-      - name: Run Migrations on Neon PostgreSQL
-        run: |
-          export DATABASE_URL=postgresql://${{ secrets.NEON_USER }}:${{ secrets.NEON_PASSWORD }}@${{ secrets.NEON_HOST }}/${{ secrets.NEON_DB }}?sslmode=require
-          npx prisma migrate deploy --schema ./prisma/schema/schema.prisma
