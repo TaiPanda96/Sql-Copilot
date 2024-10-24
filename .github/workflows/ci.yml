@@ -57,7 +57,7 @@ jobs:
             exit 1
           else
             echo "No uncommitted changes detected."
-
+          fi
         # Connect to Neon PostgreSQL and run migrations
       - name: Run Migrations on Neon PostgreSQL
         run: |
