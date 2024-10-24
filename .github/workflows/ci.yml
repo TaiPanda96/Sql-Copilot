@@ -9,7 +9,7 @@ jobs:
   CI:
     timeout-minutes: 15
     permissions: write-all
-    runs-on: 16-64
+    runs-on: ubuntu-latest
     env:
       TZ: America/New_York # Set the timezone to America/New York
       NEON_HOST: ${{ secrets.NEON_HOST }}
