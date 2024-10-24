@@ -39,7 +39,7 @@ export async function* getQueryResponseIo(
   }: {
     query: string;
     messageHistory: string[];
-  },
+  }
 ) {
   const { getModelClient } = ctx.model;
   const model = getModelClient() as OpenAiClient;
@@ -86,7 +86,7 @@ export async function* getQueryResponseIo(
 }
 
 function getResponseFromCompletion(
-  completion: OpenAI.Chat.Completions.ChatCompletion.Choice,
+  completion: OpenAI.Chat.Completions.ChatCompletion.Choice
 ): string {
   return completion.message.content ?? "";
 }
@@ -97,7 +97,7 @@ function getResponseFromCompletion(
  * For now, we only have OpenAI as an option.
  */
 function assertIsOpenAiClient(
-  client: OpenAiClient,
+  client: OpenAiClient
 ): asserts client is OpenAiClient {
   if (!client) {
     throw new Error("OpenAI client is not initialized.");

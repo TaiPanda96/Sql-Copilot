@@ -28,7 +28,7 @@ export interface ZodDataBaseJson {
  * Converts a user's SQL query to a Zod object that can be used to validate the query against a schema.
  */
 export function parseUserSqlQueryToZodInputData(
-  sqlQuery: string,
+  sqlQuery: string
 ): UserSqlDataValidationInput {
   let parsedQuery: AST | AST[] = [];
   const parser = new Parser();
@@ -51,7 +51,7 @@ export async function validateUserQueryIo(
   }: {
     schemaName: string;
     sqlQuery: string;
-  },
+  }
 ) {
   const tableSchema = await ctx.prisma.tableSchema.findFirstOrThrow({
     where: {
@@ -69,7 +69,7 @@ export async function validateUserQueryIo(
 
   // Convert `zodValidationConfig` to a Zod schema object
   const validationZodSchema = convertPrismaJsonToZod(
-    tableSchema.zodValidationConfig as Prisma.JsonObject,
+    tableSchema.zodValidationConfig as Prisma.JsonObject
   );
 
   for (const [name] of Object.keys(zodInputDataSchema)) {

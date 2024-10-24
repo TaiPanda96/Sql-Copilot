@@ -52,9 +52,9 @@ export function TextInput({
           underline,
           indent: indent > 0 ? `ml-${indent * 50}` : 0,
         },
-        className,
+        className
       ),
     },
-    value,
+    value
   );
 }

@@ -20,7 +20,7 @@ export interface CreateTableSchemaInputData {
  */
 export async function createTableSchemaIo(
   ctx: ContextWith<"prisma">,
-  inputData: CreateTableSchemaInputData,
+  inputData: CreateTableSchemaInputData
 ) {
   const tableSchema = await ctx.prisma.tableSchema.create({
     data: {

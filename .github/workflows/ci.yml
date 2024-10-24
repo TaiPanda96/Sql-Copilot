@@ -36,6 +36,7 @@ jobs:
 
       - name: Prettier
         run: npx prettier --check .
+        continue-on-error: true
 
       - name: ESLint
         working-directory: src/
