@@ -1,9 +1,9 @@
 import { PrismaClient } from "@sql-copilot/gen/prisma";
+import { getModelClient } from "./model-interface/get-model-client";
 import { getPrismaClient } from "./prisma/get-prisma-client";
-import { getLLMClient } from "./llm/get-llm-client";
 
 export interface Context {
-  llm?: ReturnType<typeof getLLMClient>;
+  model?: ReturnType<typeof getModelClient>;
   prisma?: PrismaClient;
   config?: Record<string, string>;
 }
@@ -12,7 +12,7 @@ export type ContextWith<TFields extends keyof Context> = Pick<
   Required<Context>,
   TFields
 >;
-export type DefaultContext = ContextWith<"prisma" | "config" | "llm">;
+export type DefaultContext = ContextWith<"prisma" | "config" | "model">;
 
 /**
  * Create Context is a Factory Style function that creates a context object.
@@ -42,8 +42,8 @@ export async function createContext<
     ctx.prisma = getPrismaClient();
   }
 
-  if (withKeys.includes("llm")) {
-    ctx.llm = getLLMClient();
+  if (withKeys.includes("model")) {
+    ctx.model = getModelClient();
   }
 
   return {

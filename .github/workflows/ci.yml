@@ -10,28 +10,12 @@ jobs:
     timeout-minutes: 15
     permissions: write-all
     runs-on: 16-64
-    services:
-      redis:
-        image: redis:7-alpine
-        ports:
-          - "6379:6379"
-
-      postgres:
-        image: postgresql
-        env:
-          POSTGRES_USER: postgres:15-alpine
-          POSTGRES_PASSWORD: pgpass
-          POSTGRES_HOST: localhost
-          POSTGRES_DB: test
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     env:
       TZ: America/New_York # Set the timezone to America/New York
-      DATABASE_URL: postgresql://postgres:pgpass@localhost:5432/test
-      REDIS_URL: redis://localhost:6379
+      NEON_HOST: ${{ secrets.NEON_HOST }}
+      NEON_DB: ${{ secrets.NEON_DB }}
+      NEON_USER: ${{ secrets.NEON_USER }}
+      NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
