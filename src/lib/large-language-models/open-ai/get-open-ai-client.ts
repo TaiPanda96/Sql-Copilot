@@ -5,7 +5,7 @@ import OpenAI from "openai";
 export type OpenAiClient = OpenAI;
 
 let openAiClient: OpenAiClient | null = null;
-let maxTokens = 100_000;
+let maxTokens = 16384;
 
 /**
  * Get OpenAI Client as a Singleton.
@@ -40,13 +40,14 @@ export async function* getQueryResponseIo(
     query: string;
     messageHistory: string[];
   }
-) {
+): AsyncGenerator<string> {
   const { getModelClient } = ctx.model;
   const model = getModelClient() as OpenAiClient;
   assertIsOpenAiClient(model);
 
-  const basePrompt = await getBasePrompt();
-  const fullQuery = multiline`${basePrompt}. The user has submitted the following question: ${query}`;
+  // Remove the base prompt for now
+  // const basePrompt = await getBasePrompt();
+  const fullQuery = multiline`The user has submitted the following question: ${query}`;
 
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o-mini",
@@ -75,9 +76,6 @@ export async function* getQueryResponseIo(
 
   if (streamResponse.choices && streamResponse.choices.length > 0) {
     for (const choice of streamResponse.choices) {
-      if (choice.finish_reason === "stop") {
-        break;
-      }
       yield getResponseFromCompletion(choice);
     }
   } else {
