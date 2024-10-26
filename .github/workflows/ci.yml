@@ -33,9 +33,6 @@ jobs:
       - name: Prisma Generate
         run: npx prisma generate
 
-      - name: Prisma Deploy
-        run: npx prisma migrate deploy
-
       - name: Type Check
         run: npm run typecheck
 
