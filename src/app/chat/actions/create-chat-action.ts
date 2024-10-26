@@ -24,7 +24,7 @@ const createChatSchema = z.object({
 type CreateChatResult = {
   success: true;
   messageId: string;
-  responseMessage?: string;
+  responseMessage?: string[];
 };
 
 type CreateChatResultWithErrors<TSchema extends z.AnyZodObject> =
@@ -113,7 +113,7 @@ export async function createChatAction(
     messageHistory: existingThread?.messages.map((m) => m.message) || [],
   });
 
-  const messageResponse = [];
+  const messageResponse: string[] = [];
   for await (const message of response) {
     messageResponse.push(message);
   }
@@ -121,6 +121,6 @@ export async function createChatAction(
   return {
     success: true,
     messageId: messageObj.id,
-    responseMessage: messageResponse.join(" "),
+    responseMessage: messageResponse,
   };
 }

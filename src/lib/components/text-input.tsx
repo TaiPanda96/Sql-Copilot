@@ -22,7 +22,7 @@ export interface TextProps {
   indent?: number;
 }
 
-export function TextInput({
+export function Text({
   as = "span",
   bold = false,
   color = "regular",

@@ -6,9 +6,9 @@ import MessageListComponent from "@sql-copilot/app/chat/feature-components/messa
 import ChatLayout from "@sql-copilot/app/chat/layout";
 import { useState } from "react";
 
-interface Message {
+export interface MessageResponse {
   id: string;
-  text: string;
+  responseMessage: string[];
   sender: "user" | "llm";
 }
 
@@ -17,27 +17,28 @@ interface Message {
  * It contains the message list and the message editor.
  */
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageResponse[]>([]);
 
   // Function to handle message creation and response
   async function handleSendMessage(message: string) {
-    // Add user message to the list
-    const userMessage = {
-      id: Date.now().toString(),
-      text: message,
-      sender: "user" as const,
-    };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setMessages((prevMessages) =>
+      [...prevMessages].concat({
+        id: Date.now().toString(),
+        responseMessage: [message],
+        sender: "user" as const,
+      })
+    );
 
     // Get the model response and update messages
     try {
       const { responseMessage } = await createChatAction({ message });
-      const llmMessage = {
-        id: Date.now().toString(),
-        text: responseMessage ?? "I'm sorry, I don't understand.",
-        sender: "llm" as const,
-      };
-      setMessages((prevMessages) => [...prevMessages, llmMessage]);
+      setMessages((prevMessages) =>
+        [...prevMessages].concat({
+          id: Date.now().toString(),
+          responseMessage: responseMessage as string[],
+          sender: "llm" as const,
+        })
+      );
     } catch (error) {
       console.error("Failed to send message:", error);
     }
