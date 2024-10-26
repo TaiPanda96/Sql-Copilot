@@ -5,7 +5,7 @@ import OpenAI from "openai";
 export type OpenAiClient = OpenAI;
 
 let openAiClient: OpenAiClient | null = null;
-let maxTokens = 2000;
+let maxTokens = 100_000;
 
 /**
  * Get OpenAI Client as a Singleton.
@@ -17,7 +17,7 @@ export function getOpenAiClient(): OpenAiClient {
   if (openAiClient) return openAiClient;
 
   openAiClient = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPEN_AI_KEY,
   });
 
   if (openAiClient === null) {
@@ -49,7 +49,7 @@ export async function* getQueryResponseIo(
   const fullQuery = multiline`${basePrompt}. The user has submitted the following question: ${query}`;
 
   const streamResponse = await model?.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
