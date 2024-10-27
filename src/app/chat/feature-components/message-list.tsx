@@ -5,6 +5,7 @@ import { Inset } from "@sql-copilot/lib/components/inset";
 import { SectionCard } from "@sql-copilot/lib/components/section-card";
 import { Stack } from "@sql-copilot/lib/components/stack";
 import { Text } from "@sql-copilot/lib/components/text-input";
+import React, { ReactNode } from "react";
 
 interface MessageListComponentProps {
   messages: MessageResponse[];
@@ -31,12 +32,12 @@ function MessageResponseList(message: MessageResponse) {
   return (
     <SectionCard
       className={`p-2 rounded-md ${
-        message.sender === "user" ? "bg-blue-500 text-white" : "bg-gray-200"
+        message.sender === "user" ? "bg-gray-700 text-white" : "bg-gray-200"
       }`}
     >
       {message.responseMessage.map((msg, idx) => (
         <Stack key={idx} gap={2}>
-          {CodeBlockResponse(msg)}
+          {CodeBlockResponse(msg, message.sender)}
         </Stack>
       ))}
     </SectionCard>
@@ -54,22 +55,99 @@ function isSQLQuery(messageResponse: string) {
   return containsSqlWithTripleBackticks;
 }
 
-/**
- * Component to render a code block with a copy button for SQL queries.
- */
-function CodeBlockResponse(messageResponse: string) {
+function CodeBlockResponse(messageResponse: string, sender: "user" | "llm") {
   const isSQL = isSQLQuery(messageResponse);
 
-  return isSQL ? (
-    <Stack gap={4}>
-      <Text value="SQL Query" bold />
-      <Inset>
-        <pre className="overflow-auto">
-          <code className="text-sm text-gray-800">{messageResponse}</code>
-        </pre>
-      </Inset>
-    </Stack>
-  ) : (
-    <Text value={messageResponse} />
+  /**
+   * Extract the ```sql``` code block from the message response.
+   */
+  let sqlCodeBlock;
+  let remainingText = "";
+  if (isSQL) {
+    sqlCodeBlock = messageResponse.match(/```sql([\s\S]*?)```/);
+    /**
+     * Get the remaining text explanations from the message response that isn't
+     * part of the SQL code block.
+     */
+    if (sqlCodeBlock) {
+      // Extract the SQL block and remaining text
+      const [sqlBlock] = sqlCodeBlock;
+      const splitMessage = messageResponse.split(sqlBlock);
+      remainingText = splitMessage[1];
+    } else {
+      return (
+        <Stack gap={4}>
+          <Inset className="bg-red-100 text-red-600 p-2 rounded-md">
+            <Text value="Failed to extract SQL code block." />
+          </Inset>
+        </Stack>
+      );
+    }
+
+    return (
+      <Stack gap={4}>
+        {remainingText && (
+          <p className="overflow-auto">
+            {FormattedText({ text: remainingText, sender })}
+          </p>
+        )}
+        <Inset>
+          <pre className="overflow-auto max-h-64 overflow-x-auto bg-gray-100 p-4 rounded-md shadow-sm">
+            <code className="text-sm text-gray-800">{sqlCodeBlock[1]}</code>
+          </pre>
+        </Inset>
+      </Stack>
+    );
+  } else {
+    return <Text value={FormattedText({ text: messageResponse, sender })} />;
+  }
+}
+
+/**
+ * Component to parse and render formatted text with headings and lists.
+ */
+function FormattedText({
+  text,
+  sender,
+}: {
+  text: string;
+  sender: "user" | "llm";
+}) {
+  const lines = text.trim().split("\n");
+  const elements: ReactNode[] = [];
+
+  const senderColor = sender === "user" ? "text-white-500" : "text-gray-700";
+
+  for (const line of lines) {
+    if (line.startsWith("###")) {
+      elements.push(
+        <h3 key={line} className={`text-lg font-semibold ${senderColor} mb-2`}>
+          {line.replace("### ", "")}
+        </h3>
+      );
+    } else if (line.startsWith("-")) {
+      // Convert bullets into a list
+      elements.push(
+        <li key={line} className={`ml-4 list-disc ${senderColor} mb-1`}>
+          {line.replace("- ", "")}
+        </li>
+      );
+    } else {
+      elements.push(
+        <p key={line} className={`${senderColor} mb-2`}>
+          {line}
+        </p>
+      );
+    }
+  }
+  // Wrap the list items in a <ul> if there are any
+  return (
+    <div>
+      {elements.some((el) => React.isValidElement(el) && el.type === "li") ? (
+        <ul>{elements}</ul>
+      ) : (
+        elements
+      )}
+    </div>
   );
 }
