@@ -4,6 +4,7 @@ import { createChatAction } from "@sql-copilot/app/chat/actions/create-chat-acti
 import MessageEditorComponent from "@sql-copilot/app/chat/feature-components/message-editor";
 import MessageListComponent from "@sql-copilot/app/chat/feature-components/message-list";
 import ChatLayout from "@sql-copilot/app/chat/layout";
+import { Logout } from "@sql-copilot/lib/components/logout";
 import { useState } from "react";
 
 export interface MessageResponse {
@@ -46,6 +47,7 @@ export default function ChatPage() {
 
   return (
     <ChatLayout>
+      <Logout />
       <MessageListComponent messages={messages} />
       <MessageEditorComponent onSendMessage={handleSendMessage} />
     </ChatLayout>

@@ -1,6 +1,7 @@
 "use client";
 
 import { createChatAction } from "@sql-copilot/app/chat/actions/create-chat-action";
+import { SendIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "shadcn/components/ui/button";
 import { cn } from "shadcn/lib/utils";
@@ -56,7 +57,8 @@ export default function MessageEditorComponent({
       <textarea
         className={cn(
           "w-full h-20 resize-none",
-          "p-2.5 text-sm text-gray-700 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500",
+          "focus:outline-none",
+          "p-2.5 text-sm text-gray-700 rounded-lg border-gray-300 focus:ring-gray-500 focus:border-gray-500",
           "dark:bg-gray-300 border-white dark:placeholder-gray-700 dark:text-gray-800 dark:focus:ring-gray-500 dark:focus:border-gray-500"
         )}
         onChange={(e) => setText(e.target.value)}
@@ -70,7 +72,7 @@ export default function MessageEditorComponent({
           onClick={handleSendMessage}
           className="text-gray"
         >
-          Send
+          <SendIcon className="w-6 h-6" />
         </Button>
       )}
     </div>

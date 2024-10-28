@@ -1,3 +1,3 @@
-export function getEditorPath() {
-  return `/editor`;
+export function getChatPath() {
+  return `/chat`;
 }
