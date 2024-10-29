@@ -5,17 +5,35 @@ import { Inset } from "@sql-copilot/lib/components/inset";
 import { SectionCard } from "@sql-copilot/lib/components/section-card";
 import { Stack } from "@sql-copilot/lib/components/stack";
 import { Text } from "@sql-copilot/lib/components/text-input";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 
 interface MessageListComponentProps {
   messages: MessageResponse[];
 }
 
+/**
+ * Component to render a list of messages.
+ * When new messages appear, the component will scroll to the bottom.
+ * the message ref is used to scroll to the bottom of the message list.
+ * the useEffect hook is used to scroll to the bottom whenever the messages change.
+ */
 export default function MessageListComponent({
   messages,
 }: MessageListComponentProps) {
+  const messageListRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to the bottom whenever messages change
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <div className="flex flex-col space-y-2 p-4 overflow-auto max-h-96">
+    <div
+      ref={messageListRef}
+      className="flex flex-col space-y-2 p-4 overflow-auto max-h-96"
+    >
       {messages.map((message) => MessageResponseList(message))}
     </div>
   );
