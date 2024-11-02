@@ -1,6 +1,6 @@
 import { PrismaClient } from "@sql-copilot/gen/prisma";
-import { getModelClient } from "./model-interface/get-model-client";
-import { getPrismaClient } from "./prisma/get-prisma-client";
+import { getModelClient } from "@sql-copilot/lib/model-interface/get-model-client";
+import { getPrismaClient } from "@sql-copilot/lib/prisma/get-prisma-client";
 
 export interface Context {
   model?: ReturnType<typeof getModelClient>;
