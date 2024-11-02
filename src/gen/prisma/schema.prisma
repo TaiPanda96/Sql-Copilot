@@ -1,4 +1,4 @@
-model MessageSchema {
+model Messages {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   message    String    @map("message")
   userId     String?   @map("user_id") @db.Uuid
@@ -6,6 +6,9 @@ model MessageSchema {
   at         DateTime? @map("at")
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+
+  thread   Threads? @relation(fields: [threadId], references: [id])
+  threadId String?  @map("thread_id") @db.Uuid
 
   @@map("messages")
 }
@@ -41,6 +44,17 @@ model TableSchema {
 
   @@index([schemaName, validAt, expiredAt])
   @@map("table_schemas")
+}
+
+model Threads {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String     @map("title")
+  userId    String?    @map("user_id") @db.Uuid
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @map("updated_at")
+  messages  Messages[]
+
+  @@map("threads")
 }
 
 model User {

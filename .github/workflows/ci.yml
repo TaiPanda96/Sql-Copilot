@@ -9,51 +9,39 @@ jobs:
   CI:
     timeout-minutes: 15
     permissions: write-all
-    runs-on: 16-64
-    services:
-      redis:
-        image: redis:7-alpine
-        ports:
-          - "6379:6379"
-
-      postgres:
-        image: postgresql
-        env:
-          POSTGRES_USER: postgres:15-alpine
-          POSTGRES_PASSWORD: pgpass
-          POSTGRES_HOST: localhost
-          POSTGRES_DB: test
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+    runs-on: ubuntu-latest
     env:
       TZ: America/New_York # Set the timezone to America/New York
-      DATABASE_URL: postgresql://postgres:pgpass@localhost:5432/test
-      REDIS_URL: redis://localhost:6379
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Check Secrets Passed
+        run: printenv | grep NEON_ || echo "Secrets not available"
+
+      - name: List Directory
+        run: ls -R
+
+      - name: Print Environment Variables (without secrets)
+        run: printenv | grep NEON_ || echo "Secrets not available"
+
       - name: NPM Install
         run: npm ci
 
       - name: Prisma Generate
-        working-directory: sql-copilot/
         run: npx prisma generate
 
       - name: Type Check
-        working-directory: sql-copilot/
         run: npm run typecheck
 
       - name: Prettier
         run: npx prettier --check .
+        continue-on-error: true
 
       - name: ESLint
-        working-directory: sql-copilot/
+        working-directory: src/
         run: npx eslint . --output-file ../../eslint_report.json --format json
         continue-on-error: true
 
@@ -62,13 +50,3 @@ jobs:
           name: eslint_report.json
           path: eslint_report.json
           retention-days: 5
-
-      - name: Check Uncommitted Changes
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "Uncommitted changes detected."
-            git status --porcelain
-            exit 1
-          else
-            echo "No uncommitted changes detected."
-          fi

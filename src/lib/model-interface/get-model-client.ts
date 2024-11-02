@@ -1,15 +1,15 @@
 import { Decimal } from "@sql-copilot/gen/prisma/runtime/library";
-import { llmConfigRegistry } from "./llm-config-registry";
 import OpenAI from "openai";
+import { modelConfigRegistry } from "./model-config-registry";
 
 export type BasePrompt = string;
-export type LLMClient = Record<string, unknown> | null | undefined | OpenAI;
+export type ModelClient = Record<string, unknown> | null | undefined | OpenAI;
 export interface LLMConfigRegistry {
   /**
    * Get model client for a specific model.
    * For example, for openai, this would instantiate a client for a specific engine.
    */
-  getModelClient(): LLMClient;
+  getModelClient(): ModelClient;
 }
 
 export type LLMCostBreakdown = {
@@ -27,11 +27,11 @@ export type LLMCostBreakdown = {
  * This way, we can swap out the implementation of the LLM client
  * without changing the code that uses it.
  */
-export function getLLMClient(): LLMConfigRegistry {
+export function getModelClient(): LLMConfigRegistry {
   // Read a llm configuration registry to determine which large language model to use.
   // For now, we only have OpenAI as an option.
-  const llmConfig = llmConfigRegistry.openai;
+  const modelConfig = modelConfigRegistry.openai;
   return {
-    getModelClient: llmConfig.getModelClient,
+    getModelClient: modelConfig.getModelClient,
   };
 }

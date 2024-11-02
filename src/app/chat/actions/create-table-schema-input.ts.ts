@@ -5,7 +5,7 @@ export const createTableSchemaInput = z.object({
     z.object({
       name: z.string(),
       type: z.string(),
-    })
+    }),
   ),
   schemaName: z.string(),
 });

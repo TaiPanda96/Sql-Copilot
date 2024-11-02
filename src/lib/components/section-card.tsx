@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { Stack } from "./stack";
 import { Inline } from "./inline";
+import { Stack } from "./stack";
 
 interface SectionCardProps {
   className?: string;

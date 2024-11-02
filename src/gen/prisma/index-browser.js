@@ -119,14 +119,15 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.MessageSchemaScalarFieldEnum = {
+exports.Prisma.MessagesScalarFieldEnum = {
   id: 'id',
   message: 'message',
   userId: 'userId',
   attachment: 'attachment',
   at: 'at',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  threadId: 'threadId'
 };
 
 exports.Prisma.TableSchemaScalarFieldEnum = {
@@ -137,6 +138,14 @@ exports.Prisma.TableSchemaScalarFieldEnum = {
   zodValidationConfig: 'zodValidationConfig',
   validAt: 'validAt',
   expiredAt: 'expiredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ThreadsScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -174,8 +183,9 @@ exports.Prisma.JsonNullValueFilter = {
 
 
 exports.Prisma.ModelName = {
-  MessageSchema: 'MessageSchema',
+  Messages: 'Messages',
   TableSchema: 'TableSchema',
+  Threads: 'Threads',
   User: 'User'
 };
 

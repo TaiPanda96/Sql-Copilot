@@ -1,0 +1,33 @@
+/* Padding sizes */
+.padding-sm {
+  padding: 8px;
+}
+.padding-md {
+  padding: 16px;
+}
+.padding-lg {
+  padding: 24px;
+}
+.padding-xl {
+  padding: 32px;
+}
+.padding-xxl {
+  padding: 40px;
+}
+
+/* Background colors */
+.bg-light {
+  background-color: #f9f9f9;
+}
+.bg-dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+.bg-inverted {
+  background-color: #ffffff;
+  color: #333333;
+}
+.bg-brand {
+  background-color: #0070f3;
+  color: #ffffff;
+}
