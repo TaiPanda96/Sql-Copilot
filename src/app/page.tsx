@@ -11,7 +11,6 @@ export default function HomePage() {
       <Stack gap={4}>
         <h1 className="text-4xl font-bold text-brand-600">SQL Copilot</h1>
         <h3 className="text-xl font-medium text-gray-400">SQL made easy.</h3>
-        <Text value="Please login or register to continue." size="md" />
         <LoginLink>
           <Text value="Login" size="md" color="brand" />
         </LoginLink>
