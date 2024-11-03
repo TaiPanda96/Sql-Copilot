@@ -36,3 +36,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# ignore src/gen folder
+/src/gen
+!src/gen/prisma/sql/
+!src/gen/prisma/sql/*
