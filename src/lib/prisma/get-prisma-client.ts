@@ -1,7 +1,8 @@
 import { Prisma, PrismaClient } from "@sql-copilot/gen/prisma";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 declare global {
-  // eslint-disable-next-line no-unused-vars, no-var
   var prisma: PrismaClient | null;
 }
 
@@ -10,16 +11,12 @@ export function getPrismaClient(): PrismaClient {
 
   // https://www.prisma.io/docs/orm/prisma-client/observability-and-logging/logging
   let prismaLogLevels: Array<Prisma.LogLevel> = ["info", "error"];
-
-  const databaseUrl = process.env.DATABASE_URL;
+  const pool = new Pool({ connectionString: `${process.env.DATABASE_URL}` });
+  const adapter = new PrismaPg(pool);
 
   global.prisma = new PrismaClient({
     log: prismaLogLevels,
-    datasources: {
-      db: {
-        url: databaseUrl,
-      },
-    },
+    adapter,
   });
 
   return global.prisma;

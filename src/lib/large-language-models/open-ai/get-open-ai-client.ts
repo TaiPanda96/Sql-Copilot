@@ -46,12 +46,16 @@ export async function* getQueryResponseIo(
   assertIsOpenAiClient(model);
 
   // Remove the base prompt for now
-  // const basePrompt = await getBasePrompt();
+  const basePrompt = await getBasePrompt();
   const fullQuery = multiline`The user has submitted the following question: ${query}`;
 
   const streamResponse = await model?.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "gpt-4o",
     messages: [
+      {
+        role: "system",
+        content: basePrompt,
+      },
       {
         role: "system",
         content: fullQuery,
