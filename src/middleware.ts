@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
  * Custom middleware to authenticate the user.
  * From the cookies, the access token is extracted and decoded.
  * If the access token is not found or invalid, the user is redirected to the home page.
- * If the user is not found in the database but has a valid access token, a new user is created.
+ * If the access token is valid, the user is redirected to the verify & create API route.
  */
 export async function middleware(req: NextRequest) {
   const cookies = req.cookies;
@@ -18,7 +18,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  return NextResponse.next();
+  // If the user is authenticated, redirect to the verify & create API route
+  console.log("Redirecting to /api/user/verify");
+  return NextResponse.redirect(new URL("/api/user/verify", req.url));
 }
 
 /**
