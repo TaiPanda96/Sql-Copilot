@@ -18,17 +18,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 User Flow:
-# 1. Login via the homepage "/". You can use either your email or Google login if applicable.
-# 2. Once you're authenticated, you will be redirected to the Copilot Editor. 
-# 3. You can ask questions related to SQL, and SQL Copilot will respond to you.
+1. Login via the homepage "/". You can use either your email or Google login if applicable.
+2. Once you're authenticated, you will be redirected to the Copilot Editor. 
+3. You can ask questions related to SQL, and SQL Copilot will respond to you.
 
 Tech Stack:
-# Next 14 with TypeScript
-# Prisma ORM with Neon Postgres Driver Adapter
-# Kinde for Authorization
-# Vercel for Preview & Hosting
-# Neon Postgres
-# Github Actions for CI/CD
+- Next 14 with TypeScript
+- Prisma ORM with Neon Postgres Driver Adapter
+- Kinde for Authorization
+- Vercel for Preview & Hosting
+- Neon Postgres
+- Github Actions for CI/CD
 
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
