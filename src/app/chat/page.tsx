@@ -1,10 +1,10 @@
 "use client";
 
 import { createChatAction } from "@sql-copilot/app/chat/actions/create-chat-action";
-import MessageEditorComponent from "@sql-copilot/app/chat/feature-components/message-editor";
-import MessageListComponent from "@sql-copilot/app/chat/feature-components/message-list";
+import MessageEditorComponent from "@sql-copilot/app/chat/components/MessageEditor";
+import MessageListComponent from "@sql-copilot/app/chat/components/MessageList";
 import ChatLayout from "@sql-copilot/app/chat/layout";
-import { Logout } from "@sql-copilot/lib/components/logout";
+import { Logout } from "@sql-copilot/lib/components/log-out";
 import { useState } from "react";
 
 export interface MessageResponse {

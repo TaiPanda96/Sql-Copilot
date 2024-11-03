@@ -3,7 +3,7 @@ import {
   RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Stack } from "@sql-copilot/lib/components/stack";
-import { Text } from "@sql-copilot/lib/components/text-input";
+import { Text } from "@sql-copilot/lib/components/text";
 
 export default function HomePage() {
   return (
