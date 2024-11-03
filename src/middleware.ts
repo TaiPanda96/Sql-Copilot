@@ -18,9 +18,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // If the user is authenticated, redirect to the verify & create API route
-  console.log("Redirecting to /api/user/verify");
-  return NextResponse.redirect(new URL("/api/user/verify", req.url));
+  return NextResponse.next();
 }
 
 /**
