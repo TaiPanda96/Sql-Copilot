@@ -8,6 +8,13 @@ import { Text } from "@sql-copilot/lib/components/text";
 import React, { ReactNode, useEffect, useRef } from "react";
 
 interface MessageListComponentProps {
+  currentUser?: {
+    id: string;
+    email: string | null;
+    given_name: string | null;
+    family_name: string | null;
+    picture: string | null;
+  } | null;
   messages: MessageResponse[];
 }
 
@@ -18,6 +25,7 @@ interface MessageListComponentProps {
  * the useEffect hook is used to scroll to the bottom whenever the messages change.
  */
 export default function MessageListComponent({
+  currentUser,
   messages,
 }: MessageListComponentProps) {
   const messageListRef = useRef<HTMLDivElement>(null);
