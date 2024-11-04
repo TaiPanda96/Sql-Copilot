@@ -18,9 +18,15 @@ export interface MessageResponse {
 }
 
 const breadcrumbs = [
-  { href: "/chat/schemas", label: "Data Definitions" },
-  { href: "/chat/threads", label: "Conversations" },
+  { href: "/chat/schemas", label: "Data Definitions", readOnly: true },
+  { href: "/chat/threads", label: "Conversations", readOnly: true },
 ];
+
+export interface BreadCrumb {
+  href: string;
+  label: string;
+  readOnly: boolean;
+}
 
 /**
  * This is the main chat page component.

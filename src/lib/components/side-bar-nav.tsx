@@ -3,15 +3,16 @@ import { Inline } from "./inline";
 import SideBarItem from "./side-bar-item";
 import { Stack } from "./stack";
 import { useState } from "react";
+import { BreadCrumb } from "@sql-copilot/app/chat/page";
 
 export default function SideBarNav({
   currentUser,
   breadcrumbs,
 }: {
   currentUser: { name: string | null; email: string | null } | null;
-  breadcrumbs: { href: string; label: string }[];
+  breadcrumbs: BreadCrumb[];
 }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   function handleSidebarToggle(e: React.MouseEvent<SVGSVGElement>) {
     e.preventDefault();
@@ -49,6 +50,7 @@ export default function SideBarNav({
                 href={breadcrumb.href}
                 label={breadcrumb.label}
                 key={index}
+                readOnly={breadcrumb.readOnly}
               />
             ))}
           </Stack>
