@@ -24,7 +24,6 @@ export function Inline({
         "flex",
         "flex-row",
         {
-          [`gap-${gap}`]: gap !== 0,
           "justify-center": justify === "center",
           "justify-end": justify === "right",
           "justify-start": justify === "left",
@@ -38,6 +37,7 @@ export function Inline({
         },
         className
       )}
+      style={{ gap: `${gap * 0.25}rem` }}
     >
       {children}
     </div>

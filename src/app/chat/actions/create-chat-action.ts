@@ -7,7 +7,6 @@ import {
 } from "@sql-copilot/lib/components/use-form-action";
 import { createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
-import { randomUUID } from "crypto";
 import { z } from "zod";
 
 /**
@@ -16,6 +15,7 @@ import { z } from "zod";
 
 const createChatSchema = z.object({
   message: z.string().min(1),
+  userEmail: z.string().email(),
 });
 
 /**
@@ -68,10 +68,14 @@ export async function createChatAction(
     };
   }
 
+  const user = await ctx.prisma.user.findUnique({
+    where: { email: input.userEmail },
+  });
+
   const messageObj = await ctx.prisma.messages.create({
     data: {
       message: input.message,
-      userId: randomUUID(),
+      userId: user ? user.id : undefined,
     },
   });
 

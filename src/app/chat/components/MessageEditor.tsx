@@ -7,10 +7,18 @@ import { Button } from "shadcn/components/ui/button";
 import { cn } from "shadcn/lib/utils";
 
 interface MessageEditorProps {
+  currentUser: {
+    id: string;
+    email: string | null;
+    given_name: string | null;
+    family_name: string | null;
+    picture: string | null;
+  } | null;
   onSendMessage: (message: string) => void;
 }
 
 export default function MessageEditorComponent({
+  currentUser,
   onSendMessage,
 }: MessageEditorProps) {
   const [text, setText] = useState("");
@@ -29,7 +37,10 @@ export default function MessageEditorComponent({
 
     try {
       if (text.trim().length > 0) {
-        const response = await createChatAction({ message: text });
+        const response = await createChatAction({
+          message: text,
+          userEmail: currentUser?.email as string,
+        });
         onSendMessage(text);
         setText("");
       }
