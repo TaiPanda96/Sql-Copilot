@@ -13,7 +13,7 @@ import { z } from "zod";
  * Create a Schema for a new chat. This is used for client-side validation.
  */
 
-const createChatSchema = z.object({
+const chatSchema = z.object({
   message: z.string().min(1),
   userEmail: z.string().email(),
 });
@@ -21,13 +21,13 @@ const createChatSchema = z.object({
 /**
  * The result of creating a chat.
  */
-type CreateChatResult = {
+type ChatResult = {
   success: true;
   messageId: string;
   responseMessage?: string[];
 };
 
-type CreateChatResultWithErrors<TSchema extends z.AnyZodObject> =
+type ChatResultWithErrors<TSchema extends z.AnyZodObject> =
   | {
       success: false;
       error: UseFormFieldError<TSchema>;
@@ -40,15 +40,12 @@ type CreateChatResultWithErrors<TSchema extends z.AnyZodObject> =
     };
 
 /**
- * Server-side action to create a chat message.
- * A message is stored in the database and can be retrieved later.
+ * Create a chat response action.
  */
-export async function createChatAction(
-  input: z.input<typeof createChatSchema>
-): Promise<
-  CreateChatResult | CreateChatResultWithErrors<typeof createChatSchema>
-> {
-  const parsed = createChatSchema.safeParse(input);
+export async function chatResponseAction(
+  input: z.input<typeof chatSchema>
+): Promise<ChatResult | ChatResultWithErrors<typeof chatSchema>> {
+  const parsed = chatSchema.safeParse(input);
   const ctx = await createContext(["prisma", "model"]);
 
   if (!parsed.success) {
@@ -60,7 +57,7 @@ export async function createChatAction(
     };
   }
 
-  const validation = validateActionInput(input, createChatSchema);
+  const validation = validateActionInput(input, chatSchema);
   if (!validation.success) {
     return {
       success: false,

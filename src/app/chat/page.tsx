@@ -2,14 +2,14 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
-import { createChatAction } from "@sql-copilot/app/chat/actions/create-chat-action";
-import MessageEditorComponent from "@sql-copilot/app/chat/components/MessageEditor";
-import MessageListComponent from "@sql-copilot/app/chat/components/MessageList";
+import MessageEditorComponent from "@sql-copilot/app/chat/components/message-editor";
+import MessageListComponent from "@sql-copilot/app/chat/components/message-list";
 import { Logout } from "@sql-copilot/lib/components/log-out";
 import SideBarNav from "@sql-copilot/lib/components/side-bar-nav";
 import { Stack } from "@sql-copilot/lib/components/stack";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import { chatResponseAction } from "./actions/create-chat-response-action";
 
 export interface MessageResponse {
   id: string;
@@ -64,7 +64,7 @@ export default function ChatPage() {
 
     // Get the model response and update messages
     try {
-      const { responseMessage } = await createChatAction({
+      const { responseMessage } = await chatResponseAction({
         message,
         userEmail: user?.email as string,
       });

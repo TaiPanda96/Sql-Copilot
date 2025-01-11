@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageResponse } from "@sql-copilot/app/chat/page";
+import { MessageResponse } from "@sql-copilot/app/visualizations/page";
 import { Inset } from "@sql-copilot/lib/components/inset";
 import { SectionCard } from "@sql-copilot/lib/components/section-card";
 import { Stack } from "@sql-copilot/lib/components/stack";

@@ -1,10 +1,10 @@
 "use client";
 
-import { createChatAction } from "@sql-copilot/app/chat/actions/create-chat-action";
 import { SendIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "shadcn/components/ui/button";
 import { cn } from "shadcn/lib/utils";
+import { chatResponseAction } from "../actions/create-chat-response-action";
 
 interface MessageEditorProps {
   currentUser: {
@@ -37,7 +37,7 @@ export default function MessageEditorComponent({
 
     try {
       if (text.trim().length > 0) {
-        const response = await createChatAction({
+        const response = await chatResponseAction({
           message: text,
           userEmail: currentUser?.email as string,
         });

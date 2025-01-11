@@ -3,7 +3,7 @@ import { Inline } from "./inline";
 import SideBarItem from "./side-bar-item";
 import { Stack } from "./stack";
 import { useState } from "react";
-import { BreadCrumb } from "@sql-copilot/app/chat/page";
+import { BreadCrumb } from "@sql-copilot/app/visualizations/page";
 
 export default function SideBarNav({
   currentUser,
