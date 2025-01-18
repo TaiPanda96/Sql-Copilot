@@ -1,3 +1,7 @@
+import { AsciiBackground } from "@sql-copilot/lib/components/ascii-background";
+import { ChatInterface } from "@sql-copilot/lib/components/chat-interface";
+import { UploadForm } from "@sql-copilot/lib/components/upload-form";
+import { VisualizationChart } from "@sql-copilot/lib/components/visualization-charts";
 
 
 export default function Home() {
