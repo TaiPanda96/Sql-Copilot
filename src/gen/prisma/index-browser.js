@@ -128,18 +128,6 @@ exports.Prisma.MessagesScalarFieldEnum = {
   threadId: 'threadId'
 };
 
-exports.Prisma.TableSchemaScalarFieldEnum = {
-  id: 'id',
-  schemaSlug: 'schemaSlug',
-  schemaName: 'schemaName',
-  rawSqlSchema: 'rawSqlSchema',
-  zodValidationConfig: 'zodValidationConfig',
-  validAt: 'validAt',
-  expiredAt: 'expiredAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.ThreadsScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -159,10 +147,6 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
-  JsonNull: Prisma.JsonNull
-};
-
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -173,16 +157,9 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
-};
-
 
 exports.Prisma.ModelName = {
   Messages: 'Messages',
-  TableSchema: 'TableSchema',
   Threads: 'Threads',
   User: 'User'
 };
