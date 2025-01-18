@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Add this to your CSS file */
+.grid-container {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(200px, 1fr)
+  ); /* Adjust minmax based on your content size */
+}
