@@ -170,7 +170,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/adaga/daga_lin/Sql-Copilot/src/gen/prisma",
+      "value": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/src/gen/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -190,11 +190,12 @@ const config = {
       "prismaSchemaFolder",
       "omitApi"
     ],
-    "sourceFilePath": "/Users/adaga/daga_lin/Sql-Copilot/prisma/schema/schema.prisma",
+    "sourceFilePath": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/prisma/schema/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma/schema",
   "clientVersion": "5.21.1",
