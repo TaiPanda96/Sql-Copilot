@@ -3,7 +3,6 @@ import { ChatInterface } from "@sql-copilot/lib/components/chat-interface";
 import { UploadForm } from "@sql-copilot/lib/components/upload-form";
 import { VisualizationChart } from "@sql-copilot/lib/components/visualization-charts";
 
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
@@ -19,6 +18,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,68 +1,39 @@
-"use client"
+"use client";
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { PaperclipIcon } from 'lucide-react'
-import { z } from "zod"
-import { useForm } from "./use-form"
-import { uploadFileAction } from "@sql-copilot/app/actions"
-import { Button } from "shadcn/components/ui/button"
-import { cn } from "shadcn/lib/utils"
-
-const formSchema = z.object({
-  story: z.string().min(1, "Please provide a story"),
-  files: z.array(z.instanceof(File)).min(1, "Please upload at least one file")
-})
-
-type FormValues = z.infer<typeof formSchema>
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useForm } from "./use-form";
+import {
+  uploadFileAction,
+  uploadFileSchema,
+} from "@sql-copilot/app/upload-file-action";
+import { Button } from "shadcn/components/ui/button";
+import { FileUploadInput } from "./file-upload-input";
 
 export function UploadForm() {
-  const form = useForm<typeof formSchema, void>({
-    schema: formSchema,
+  const form = useForm<typeof uploadFileSchema, void>({
+    schema: uploadFileSchema,
     initialValues: {
       story: "",
-      files: []
+      url: "",
+      fileName: "",
     },
-    onValidSubmit: async (values) => {
-      const formData = new FormData()
-      values.files.forEach(file => formData.append("files", file))
-      formData.append("story", values.story)
-      await uploadFileAction({
-        story: values.story,
-        files: values.files
-      })
-    }
-  })
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      form.setValue("files", form.values.files)
-    }
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    const newFiles = Array.from(e.dataTransfer.files)
-    form.setValue("files", [...form.values.files, ...newFiles])
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files)
-      form.setValue("files", [...form.values.files, ...newFiles])
-    }
-  }
+    onValidSubmit: async (uploadFileInput) => {
+      try {
+        await uploadFileAction(uploadFileInput);
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
+    },
+  });
 
   return (
-    <form onSubmit={form.handleSubmit} className="space-y-6 bg-white rounded-lg p-6 shadow-sm">
+    <form
+      onSubmit={form.handleSubmit}
+      className="space-y-6 bg-white rounded-lg p-6 shadow-sm"
+    >
       <div className="space-y-2">
-        <Label 
-          htmlFor="story" 
-          className="text-base font-normal text-gray-900"
-        >
+        <Label htmlFor="story" className="text-base font-normal text-gray-900">
           What's the TL;DR of your data and who's your audience?
         </Label>
         <Input
@@ -77,57 +48,20 @@ export function UploadForm() {
         )}
       </div>
       <div className="space-y-2">
-        <Label className="text-base font-normal text-gray-900">
-          Upload your data
-        </Label>
-        <div
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-          className={cn(
-            "border border-dashed border-gray-300 rounded-lg py-12 px-6 text-center transition-colors",
-            form.values.files.length > 0 && "border-blue-500 bg-blue-50"
-          )}
-        >
-          <Input
-            type="file"
-            multiple
-            accept=".csv,.xlsx,.png,.jpg,.jpeg,.heic"
-            onChange={handleFileChange}
-            className="hidden"
-            id="file-upload"
-          />
-          <Label 
-            htmlFor="file-upload" 
-            className="cursor-pointer text-gray-600 flex flex-col items-center"
-          >
-            <PaperclipIcon className="h-6 w-6 mb-2 text-gray-400" />
-            <p>Upload data and images</p>
-            <p className="text-sm text-gray-500 mt-1">
-              Support for CSV, Excel, PNG, JPG, JPEG, and HEIC
-            </p>
-          </Label>
-        </div>
-        {form.errors.files && (
-          <p className="text-sm text-red-500">{form.errors.files}</p>
-        )}
-        {form.values.files.length > 0 && (
-          <div className="mt-2">
-            <p className="text-sm text-gray-600">
-              {form.values.files.length} file(s) selected
-            </p>
-          </div>
-        )}
+        <FileUploadInput
+          onChange={({ url, fileName }) => {
+            form.setValue("url", url);
+            form.setValue("fileName", fileName);
+          }}
+        />
       </div>
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         className="w-full h-[52px] bg-[#818CF8] hover:bg-[#6366F1] text-white font-medium text-base rounded-lg"
         disabled={form.loading}
       >
         {form.loading ? "Processing..." : "Generate Visualization"}
       </Button>
     </form>
-  )
+  );
 }
-
