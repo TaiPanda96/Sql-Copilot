@@ -79,6 +79,9 @@ export function FileInput({
 
   const handleChange = useCallback(
     (event?: ChangeEvent<HTMLInputElement>) => {
+      if (!inputRef) {
+        return;
+      }
       const file = inputRef.current?.files ? inputRef.current.files[0] : null;
       handleFile(file);
     },
@@ -99,7 +102,7 @@ export function FileInput({
     (event: DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       setIsDraggingOver(false);
-      if (inputRef.current) {
+      if (inputRef && inputRef.current && event.dataTransfer.files.length > 0) {
         inputRef.current.files = event.dataTransfer.files;
         handleChange();
       }
