@@ -22,7 +22,7 @@ model Messages {
 generator client {
   provider        = "prisma-client-js"
   output          = "../../src/gen/prisma"
-  previewFeatures = ["metrics", "prismaSchemaFolder", "omitApi", "views", "driverAdapters"]
+  previewFeatures = ["metrics", "prismaSchemaFolder", "views", "driverAdapters"]
 }
 
 datasource db {

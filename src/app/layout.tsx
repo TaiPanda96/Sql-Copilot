@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { AsciiBackground } from "@sql-copilot/lib/components/ascii-background";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

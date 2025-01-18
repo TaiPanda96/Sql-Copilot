@@ -7,7 +7,6 @@ const {
   PrismaClientRustPanicError,
   PrismaClientInitializationError,
   PrismaClientValidationError,
-  NotFoundError,
   getPrismaClient,
   sqltag,
   empty,
@@ -32,12 +31,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.21.1
- * Query Engine version: 69d742ee20b815d88e17e54db4a2a7a3b30324e3
+ * Prisma Client JS version: 6.2.1
+ * Query Engine version: 4123509d24aa4dede1e864b46351bf2790323b69
  */
 Prisma.prismaVersion = {
-  client: "5.21.1",
-  engine: "69d742ee20b815d88e17e54db4a2a7a3b30324e3"
+  client: "6.2.1",
+  engine: "4123509d24aa4dede1e864b46351bf2790323b69"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -45,7 +44,6 @@ Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
 Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
 Prisma.PrismaClientInitializationError = PrismaClientInitializationError
 Prisma.PrismaClientValidationError = PrismaClientValidationError
-Prisma.NotFoundError = NotFoundError
 Prisma.Decimal = Decimal
 
 /**
@@ -187,8 +185,7 @@ const config = {
       "driverAdapters",
       "metrics",
       "views",
-      "prismaSchemaFolder",
-      "omitApi"
+      "prismaSchemaFolder"
     ],
     "sourceFilePath": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/prisma/schema/schema.prisma",
     "isCustomOutput": true
@@ -198,8 +195,8 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma/schema",
-  "clientVersion": "5.21.1",
-  "engineVersion": "69d742ee20b815d88e17e54db4a2a7a3b30324e3",
+  "clientVersion": "6.2.1",
+  "engineVersion": "4123509d24aa4dede1e864b46351bf2790323b69",
   "datasourceNames": [
     "db"
   ],
@@ -213,8 +210,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "model Messages {\n  id         String    @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  message    String    @map(\"message\")\n  userId     String?   @map(\"user_id\") @db.Uuid\n  attachment String?   @map(\"attachment\")\n  at         DateTime? @map(\"at\")\n  createdAt  DateTime  @default(now())\n  updatedAt  DateTime  @updatedAt\n\n  thread   Threads? @relation(fields: [threadId], references: [id])\n  threadId String?  @map(\"thread_id\") @db.Uuid\n\n  @@map(\"messages\")\n}\n\n// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../../src/gen/prisma\"\n  previewFeatures = [\"metrics\", \"prismaSchemaFolder\", \"omitApi\", \"views\", \"driverAdapters\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel TableSchema {\n  id                  String    @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  schemaSlug          String    @map(\"schema_slug\")\n  schemaName          String    @map(\"schema_name\")\n  rawSqlSchema        String    @map(\"raw_sql_schema\")\n  zodValidationConfig Json      @map(\"zod_validation_config\")\n  validAt             DateTime  @map(\"valid_at\")\n  expiredAt           DateTime? @map(\"expired_at\")\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([schemaName, validAt, expiredAt])\n  @@map(\"table_schemas\")\n}\n\nmodel Threads {\n  id        String     @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  title     String     @map(\"title\")\n  userId    String?    @map(\"user_id\") @db.Uuid\n  createdAt DateTime   @default(now())\n  updatedAt DateTime   @default(now()) @map(\"updated_at\")\n  messages  Messages[]\n\n  @@map(\"threads\")\n}\n\nmodel User {\n  id    String  @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  email String  @unique\n  name  String?\n}\n",
-  "inlineSchemaHash": "c1a9eef67541d6caf7f57b10b7e9cdd706e3cd273d206f5368d4ee4bfe6d7fe1",
+  "inlineSchema": "model Messages {\n  id         String    @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  message    String    @map(\"message\")\n  userId     String?   @map(\"user_id\") @db.Uuid\n  attachment String?   @map(\"attachment\")\n  at         DateTime? @map(\"at\")\n  createdAt  DateTime  @default(now())\n  updatedAt  DateTime  @updatedAt\n\n  thread   Threads? @relation(fields: [threadId], references: [id])\n  threadId String?  @map(\"thread_id\") @db.Uuid\n\n  @@map(\"messages\")\n}\n\n// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../../src/gen/prisma\"\n  previewFeatures = [\"metrics\", \"prismaSchemaFolder\", \"views\", \"driverAdapters\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel TableSchema {\n  id                  String    @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  schemaSlug          String    @map(\"schema_slug\")\n  schemaName          String    @map(\"schema_name\")\n  rawSqlSchema        String    @map(\"raw_sql_schema\")\n  zodValidationConfig Json      @map(\"zod_validation_config\")\n  validAt             DateTime  @map(\"valid_at\")\n  expiredAt           DateTime? @map(\"expired_at\")\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([schemaName, validAt, expiredAt])\n  @@map(\"table_schemas\")\n}\n\nmodel Threads {\n  id        String     @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  title     String     @map(\"title\")\n  userId    String?    @map(\"user_id\") @db.Uuid\n  createdAt DateTime   @default(now())\n  updatedAt DateTime   @default(now()) @map(\"updated_at\")\n  messages  Messages[]\n\n  @@map(\"threads\")\n}\n\nmodel User {\n  id    String  @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  email String  @unique\n  name  String?\n}\n",
+  "inlineSchemaHash": "664cf7e62f2d08ffbdb139ca0ea4ee9124a5aea8dd40a623c2666f785c9a7ad2",
   "copyEngine": true
 }
 config.dirname = '/'
