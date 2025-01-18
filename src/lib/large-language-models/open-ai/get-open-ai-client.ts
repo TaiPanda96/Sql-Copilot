@@ -47,7 +47,7 @@ export async function* getQueryResponseIo(
 
   // Remove the base prompt for now
   const basePrompt = await getBasePrompt();
-  const fullQuery = multiline`The user has submitted the following question: ${query}`;
+  const fullQuery = multiline`The user has submitted the following story: ${query}`;
 
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o",
@@ -61,10 +61,10 @@ export async function* getQueryResponseIo(
         content: fullQuery,
       },
       // Add the message history
-      ...messageHistory.map((message) => ({
-        role: "user" as const,
-        content: message,
-      })),
+      // ...messageHistory.map((message) => ({
+      //   role: "user" as const,
+      //   content: message,
+      // })),
       {
         role: "user",
         content: query,

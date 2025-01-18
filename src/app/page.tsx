@@ -1,23 +1,24 @@
-import {
-  LoginLink,
-  RegisterLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import { Stack } from "@sql-copilot/lib/components/stack";
-import { Text } from "@sql-copilot/lib/components/text";
+import { AsciiBackground } from "@sql-copilot/lib/components/ascii-background";
+import { ChatInterface } from "@sql-copilot/lib/components/chat-interface";
+import { UploadForm } from "@sql-copilot/lib/components/upload-form";
+import { VisualizationChart } from "@sql-copilot/lib/components/visualization-charts";
 
-export default function HomePage() {
+
+export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center h-screen">
-      <Stack gap={4}>
-        <h1 className="text-4xl font-bold text-brand-600">SQL Copilot</h1>
-        <h3 className="text-xl font-medium text-gray-400">SQL made easy.</h3>
-        <LoginLink>
-          <Text value="Login" size="md" color="brand" />
-        </LoginLink>
-        <RegisterLink>
-          <Text value="Register" size="md" color="brand" />
-        </RegisterLink>
-      </Stack>
-    </main>
-  );
+    <div className="min-h-screen bg-white">
+      <AsciiBackground />
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto space-y-12">
+          <h1 className="text-[40px] leading-tight font-semibold text-center text-gray-900">
+            What story can we help you tell?
+          </h1>
+          <UploadForm />
+          <VisualizationChart />
+          <ChatInterface />
+        </div>
+      </div>
+    </div>
+  )
 }
+
