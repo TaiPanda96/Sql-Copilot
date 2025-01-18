@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import classNames from "classnames";
 import {
   ChangeEvent,
@@ -13,6 +12,7 @@ import { Inline } from "./inline";
 import { Text } from "./text";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "shadcn/lib/utils";
+import { Input } from "./input";
 
 export interface BaseFileInputProps {
   value?: never;
@@ -125,7 +125,7 @@ export function FileInput({
           "gap-4",
           "cursor-pointer",
           {
-            "bg-gray-100": isDraggingOver,
+            "bg-gray-600": isDraggingOver,
           }
         )}
       >
@@ -137,7 +137,7 @@ export function FileInput({
         ) : fileName ? (
           <Text value={fileName} />
         ) : (
-          <Text value="Drop here, or click to select." color="light" />
+          <Text value="Drop here, or click to select." color="regular" />
         )}
       </div>
       <input
