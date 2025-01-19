@@ -1,5 +1,21 @@
-import { UseFormActionResult } from "@sql-copilot/lib/components/use-form";
 import { z } from "zod";
+
+/**
+ * This is the standard return type for a form action. It's used to pass
+ * validation errors back to `useForm` to that can be shown to the user in the correct way.
+ */
+export type UseFormActionResult<
+  TSchema extends z.AnyZodObject = z.AnyZodObject,
+  TResult = unknown
+> =
+  | {
+      success: true;
+      result: TResult;
+    }
+  | {
+      success: false;
+      errors: UseFormFieldError<TSchema>;
+    };
 
 interface ZodErrorNode {
   [key: string]: ZodErrorNode | Array<string>;
@@ -41,9 +57,7 @@ export function validateActionInput<TSchema extends z.AnyZodObject>(
 }
 
 /**
- * Transforms Zod Errors to a Flat Object of Field Errors
- * @param error The Zod error object
- * @param dirty The dirty state of the form
+ * Convert Zod errors into a simpler form that can be used by `useForm`
  */
 export function zodToFieldErrors<TSchema extends z.AnyZodObject>(
   error?: z.SafeParseError<TSchema["_input"]>["error"],
@@ -68,9 +82,6 @@ export function zodToFieldErrors<TSchema extends z.AnyZodObject>(
   );
 }
 
-/**
- * Utility function to flatten Zod errors into a list of field errors.
- */
 function flattenFieldErrors(
   field: string,
   fieldErrors: ZodErrorNode
@@ -99,13 +110,14 @@ function flattenFieldErrors(
   return errors;
 }
 
-/**
- * Use Form standard Field Error, which uses zod schemas to validate input.
- * If errors are surfaced, we call `zodToFieldErrors` to convert the zod errors to friendly
- * field errors (friendly in the sense of form validation).
- */
 export type UseFormFieldError<TSchema extends z.AnyZodObject = z.AnyZodObject> =
   ReturnType<typeof zodToFieldErrors<TSchema>>;
+
+export class InputError extends Error {
+  constructor(public inputKey: string, message: string) {
+    super(message);
+  }
+}
 
 /**
  * For handling InputErrors from server-side actions and converting them into a form error.
@@ -122,8 +134,6 @@ export function handleActionInputError<TSchema extends z.AnyZodObject, TResult>(
   }
 
   if (error instanceof Error) {
-    // non-input errors are unexpected and should be reported to Sentry, but we still
-    // want to inform the user that something went wrong
     console.error(error);
 
     return {
@@ -133,28 +143,4 @@ export function handleActionInputError<TSchema extends z.AnyZodObject, TResult>(
   }
 
   throw error;
-}
-
-/**
- * An error that is associated with some input.
- * Zod should be used for schema (data shape) validation.
- *
- * @param inputKey The key of the input that caused the error (i.e. parameter name)
- * @param message The error message; preferably customer friendly for display.
- */
-export class InputError extends Error {
-  public readonly inputKey: string;
-
-  constructor(inputKey: string, message: string) {
-    super(message);
-    this.name = this.constructor.name;
-    this.inputKey = inputKey;
-
-    // Maintain stack trace
-    if (typeof Error.captureStackTrace === "function") {
-      Error.captureStackTrace(this, this.constructor);
-    } else {
-      this.stack = new Error(message).stack;
-    }
-  }
 }

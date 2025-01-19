@@ -1,18 +1,18 @@
 "use client";
 
 import { useForm } from "./use-form";
-import {
-  uploadFileAction,
-  uploadFileSchema,
-} from "@sql-copilot/app/upload-file-action";
-import { Button } from "shadcn/components/ui/button";
+import { uploadFileAction } from "@sql-copilot/app/upload-file-action";
 import { FileUploadInput } from "./file-upload-input";
 import { Stack } from "./stack";
 import { Inline } from "./inline";
-import { cn } from "shadcn/lib/utils";
-import { Input } from "@/components/ui/input";
+import { Button } from "./button";
+import { Upload } from "lucide-react";
+import { TextInput } from "./text-input";
+import { useRouter } from "next/navigation";
+import { uploadFileSchema } from "@sql-copilot/app/upload-file-input";
 
 export function UploadForm() {
+  const router = useRouter();
   const form = useForm({
     schema: uploadFileSchema,
     initialValues: {
@@ -21,36 +21,43 @@ export function UploadForm() {
       fileName: "",
     },
     onValidSubmit: uploadFileAction,
+    onSuccess(data) {
+      router.push("/");
+    },
   });
 
   return (
-    <Stack gap={6}>
-      <form onSubmit={form.handleSubmit}>
-        <Stack gap={6}>
-          <Input
-            id="story"
-            value={form.values.story}
-            onChange={(e) => form.setValue("story", e.target.value)}
-            placeholder="I want to report Q3 sales to my CEO"
-            className="h-[52px] px-4 bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-500 rounded-lg"
+    <form onSubmit={form.handleSubmit}>
+      <Stack gap={6} className="max-w-lg mx-auto">
+        <FileUploadInput
+          onChange={({ url }) => {
+            form.setValue("url", url);
+          }}
+          error={form.errors.url}
+        />
+        <TextInput
+          value={form.values.story}
+          onChange={(story) => {
+            form.setValue("story", story);
+          }}
+          error={form.errors.story}
+        />
+        <Inline align="center">
+          <Button
+            type="submit"
+            label="Upload"
+            loading={form.loading}
+            disabled={!form.isValid}
+            variant="ghost"
+            IconRight={Upload}
+            iconClassName="
+              text-gray-500
+              hover:text-gray-900
+              transition
+            "
           />
-          <div
-            className={cn(
-              "border border-gray-250 rounded-lg py-12 px-6 text-center transition-colors"
-            )}
-          >
-            <FileUploadInput
-              error={form.errors.url}
-              onChange={({ url }) => {
-                form.setValue("url", url);
-              }}
-            />
-          </div>
-          <Inline>
-            <Button type="submit" />
-          </Inline>
-        </Stack>
-      </form>
-    </Stack>
+        </Inline>
+      </Stack>
+    </form>
   );
 }

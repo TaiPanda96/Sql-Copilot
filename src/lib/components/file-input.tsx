@@ -126,7 +126,7 @@ export function FileInput({
           "cursor-pointer",
           {
             "bg-gray-100": isDraggingOver,
-            "bg-gray-50": !isDraggingOver,
+            "bg-gray-200": !isDraggingOver,
           },
           { "border-red-600": error },
           "border-gray-50"

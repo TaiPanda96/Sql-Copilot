@@ -2,22 +2,21 @@
 
 import { validateActionInput } from "@sql-copilot/lib/components/use-form-action";
 import { z } from "zod";
-
-export const uploadFileSchema = z.object({
-  url: z.string(),
-  fileName: z.string(),
-  story: z.string(),
-});
+import { uploadFileSchema } from "./upload-file-input";
 
 export async function uploadFileAction(
   input: z.input<typeof uploadFileSchema>
 ): Promise<{ success: boolean }> {
-  console.log("uploadFileAction", input);
   const validation = validateActionInput(input, uploadFileSchema);
   if (!validation.success) {
     return { success: false };
   }
   const { url, fileName, story } = validation.data;
+
+  let outputFileName = fileName;
+  if (!fileName.length) {
+    outputFileName = url.split("/").pop() || "file";
+  }
   try {
     // Process the file here
     console.log("Processing file:", { url, fileName, story });
