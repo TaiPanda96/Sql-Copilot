@@ -7,7 +7,6 @@ const {
   PrismaClientRustPanicError,
   PrismaClientInitializationError,
   PrismaClientValidationError,
-  NotFoundError,
   getPrismaClient,
   sqltag,
   empty,
@@ -32,12 +31,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.21.1
- * Query Engine version: 69d742ee20b815d88e17e54db4a2a7a3b30324e3
+ * Prisma Client JS version: 6.2.1
+ * Query Engine version: 4123509d24aa4dede1e864b46351bf2790323b69
  */
 Prisma.prismaVersion = {
-  client: "5.21.1",
-  engine: "69d742ee20b815d88e17e54db4a2a7a3b30324e3"
+  client: "6.2.1",
+  engine: "4123509d24aa4dede1e864b46351bf2790323b69"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -45,7 +44,6 @@ Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
 Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
 Prisma.PrismaClientInitializationError = PrismaClientInitializationError
 Prisma.PrismaClientValidationError = PrismaClientValidationError
-Prisma.NotFoundError = NotFoundError
 Prisma.Decimal = Decimal
 
 /**
@@ -171,12 +169,11 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma/schema",
-  "clientVersion": "5.21.1",
-  "engineVersion": "69d742ee20b815d88e17e54db4a2a7a3b30324e3",
+  "clientVersion": "6.2.1",
+  "engineVersion": "4123509d24aa4dede1e864b46351bf2790323b69",
   "datasourceNames": [
     "db"
   ],
