@@ -12,6 +12,7 @@ export const uploadFileSchema = z.object({
 export async function uploadFileAction(
   input: z.input<typeof uploadFileSchema>
 ): Promise<{ success: boolean }> {
+  console.log("uploadFileAction", input);
   const validation = validateActionInput(input, uploadFileSchema);
   if (!validation.success) {
     return { success: false };

@@ -13,16 +13,14 @@ import { cn } from "shadcn/lib/utils";
 import { Input } from "@/components/ui/input";
 
 export function UploadForm() {
-  const form = useForm<typeof uploadFileSchema, void>({
+  const form = useForm({
     schema: uploadFileSchema,
     initialValues: {
       story: "",
       url: "",
       fileName: "",
     },
-    onValidSubmit: async (values) => {
-      await uploadFileAction(values);
-    },
+    onValidSubmit: uploadFileAction,
   });
 
   return (
