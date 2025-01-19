@@ -125,8 +125,11 @@ export function FileInput({
           "gap-4",
           "cursor-pointer",
           {
-            "bg-gray-600": isDraggingOver,
-          }
+            "bg-gray-100": isDraggingOver,
+            "bg-gray-50": !isDraggingOver,
+          },
+          { "border-red-600": error },
+          "border-gray-50"
         )}
       >
         {loading ? (

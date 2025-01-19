@@ -38,7 +38,7 @@ export function UploadForm() {
           />
           <div
             className={cn(
-              "border border-dashed border-gray-600 rounded-lg py-12 px-6 text-center transition-colors"
+              "border border-gray-250 rounded-lg py-12 px-6 text-center transition-colors"
             )}
           >
             <FileUploadInput
