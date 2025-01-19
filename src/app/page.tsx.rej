@@ -1,0 +1,37 @@
+diff a/src/app/page.tsx b/src/app/page.tsx	(rejected hunks)
+@@ -3,22 +3,18 @@ import { ChatInterface } from "@sql-copilot/lib/components/chat-interface";
+ import { UploadForm } from "@sql-copilot/lib/components/upload-form";
+ import { VisualizationChart } from "@sql-copilot/lib/components/visualization-charts";
+ 
+-
+ export default function Home() {
+   return (
+-    <div className="min-h-screen bg-white">
+-      <AsciiBackground />
+-      <div className="container mx-auto px-4 py-16">
+-        <div className="max-w-4xl mx-auto space-y-12">
+-          <h1 className="text-[40px] leading-tight font-semibold text-center text-gray-900">
+-            What story can we help you tell?
+-          </h1>
+-          <UploadForm />
+-          <VisualizationChart />
+-          <ChatInterface />
+-        </div>
++      <div className="min-h-screen bg-transparent">
++          <AsciiBackground />
++          <div className="container mx-auto px-4 py-16 relative" style={{ zIndex: 1 }}>
++              <div className="max-w-4xl mx-auto space-y-12">
++                  <h1 className="text-[40px] leading-tight font-semibold text-center text-gray-900">
++                      Build beautiful charts with AI
++                  </h1>
++                  <UploadForm />
++              </div>
++          </div>
+       </div>
+-    </div>
+-  )
+-}
+-
++  );
++}
+\ No newline at end of file
