@@ -7,6 +7,7 @@ const {
   PrismaClientRustPanicError,
   PrismaClientInitializationError,
   PrismaClientValidationError,
+  NotFoundError,
   getPrismaClient,
   sqltag,
   empty,
@@ -31,12 +32,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.2.1
- * Query Engine version: 4123509d24aa4dede1e864b46351bf2790323b69
+ * Prisma Client JS version: 5.21.1
+ * Query Engine version: 69d742ee20b815d88e17e54db4a2a7a3b30324e3
  */
 Prisma.prismaVersion = {
-  client: "6.2.1",
-  engine: "4123509d24aa4dede1e864b46351bf2790323b69"
+  client: "5.21.1",
+  engine: "69d742ee20b815d88e17e54db4a2a7a3b30324e3"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -44,6 +45,7 @@ Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
 Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
 Prisma.PrismaClientInitializationError = PrismaClientInitializationError
 Prisma.PrismaClientValidationError = PrismaClientValidationError
+Prisma.NotFoundError = NotFoundError
 Prisma.Decimal = Decimal
 
 /**
@@ -145,7 +147,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/src/gen/prisma",
+      "value": "/Users/adaga/daga_lin/Sql-Copilot/src/gen/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -164,7 +166,7 @@ const config = {
       "views",
       "prismaSchemaFolder"
     ],
-    "sourceFilePath": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/prisma/schema/schema.prisma",
+    "sourceFilePath": "/Users/adaga/daga_lin/Sql-Copilot/prisma/schema/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -172,8 +174,8 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma/schema",
-  "clientVersion": "6.2.1",
-  "engineVersion": "4123509d24aa4dede1e864b46351bf2790323b69",
+  "clientVersion": "5.21.1",
+  "engineVersion": "69d742ee20b815d88e17e54db4a2a7a3b30324e3",
   "datasourceNames": [
     "db"
   ],
