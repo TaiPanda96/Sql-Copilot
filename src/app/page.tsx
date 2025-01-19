@@ -10,7 +10,7 @@ export default function Home() {
           <div className="container mx-auto px-4 py-16 relative" style={{ zIndex: 1 }}>
               <div className="max-w-4xl mx-auto space-y-12">
                   <h1 className="text-[40px] leading-tight font-semibold text-center text-gray-900">
-                      What story can we help you tell?
+                      Build beautiful charts with AI
                   </h1>
                   <UploadForm />
               </div>
