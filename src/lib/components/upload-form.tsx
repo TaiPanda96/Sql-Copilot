@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -214,6 +214,22 @@ export function UploadForm() {
     }
   });
 
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.type === "dragenter" || e.type === "dragover") {
+      form.setValue("files", form.values.files)
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const newFiles = Array.from(e.dataTransfer.files)
+    const validFiles = validateFiles(newFiles);
+    form.setValue("files", [...form.values.files, ...validFiles])
+  };
+
   const validateFiles = (files: File[]) => {
     return files.filter(file => {
       const fileType = getFileType(file);
@@ -232,22 +248,6 @@ export function UploadForm() {
     });
   };
 
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      form.setValue("files", form.values.files)
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    const newFiles = Array.from(e.dataTransfer.files)
-    const validFiles = validateFiles(newFiles);
-    form.setValue("files", [...form.values.files, ...validFiles])
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
@@ -263,87 +263,85 @@ export function UploadForm() {
   };
 
   return (
-    <form onSubmit={form.handleSubmit} className="space-y-6 bg-white rounded-lg p-6 shadow-sm">
-      {/* Story Input Section */}
-      <div className="space-y-2">
-        <Label 
-          htmlFor="story" 
-          className="text-base font-normal text-gray-900"
-        >
-          What's the TL;DR of your data and who's your audience?
-        </Label>
-        <Input
-          id="story"
-          value={form.values.story}
-          onChange={(e) => form.setValue("story", e.target.value)}
-          placeholder="I want to report Q3 sales to my CEO"
-          className="h-[52px] px-4 bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-500 rounded-lg"
-        />
-        {form.errors.story && (
-          <p className="text-sm text-red-500">{form.errors.story}</p>
-        )}
-      </div>
-
-      {/* File Upload Section */}
-      <div className="space-y-2">
-        <Label className="text-base font-normal text-gray-900">
-          Upload your data
-        </Label>
-        <div
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-          className={cn(
-            "border-2 border-dashed border-blue-200 rounded-lg py-12 px-6 text-center transition-colors bg-blue-50",
-            form.values.files.length > 0 && "border-blue-300 bg-blue-100"
-          )}
-        >
-          <Input
-            type="file"
-            multiple
-            accept={Object.values(FILE_CONFIGS).map(config => config.accept).join(',')}
-            onChange={handleFileChange}
-            className="hidden"
-            id="file-upload"
-          />
+    <form onSubmit={form.handleSubmit} className="p-6">
+      <div className="space-y-6">
+        {/* Story Input Section */}
+        <div className="space-y-2">
           <Label 
-            htmlFor="file-upload" 
-            className="cursor-pointer text-gray-600 flex flex-col items-center"
+            htmlFor="story" 
+            className="text-base font-normal text-gray-900"
           >
-            <PaperclipIcon className="h-6 w-6 mb-2 text-blue-400" />
-            <p className="text-gray-700 font-medium">Upload raw data and/or images</p>
-            <div className="text-sm text-gray-500 mt-1 space-y-1">
-              <p>Data files: {FILE_CONFIGS.data.extensions.join(', ').toUpperCase()} (max {FILE_CONFIGS.data.maxSize / (1024 * 1024)}MB)</p>
-              <p>Image files: {FILE_CONFIGS.image.extensions.join(', ').toUpperCase()} (max {FILE_CONFIGS.image.maxSize / (1024 * 1024)}MB)</p>
-            </div>
+            What's the TL;DR of your data and who's your audience?
           </Label>
+          <Input
+            id="story"
+            value={form.values.story}
+            onChange={(e) => form.setValue("story", e.target.value)}
+            placeholder="I want to report Q3 sales to my CEO"
+            className="h-[52px] px-4 bg-white border-gray-200 text-gray-900 placeholder:text-gray-500 rounded-lg"
+          />
+          {form.errors.story && (
+            <p className="text-sm text-red-500">{form.errors.story}</p>
+          )}
         </div>
 
-        {form.values.files.length > 0 && (
-          <div className="mt-4 space-y-2">
-            {form.values.files.map((file, index) => (
-              <FilePreview
-                key={index}
-                file={file}
-                onRemove={() => removeFile(index)}
-              />
-            ))}
+        {/* File Upload Section */}
+        <div className="space-y-2">
+          <Label className="text-base font-normal text-gray-900">
+            Upload your data
+          </Label>
+          <div
+            onDragEnter={handleDrag}
+            onDragOver={handleDrag}
+            onDragLeave={handleDrag}
+            onDrop={handleDrop}
+            className={cn(
+              "border-2 border-dashed border-blue-200 rounded-lg py-12 px-6 text-center transition-colors bg-blue-50",
+              form.values.files.length > 0 && "border-blue-300 bg-blue-100"
+            )}
+          >
+            <Input
+              type="file"
+              multiple
+              accept={Object.values(FILE_CONFIGS).map(config => config.accept).join(',')}
+              onChange={handleFileChange}
+              className="hidden"
+              id="file-upload"
+            />
+            <Label 
+              htmlFor="file-upload" 
+              className="cursor-pointer text-gray-600 flex flex-col items-center"
+            >
+              <PaperclipIcon className="h-6 w-6 mb-2 text-blue-400" />
+              <p className="text-gray-700 font-medium">Upload raw data and/or images</p>
+              <div className="text-sm text-gray-500 mt-1 space-y-1">
+                <p>Data files: {FILE_CONFIGS.data.extensions.join(', ').toUpperCase()} (max {FILE_CONFIGS.data.maxSize / (1024 * 1024)}MB)</p>
+                <p>Image files: {FILE_CONFIGS.image.extensions.join(', ').toUpperCase()} (max {FILE_CONFIGS.image.maxSize / (1024 * 1024)}MB)</p>
+              </div>
+            </Label>
           </div>
-        )}
-        
-        {form.errors.files && (
-          <p className="text-sm text-red-500">{form.errors.files}</p>
-        )}
-      </div>
 
-      <Button 
-        type="submit" 
-        className="w-full h-[52px] bg-[#818CF8] hover:bg-[#6366F1] text-white font-medium text-base rounded-lg"
-        disabled={form.loading}
-      >
-        {form.loading ? "Processing..." : "Generate Visualization"}
-      </Button>
+          {form.values.files.length > 0 && (
+            <div className="mt-4 space-y-2">
+              {form.values.files.map((file, index) => (
+                <FilePreview
+                  key={index}
+                  file={file}
+                  onRemove={() => removeFile(index)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <Button 
+          type="submit" 
+          className="w-full h-[52px] bg-[#818CF8] hover:bg-[#6366F1] text-white font-medium text-base rounded-lg"
+          disabled={form.loading}
+        >
+          {form.loading ? "Processing..." : "Generate Visualization"}
+        </Button>
+      </div>
     </form>
   );
 }

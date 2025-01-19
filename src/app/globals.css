@@ -1,12 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Add this to your CSS file */
-.grid-container {
-  display: grid;
-  grid-gap: 8px;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(200px, 1fr)
-  ); /* Adjust minmax based on your content size */
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-blue-50 via-white to-blue-50;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg;
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes pathAnimation {
+  0% {
+    d: path("M -100 100 Q 250 100 600 100");
+  }
+  50% {
+    d: path("M -100 100 Q 250 50 600 100");
+  }
+  100% {
+    d: path("M -100 100 Q 250 100 600 100");
+  }
+}
+
+.animated-path {
+  animation: pathAnimation 5s ease-in-out infinite;
 }
