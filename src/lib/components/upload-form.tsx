@@ -23,6 +23,7 @@ const FILE_CONFIGS = {
     accept: ".jpg,.jpeg,.png,.gif",
     maxSize: 5 * 1024 * 1024,
     label: "Image",
+    files: [] as File[],
   },
 };
 

@@ -14,7 +14,7 @@ export async function uploadFileAction(
   const { url, fileName, story } = validation.data;
 
   let outputFileName = fileName;
-  if (!fileName.length) {
+  if (!fileName) {
     outputFileName = url.split("/").pop() || "file";
   }
   try {
