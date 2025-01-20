@@ -13,16 +13,13 @@ export async function uploadFileAction(
   if (!validation.success) {
     return { success: false, fileUrl: "" };
   }
-  const { url, fileName, story } = validation.data;
+  const { url, fileName } = validation.data;
 
   let outputFileName = fileName;
   if (!fileName) {
     outputFileName = url.split("/").pop() || "file";
   }
   try {
-    // Process the file here
-    console.log("Processing file:", { url, fileName, story });
-
     const newFile = await ctx.prisma.files.create({
       data: {
         name: outputFileName,
