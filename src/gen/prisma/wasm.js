@@ -88,6 +88,13 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.FilesScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  name: 'name',
+  userId: 'userId'
+};
+
 exports.Prisma.MessagesScalarFieldEnum = {
   id: 'id',
   message: 'message',
@@ -130,6 +137,7 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
+  Files: 'Files',
   Messages: 'Messages',
   Threads: 'Threads',
   User: 'User'
@@ -145,7 +153,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/adaga/daga_lin/Sql-Copilot/src/gen/prisma",
+      "value": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/src/gen/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -164,11 +172,12 @@ const config = {
       "views",
       "prismaSchemaFolder"
     ],
-    "sourceFilePath": "/Users/adaga/daga_lin/Sql-Copilot/prisma/schema/schema.prisma",
+    "sourceFilePath": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/prisma/schema/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma/schema",
   "clientVersion": "6.2.1",
@@ -185,13 +194,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "model Messages {\n  id         String    @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  message    String    @map(\"message\")\n  userId     String?   @map(\"user_id\") @db.Uuid\n  attachment String?   @map(\"attachment\")\n  at         DateTime? @map(\"at\")\n  createdAt  DateTime  @default(now())\n  updatedAt  DateTime  @updatedAt\n\n  thread   Threads? @relation(fields: [threadId], references: [id])\n  threadId String?  @map(\"thread_id\") @db.Uuid\n\n  @@map(\"messages\")\n}\n\n// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../../src/gen/prisma\"\n  previewFeatures = [\"metrics\", \"prismaSchemaFolder\", \"views\", \"driverAdapters\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Threads {\n  id        String     @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  title     String     @map(\"title\")\n  userId    String?    @map(\"user_id\") @db.Uuid\n  createdAt DateTime   @default(now())\n  updatedAt DateTime   @default(now()) @map(\"updated_at\")\n  messages  Messages[]\n\n  @@map(\"threads\")\n}\n\nmodel User {\n  id    String  @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  email String  @unique\n  name  String?\n}\n",
-  "inlineSchemaHash": "2743cc59dff185dca0f21791405c16c82b790f64363becab763c530139c1fefb",
+  "inlineSchema": "model Files {\n  id   String  @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  url  String  @map(\"url\")\n  name String? @map(\"name\")\n\n  // User Relationship\n  user   User?   @relation(fields: [userId], references: [id])\n  userId String? @map(\"user_id\") @db.Uuid\n\n  @@map(\"files\")\n}\n\nmodel Messages {\n  id         String    @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  message    String    @map(\"message\")\n  userId     String?   @map(\"user_id\") @db.Uuid\n  attachment String?   @map(\"attachment\")\n  at         DateTime? @map(\"at\")\n  createdAt  DateTime  @default(now())\n  updatedAt  DateTime  @updatedAt\n\n  thread   Threads? @relation(fields: [threadId], references: [id])\n  threadId String?  @map(\"thread_id\") @db.Uuid\n\n  @@map(\"messages\")\n}\n\n// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../../src/gen/prisma\"\n  previewFeatures = [\"metrics\", \"prismaSchemaFolder\", \"views\", \"driverAdapters\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Threads {\n  id        String     @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  title     String     @map(\"title\")\n  userId    String?    @map(\"user_id\") @db.Uuid\n  createdAt DateTime   @default(now())\n  updatedAt DateTime   @default(now()) @map(\"updated_at\")\n  messages  Messages[]\n\n  @@map(\"threads\")\n}\n\nmodel User {\n  id    String  @id @default(dbgenerated(\"gen_random_uuid()\")) @db.Uuid\n  email String  @unique\n  name  String?\n  files Files[]\n}\n",
+  "inlineSchemaHash": "41f36abeda028d5908c03f938bf181846eb27f24142f8024a1f3f7138fdf26b5",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Messages\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"message\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"attachment\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"attachment\"},{\"name\":\"at\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"at\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"thread\",\"kind\":\"object\",\"type\":\"Threads\",\"relationName\":\"MessagesToThreads\"},{\"name\":\"threadId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"thread_id\"}],\"dbName\":\"messages\"},\"Threads\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"title\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"Messages\",\"relationName\":\"MessagesToThreads\"}],\"dbName\":\"threads\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Files\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"url\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"name\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"FilesToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"}],\"dbName\":\"files\"},\"Messages\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"message\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"attachment\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"attachment\"},{\"name\":\"at\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"at\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"thread\",\"kind\":\"object\",\"type\":\"Threads\",\"relationName\":\"MessagesToThreads\"},{\"name\":\"threadId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"thread_id\"}],\"dbName\":\"messages\"},\"Threads\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"title\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"Messages\",\"relationName\":\"MessagesToThreads\"}],\"dbName\":\"threads\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"files\",\"kind\":\"object\",\"type\":\"Files\",\"relationName\":\"FilesToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: () => require('./query_engine_bg.js'),
