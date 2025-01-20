@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import { UploadForm } from "@sql-copilot/lib/components/upload-form";
 import { BrownianLine } from "@sql-copilot/lib/components/brownian-line";
 

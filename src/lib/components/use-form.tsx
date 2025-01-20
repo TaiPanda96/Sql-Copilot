@@ -1,42 +1,8 @@
-import {
-  UseFormFieldError,
-  zodToFieldErrors,
-} from "@sql-copilot/lib/components/use-form-action";
 import { last } from "lodash";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
+import { UseFormActionResult, zodToFieldErrors } from "./use-form-action";
 
-/**
- * Standardized UseFormActionResult for use with `useForm`.
- * This is used to pass validation errors back to `useForm` so they can be shown to the user.
- */
-export type UseFormActionResult<TSchema extends z.AnyZodObject, TResult> =
-  | {
-      success: true;
-      result: TResult;
-    }
-  | {
-      success: false;
-      errors: UseFormFieldError<TSchema>;
-    };
-
-interface ZodErrorNode {
-  [key: string]: ZodErrorNode | Array<string>;
-  _errors: Array<string>;
-}
-
-/**
- * A hook for creating forms with validation.
- * Centralizes form state management, validation, and submission.
- * Zod schemas are used for client-side validation.
- * @param schema - A Zod schema that represents the form's shape.
- * @param initialValues - The initial values of the form.
- * @param updateOnInitialValuesChange - Whether to update the form state when the initial values change.
- * @param onValidSubmit - A function that is called when the form is submitted and is valid.
- * @param onSuccess - A function that is called when the form submission is successful.
- * @param onChange - A function that is called when the form values change.
- * @returns An object with the form state and a submit function.
- */
 interface UseFormOptions<TSchema extends z.AnyZodObject, TResult> {
   schema: TSchema;
   initialValues: Partial<TSchema["_input"]>;
@@ -51,10 +17,6 @@ interface UseFormOptions<TSchema extends z.AnyZodObject, TResult> {
   onChange?: (values: TSchema["_input"]) => void;
 }
 
-/**
- * The dirty state of the form.
- * Meaning, which fields have been touched by the user.
- */
 type Dirty<TSchema extends z.AnyZodObject> = Partial<
   Record<keyof TSchema["_input"], boolean>
 >;
@@ -204,9 +166,14 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
       const result = schema.safeParse({ ...state.values, ...extraValues });
 
       if (!result.success) {
+        const errors = zodToFieldErrors(result.error);
+        console.warn("validation errors", {
+          values: { ...state.values, ...extraValues },
+          errors,
+        });
         setState((state) => ({
           ...state,
-          errors: zodToFieldErrors(result.error),
+          errors,
         }));
         return;
       }
@@ -228,7 +195,9 @@ export function useForm<TSchema extends z.AnyZodObject, TResult>({
       } catch (error) {
         if (error instanceof Error && "data" in error) {
           const trpcError = error;
-          const data = trpcError.data as ApiErrorOutput;
+          const data = trpcError.data as {
+            issues: { path: string[]; message: string }[];
+          };
           const errors = data.issues
             ? (Object.fromEntries(
                 data.issues.map((issue) => [last(issue.path), issue.message])
@@ -277,11 +246,4 @@ function resultIsUseFormActionResult<TSchema extends z.AnyZodObject, TResult>(
   result: unknown
 ): result is UseFormActionResult<TSchema, TResult> {
   return result !== null && typeof result === "object" && "success" in result;
-}
-
-export class ApiErrorOutput {
-  issues: Array<{ path: string[]; message: string }>;
-  constructor(issues: Array<{ path: string[]; message: string }>) {
-    this.issues = issues;
-  }
 }
