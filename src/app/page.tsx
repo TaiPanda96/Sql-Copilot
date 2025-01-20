@@ -1,4 +1,4 @@
-import { UploadForm } from "@sql-copilot/lib/components/upload-form";
+import { VisualizationInterface } from "@sql-copilot/lib/components/upload-form";
 import { BrownianLine } from "@sql-copilot/lib/components/brownian-line";
 
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
             Build beautiful charts with AI
           </h1>
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
-            <UploadForm />
+            <VisualizationInterface />
           </div>
         </div>
       </div>

@@ -27,19 +27,20 @@ export function getOpenAiClient(): OpenAiClient {
   return openAiClient;
 }
 
+export interface QueryInputOptions {
+  query: string;
+  // If a user submits a file, we can stream the file data to the model.
+  fileStream?: ReadableStream<Uint8Array>;
+  messageHistory?: string[];
+}
+
 /**
  * Get Query Response from OpenAI.
  * This gets a default context and a query string.
  */
 export async function* getQueryResponseIo(
   ctx: ContextWith<"prisma" | "model">,
-  {
-    query,
-    messageHistory,
-  }: {
-    query: string;
-    messageHistory: string[];
-  }
+  { query, fileStream }: QueryInputOptions
 ): AsyncGenerator<string> {
   const { getModelClient } = ctx.model;
   const model = getModelClient() as OpenAiClient;
@@ -47,7 +48,9 @@ export async function* getQueryResponseIo(
 
   // Remove the base prompt for now
   const basePrompt = await getBasePrompt();
-  const fullQuery = multiline`The user has submitted the following story: ${query}`;
+  const fileStreamString = await new Response(fileStream).text();
+  const fullQuery = multiline`The user has submitted the following story: ${query} 
+  with the following streamed context: ${fileStreamString}`;
 
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o",
@@ -60,11 +63,7 @@ export async function* getQueryResponseIo(
         role: "system",
         content: fullQuery,
       },
-      // Add the message history
-      // ...messageHistory.map((message) => ({
-      //   role: "user" as const,
-      //   content: message,
-      // })),
+
       {
         role: "user",
         content: query,

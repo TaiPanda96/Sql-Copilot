@@ -9,42 +9,19 @@ import { FileUploadInput } from "./file-upload-input";
 import { Inline } from "./inline";
 import { Stack } from "./stack";
 import { Button } from "./button";
+import { useState } from "react";
+import { getResponseAction } from "@sql-copilot/app/get-llm-response-action";
+import { DynamicVisualization } from "./dynamic-visualization";
+import { LoaderCircle } from "lucide-react";
+import { cn } from "shadcn/lib/utils";
+import { Text } from "./text";
+import { SectionCard } from "./section-card";
 
-const FILE_CONFIGS = {
-  data: {
-    extensions: ["csv", "json", "xls", "xlsx"],
-    accept: ".csv,.json,.xls,.xlsx",
-    maxSize: 10 * 1024 * 1024,
-    label: "Data",
-    files: [] as File[],
-  },
-  image: {
-    extensions: ["jpg", "jpeg", "png", "gif"],
-    accept: ".jpg,.jpeg,.png,.gif",
-    maxSize: 5 * 1024 * 1024,
-    label: "Image",
-    files: [] as File[],
-  },
-};
+export function VisualizationInterface() {
+  const [reactComponent, setReactComponent] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-function getFileType(file: File) {
-  const extension = file.name.split(".").pop()?.toLowerCase();
-  if (!extension) {
-    return null;
-  }
-
-  if (FILE_CONFIGS.data.extensions.includes(extension)) {
-    return "data";
-  }
-
-  if (FILE_CONFIGS.image.extensions.includes(extension)) {
-    return "image";
-  }
-
-  return null;
-}
-
-export function UploadForm() {
   const form = useForm({
     schema: uploadFileSchema,
     initialValues: {
@@ -52,7 +29,36 @@ export function UploadForm() {
       url: "",
       fileName: "",
     },
-    onValidSubmit: uploadFileAction,
+    onValidSubmit: async (values) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Step 1: Upload the file
+        const { success, fileUrl } = await uploadFileAction(values);
+
+        if (!success) {
+          setError("Error uploading file");
+          return;
+        }
+
+        // Step 2: Get the visualization
+        const llmCodeResponse = await getResponseAction({
+          url: fileUrl,
+          story: values.story,
+        });
+
+        if (!llmCodeResponse.success) {
+          setError("Error getting visualization");
+          return;
+        }
+
+        // Step 3: Set the visualization
+        setReactComponent(llmCodeResponse.llmResponse);
+      } catch (error) {
+        return { success: false, fileUrl: "" };
+      }
+    },
   });
 
   return (
@@ -83,8 +89,6 @@ export function UploadForm() {
           }}
         />
 
-        {/* File Preview Section */}
-
         <Inline>
           <Button
             type="submit"
@@ -96,13 +100,28 @@ export function UploadForm() {
             {form.loading ? "Processing..." : "Visualize"}
           </Button>
         </Inline>
+
+        {error && <p className="text-red-500">{error}</p>}
+
+        {form.errors.url && (
+          <p className="text-sm text-red-500">{form.errors.url}</p>
+        )}
+
+        <SectionCard
+          title="Visualization"
+          className="p-4 bg-gray-50 border-t border-gray-200"
+        >
+          {loading && (
+            <Inline>
+              <Text value="Visualizing..." />
+              <LoaderCircle className={cn("animate-spin")} />
+            </Inline>
+          )}
+          {reactComponent && !loading && (
+            <DynamicVisualization componentCode={reactComponent ?? ""} />
+          )}
+        </SectionCard>
       </Stack>
     </form>
   );
-}
-
-export interface FilePreviewProps {
-  file: File;
-  onRemove: () => void;
-  children: React.ReactNode;
 }
