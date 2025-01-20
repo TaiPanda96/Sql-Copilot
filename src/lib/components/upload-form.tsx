@@ -10,16 +10,13 @@ import { Button } from "shadcn/components/ui/button"
 import { cn } from "shadcn/lib/utils"
 import { useEffect, useState } from 'react'
 
-// Remove the config import as it's not needed
-// import { config } from "process"
-
 const FILE_CONFIGS = {
   data: {
     extensions: ['csv', 'xlsx'],
-    maxSize: 10 * 1024 * 1024, // 10MB
+    maxSize: 10 * 1024 * 1024,
     icon: (
       <svg
-        className="w-6 h-6 text-gray-400"
+        className="w-6 h-6 text-excel-primary"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -37,10 +34,10 @@ const FILE_CONFIGS = {
   },
   image: {
     extensions: ['png', 'jpg', 'jpeg', 'heic'],
-    maxSize: 5 * 1024 * 1024, // 5MB
+    maxSize: 5 * 1024 * 1024,
     icon: (
       <svg
-        className="w-6 h-6 text-gray-400"
+        className="w-6 h-6 text-excel-primary"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -109,7 +106,7 @@ const FilePreview = ({ file, onRemove }: FilePreviewProps) => {
   const getThumbnail = () => {
     if (fileType === 'image') {
       return (
-        <div className="w-12 h-12 rounded overflow-hidden bg-white">
+        <div className="w-12 h-12 rounded overflow-hidden bg-excel-light border-2 border-excel-gray">
           <img
             src={thumbnailUrl}
             alt={file.name}
@@ -120,24 +117,24 @@ const FilePreview = ({ file, onRemove }: FilePreviewProps) => {
     }
 
     return (
-      <div className="w-12 h-12 rounded flex items-center justify-center bg-blue-100">
+      <div className="w-12 h-12 rounded flex items-center justify-center bg-excel-accent/20 border-2 border-excel-gray">
         {config.icon}
       </div>
     );
   };
 
   return (
-    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
+    <div className="flex items-center justify-between p-3 bg-excel-light rounded-lg border-2 border-excel-gray hover:border-excel-accent transition-colors">
       <div className="flex items-center space-x-4">
         {getThumbnail()}
         <div className="flex flex-col">
-          <span className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
+          <span className="text-sm font-excel-bold text-excel-dark truncate max-w-[200px]">
             {file.name}
           </span>
           <div className="flex items-center space-x-2">
-            <span className="text-xs text-gray-600">{config.label}</span>
-            <span className="text-xs text-gray-400">•</span>
-            <span className="text-xs text-gray-600">{fileSize} MB</span>
+            <span className="text-xs text-excel-dark/70">{config.label}</span>
+            <span className="text-xs text-excel-gray">â¢</span>
+            <span className="text-xs text-excel-dark/70">{fileSize} MB</span>
           </div>
         </div>
       </div>
@@ -154,7 +151,7 @@ const FilePreview = ({ file, onRemove }: FilePreviewProps) => {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
           }}
-          className="p-2 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
+          className="p-2 text-excel-primary hover:text-excel-dark rounded-lg hover:bg-excel-accent/20 transition-colors"
           title="Download file"
         >
           <svg
@@ -174,7 +171,7 @@ const FilePreview = ({ file, onRemove }: FilePreviewProps) => {
         <button
           type="button"
           onClick={onRemove}
-          className="p-2 text-gray-400 hover:text-red-600 rounded-full hover:bg-blue-100 transition-colors"
+          className="p-2 text-excel-gray hover:text-red-600 rounded-lg hover:bg-excel-accent/20 transition-colors"
           title="Remove file"
         >
           <svg
@@ -263,13 +260,12 @@ export function UploadForm() {
   };
 
   return (
-    <form onSubmit={form.handleSubmit} className="p-6">
+    <form onSubmit={form.handleSubmit} className="p-6 font-excel">
       <div className="space-y-6">
-        {/* Story Input Section */}
         <div className="space-y-2">
           <Label 
             htmlFor="story" 
-            className="text-base font-normal text-gray-900"
+            className="text-base font-excel-bold text-excel-dark"
           >
             What's the TL;DR of your data and who's your audience?
           </Label>
@@ -278,16 +274,15 @@ export function UploadForm() {
             value={form.values.story}
             onChange={(e) => form.setValue("story", e.target.value)}
             placeholder="I want to report Q3 sales to my CEO"
-            className="h-[52px] px-4 bg-white border-gray-200 text-gray-900 placeholder:text-gray-500 rounded-lg"
+            className="h-[52px] px-4 bg-white border-2 border-excel-gray focus:border-excel-primary focus:ring-0 text-excel-dark placeholder:text-excel-gray/70 rounded-lg"
           />
           {form.errors.story && (
-            <p className="text-sm text-red-500">{form.errors.story}</p>
+            <p className="text-sm text-red-500 font-excel-bold">{form.errors.story}</p>
           )}
         </div>
 
-        {/* File Upload Section */}
         <div className="space-y-2">
-          <Label className="text-base font-normal text-gray-900">
+          <Label className="text-base font-excel-bold text-excel-dark">
             Upload your data
           </Label>
           <div
@@ -296,8 +291,8 @@ export function UploadForm() {
             onDragLeave={handleDrag}
             onDrop={handleDrop}
             className={cn(
-              "border-2 border-dashed border-blue-200 rounded-lg py-12 px-6 text-center transition-colors bg-blue-50",
-              form.values.files.length > 0 && "border-blue-300 bg-blue-100"
+              "border-2 border-dashed border-excel-accent rounded-lg py-12 px-6 text-center transition-colors bg-excel-light/50",
+              form.values.files.length > 0 && "border-excel-primary bg-excel-accent/20"
             )}
           >
             <Input
@@ -310,11 +305,11 @@ export function UploadForm() {
             />
             <Label 
               htmlFor="file-upload" 
-              className="cursor-pointer text-gray-600 flex flex-col items-center"
+              className="cursor-pointer text-excel-dark flex flex-col items-center"
             >
-              <PaperclipIcon className="h-6 w-6 mb-2 text-blue-400" />
-              <p className="text-gray-700 font-medium">Upload raw data and/or images</p>
-              <div className="text-sm text-gray-500 mt-1 space-y-1">
+              <PaperclipIcon className="h-6 w-6 mb-2 text-excel-primary" />
+              <p className="font-excel-bold">Upload raw data and/or images</p>
+              <div className="text-sm text-excel-dark/70 mt-1 space-y-1">
                 <p>Data files: {FILE_CONFIGS.data.extensions.join(', ').toUpperCase()} (max {FILE_CONFIGS.data.maxSize / (1024 * 1024)}MB)</p>
                 <p>Image files: {FILE_CONFIGS.image.extensions.join(', ').toUpperCase()} (max {FILE_CONFIGS.image.maxSize / (1024 * 1024)}MB)</p>
               </div>
@@ -336,7 +331,7 @@ export function UploadForm() {
 
         <Button 
           type="submit" 
-          className="w-full h-[52px] bg-[#818CF8] hover:bg-[#6366F1] text-white font-medium text-base rounded-lg"
+          className="w-full h-[52px] bg-excel-primary hover:bg-excel-dark text-white font-excel-bold text-base rounded-lg transition-colors duration-200"
           disabled={form.loading}
         >
           {form.loading ? "Processing..." : "Generate Visualization"}

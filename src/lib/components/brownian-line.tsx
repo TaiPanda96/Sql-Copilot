@@ -5,12 +5,11 @@ import { useEffect, useRef } from 'react';
 export function BrownianLine() {
   // Define colors for each line
   const lineColors = [
-    '#FF6B6B', // coral red
-    '#4ECDC4', // turquoise
-    '#45B7D1', // sky blue
-    '#96CEB4', // sage green
+    '#2E8B57', // excel-primary
+    '#98FB98', // excel-secondary
+    '#C1E1C1', // excel-accent
+    '#1A4731', // excel-dark
   ];
-
   const pathRefs = Array(4).fill(null).map(() => useRef<SVGPathElement>(null));
   
   useEffect(() => {
@@ -76,12 +75,12 @@ export function BrownianLine() {
             className="transition-all duration-75 ease-linear"
             fill="none"
             stroke={lineColors[index]}
-            strokeWidth="8" // Back to thick lines
+            strokeWidth="6"
             strokeLinecap="round"
             strokeLinejoin="round"
             style={{ 
-              opacity: 0.7,
-              filter: 'blur(0.5px)'
+              opacity: 0.5,
+              filter: 'blur(1px)'
             }}
           />
         ))}
