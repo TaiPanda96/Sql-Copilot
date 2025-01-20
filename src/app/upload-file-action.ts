@@ -8,7 +8,7 @@ import { createContext } from "@sql-copilot/lib/create-context";
 export async function uploadFileAction(
   input: z.input<typeof uploadFileSchema>
 ): Promise<{ success: boolean; fileUrl: string }> {
-  const ctx = await createContext(["prisma", "model"]);
+  const ctx = await createContext(["prisma"]);
   const validation = validateActionInput(input, uploadFileSchema);
   if (!validation.success) {
     return { success: false, fileUrl: "" };
@@ -22,11 +22,12 @@ export async function uploadFileAction(
   try {
     const newFile = await ctx.prisma.files.create({
       data: {
-        url,
         name: outputFileName,
+        url,
       },
     });
 
+    // IO to store the story and url in the database
     return {
       success: true,
       fileUrl: newFile.url,
