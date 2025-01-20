@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { Stack } from "./stack";
-import { AsciiBackground } from "./ascii-background";
 
 interface PageContainerProps {
   children: React.ReactNode;
@@ -40,7 +39,6 @@ export function PageContainer({
         className // Allow additional custom styles
       )}
     >
-      {optionalBackground && <AsciiBackground />}
       <div
         className={classNames(
           "bg-white", // White background for the content
