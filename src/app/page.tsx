@@ -1,7 +1,7 @@
-import { VisualizationInterface } from "@sql-copilot/lib/components/upload-form";
 import { BrownianLine } from "@sql-copilot/lib/components/brownian-line";
+import VisualizationInterface from "@sql-copilot/lib/components/visualization-interface";
 
-export default function Page() {
+export default async function Page() {
   return (
     <div className="min-h-screen bg-[#faf9f6]">
       {/* Brownian Motion Lines */}

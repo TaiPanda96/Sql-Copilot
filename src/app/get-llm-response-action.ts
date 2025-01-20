@@ -5,14 +5,19 @@ import { z } from "zod";
 import { uploadFileSchema } from "./upload-file-input";
 import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
+import multiline from "multiline-ts";
 
 export async function getResponseAction(
   input: z.input<typeof uploadFileSchema>
-): Promise<{ success: boolean; llmResponse: string }> {
+): Promise<{
+  success: boolean;
+  llmResponse: string;
+  isReactComponent: boolean;
+}> {
   const ctx = await createContext(["prisma", "model"]);
   const validation = validateActionInput(input, uploadFileSchema);
   if (!validation.success) {
-    return { success: false, llmResponse: "" };
+    return { success: false, llmResponse: "", isReactComponent: false };
   }
   const { url, story } = validation.data;
 
@@ -22,21 +27,17 @@ export async function getResponseAction(
 
     // Fetch the response from the LLM
     const response = await fetchLLMResponse(ctx, fileContent, story);
-
-    if (typeof response !== "string") {
-      throw new Error("LLM response is not a string.");
-    }
-    assertIsValidReactComponent(response);
-
+    console.log("Response from LLM:", response);
     return {
       success: true,
-      llmResponse: response,
+      ...response,
     };
   } catch (error) {
     console.error("Error processing files:", error);
     return {
       success: false,
       llmResponse: "",
+      isReactComponent: false,
     };
   }
 }
@@ -96,7 +97,10 @@ async function fetchLLMResponse(
   ctx: ContextWith<"prisma" | "model">,
   fileContent: any,
   query: string
-): Promise<string> {
+): Promise<{
+  llmResponse: string;
+  isReactComponent: boolean;
+}> {
   const readableStream = createReadableStream(fileContent);
 
   const llmResponse = getQueryResponseIo(ctx, {
@@ -110,7 +114,25 @@ async function fetchLLMResponse(
     response += chunk;
   }
 
-  return response;
+  // IF the response is empty, throw an error
+  if (!response) {
+    throw new Error("Failed to get a response from the model.");
+  }
+
+  const componentCode = extractJsxCodeFromResponse(response);
+  // Check if the response has "```" which indicates a code block in markdown
+  if (componentCode) {
+    await assertIsValidReactComponent(componentCode);
+    return {
+      llmResponse: componentCode,
+      isReactComponent: true,
+    };
+  }
+
+  return {
+    llmResponse: response,
+    isReactComponent: false,
+  };
 }
 
 /**
@@ -139,7 +161,13 @@ function createReadableStream(data: any): ReadableStream {
  * @param {string} componentCode - The React component code as a string.
  * @throws {Error} Throws an error if the code does not meet validation criteria.
  */
-export function assertIsValidReactComponent(componentCode: string): void {
+export async function assertIsValidReactComponent(
+  componentCode: string
+): Promise<void> {
+  console.log(
+    "Validating React component code...",
+    multiline`${componentCode}`
+  );
   if (!componentCode || typeof componentCode !== "string") {
     throw new Error("Component code must be a non-empty string.");
   }
@@ -149,12 +177,10 @@ export function assertIsValidReactComponent(componentCode: string): void {
     throw new Error("Component code must include a reference to 'React'.");
   }
 
-  if (
-    !componentCode.includes("Recharts") &&
-    !componentCode.includes("LucidReact")
-  ) {
+  // Check for import statements for `recharts`
+  if (!componentCode.includes("recharts")) {
     throw new Error(
-      "Component code must include references to either 'Recharts' or 'LucidReact'."
+      "Component code must include import statements for 'recharts'."
     );
   }
 
@@ -172,11 +198,26 @@ export function assertIsValidReactComponent(componentCode: string): void {
   if (!componentCode.includes("return") || !componentCode.includes("<")) {
     throw new Error("Component code must include a JSX 'return' statement.");
   }
+}
 
-  // Optional: Perform a lightweight syntax check using Function constructor
-  try {
-    new Function(`return (${componentCode});`);
-  } catch (error) {
-    throw new Error("Component code contains invalid JavaScript syntax.");
+function extractJsxCodeFromResponse(response: string): string | null {
+  // Regular expression to match `jsx` or `javascript` code blocks
+  const jsxBlockRegex = /```jsx\s*([\s\S]*?)\s*```/g;
+  const jsBlockRegex = /```javascript\s*([\s\S]*?)\s*```/g;
+
+  // Match all code blocks
+  const matches = response.match(jsxBlockRegex) || response.match(jsBlockRegex);
+
+  if (!matches) {
+    return null;
   }
+
+  // Extract the first code block
+  const firstMatch = matches[0];
+
+  // Extract the code block
+  const codeBlock = firstMatch.replace(/```jsx/g, "").replace("```", "");
+
+  console.log("Extracted JSX code block:", codeBlock);
+  return codeBlock;
 }
