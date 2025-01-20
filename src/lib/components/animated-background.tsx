@@ -1,5 +1,4 @@
-// src/lib/components/animated-background.tsx
-'use client'
+"use client";
 
 export function AnimatedBackground() {
   return (
