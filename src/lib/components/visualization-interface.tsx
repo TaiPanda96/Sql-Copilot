@@ -13,8 +13,9 @@ import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "shadcn/lib/utils";
 import { Text } from "./text";
-import { DynamicChart } from "./dynamic-chart";
+import { ChartType, DynamicChart } from "./dynamic-chart";
 import { getResponseAction } from "@sql-copilot/app/get-llm-response-action";
+import { camelCase } from "lodash";
 
 export default function VisualizationInterface() {
   const [config, setconfig] = useState<{
@@ -118,7 +119,23 @@ export default function VisualizationInterface() {
           </Inline>
         )}
 
-        {config && !loading && <DynamicChart chartConfig={config} />}
+        {config && !loading && (
+          <DynamicChart
+            chartConfig={{
+              ...config,
+              type: config.type as ChartType,
+              data: config.data.map((item) => {
+                const newItem: { [key: string]: any } = {};
+                Object.keys(item).forEach((key) => {
+                  newItem[camelCase(key)] = item[key];
+                });
+                return newItem;
+              }),
+              xKey: camelCase(config.xKey),
+              yKey: camelCase(config.yKey),
+            }}
+          />
+        )}
       </Stack>
     </form>
   );

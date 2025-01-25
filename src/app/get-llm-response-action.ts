@@ -34,7 +34,6 @@ export async function getResponseAction(
 
     // Fetch the response from the LLM
     const response = await fetchLLMResponse(ctx, fileContent, story);
-    console.log("Response from LLM:", response);
     return {
       success: true,
       chartConfig: response.llmResponse,
@@ -182,13 +181,17 @@ function extractJsonStringifiedDataFromResponse(
   llmResponse: string
 ): ChartConfig[] {
   const findOutputKeyWord = "Output is the following:";
-
   // Extract the portion of the response after the keyword
-  const outputStartIndex = llmResponse.indexOf(findOutputKeyWord);
+  let outputStartIndex = llmResponse.indexOf(findOutputKeyWord);
   if (outputStartIndex === -1) {
-    throw new Error(
-      "Failed to find the 'Output is the following:' keyword in the response."
+    outputStartIndex = `Output is the following: ${llmResponse}`.indexOf(
+      findOutputKeyWord
     );
+    if (outputStartIndex === -1) {
+      throw new Error(
+        `Failed to find the output keyword "${findOutputKeyWord}" in the response.`
+      );
+    }
   }
 
   let jsonString = llmResponse
