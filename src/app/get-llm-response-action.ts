@@ -5,19 +5,26 @@ import { z } from "zod";
 import { uploadFileSchema } from "./upload-file-input";
 import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
-import multiline from "multiline-ts";
+import { json } from "stream/consumers";
+
+export interface ChartConfig {
+  type: "BarChart" | "LineChart" | "PieChart";
+  title: string;
+  data: Array<Record<string, unknown>>;
+  xKey: string;
+  yKey: string;
+}
 
 export async function getResponseAction(
   input: z.input<typeof uploadFileSchema>
 ): Promise<{
   success: boolean;
-  llmResponse: string;
-  isReactComponent: boolean;
+  chartConfig: ChartConfig | null;
 }> {
   const ctx = await createContext(["prisma", "model"]);
   const validation = validateActionInput(input, uploadFileSchema);
   if (!validation.success) {
-    return { success: false, llmResponse: "", isReactComponent: false };
+    return { success: false, chartConfig: null };
   }
   const { url, story } = validation.data;
 
@@ -27,17 +34,15 @@ export async function getResponseAction(
 
     // Fetch the response from the LLM
     const response = await fetchLLMResponse(ctx, fileContent, story);
-    console.log("Response from LLM:", response);
     return {
       success: true,
-      ...response,
+      chartConfig: response.llmResponse,
     };
   } catch (error) {
     console.error("Error processing files:", error);
     return {
       success: false,
-      llmResponse: "",
-      isReactComponent: false,
+      chartConfig: null,
     };
   }
 }
@@ -90,16 +95,18 @@ function parseCSV(csv: string): Array<Record<string, string>> {
   });
 }
 
-/**
- * Fetches the response from the LLM.
- */
 async function fetchLLMResponse(
   ctx: ContextWith<"prisma" | "model">,
   fileContent: any,
   query: string
 ): Promise<{
-  llmResponse: string;
-  isReactComponent: boolean;
+  llmResponse: {
+    type: "BarChart" | "LineChart" | "PieChart";
+    title: string;
+    data: Array<Record<string, unknown>>;
+    xKey: string;
+    yKey: string;
+  };
 }> {
   const readableStream = createReadableStream(fileContent);
 
@@ -114,25 +121,16 @@ async function fetchLLMResponse(
     response += chunk;
   }
 
-  // IF the response is empty, throw an error
+  // If the response is empty, throw an error
   if (!response) {
     throw new Error("Failed to get a response from the model.");
   }
 
-  const componentCode = extractJsxCodeFromResponse(response);
-  // Check if the response has "```" which indicates a code block in markdown
-  if (componentCode) {
-    await assertIsValidReactComponent(componentCode);
-    return {
-      llmResponse: componentCode,
-      isReactComponent: true,
-    };
-  }
+  console.log("LLM Response:", "Raw response from the model:", response);
+  // Parse and validate the response
+  const parsedResponse = extractJsonStringifiedDataFromResponse(response);
 
-  return {
-    llmResponse: response,
-    isReactComponent: false,
-  };
+  return { llmResponse: parsedResponse[0] };
 }
 
 /**
@@ -152,72 +150,70 @@ function createReadableStream(data: any): ReadableStream {
 }
 
 /**
- * Assert that the LLM response is a string.
- */
-/**
- * Validates that the provided component code contains a valid React component definition
- * and necessary imports for rendering within an iframe.
+ * Extracts and validates the JSON stringified data from the LLM response.
+ * It detects JSON-like structures, deserializes them, and validates that they match the expected chart data format.
  *
- * @param {string} componentCode - The React component code as a string.
- * @throws {Error} Throws an error if the code does not meet validation criteria.
+ * The expected response format is:
+ * [
+ *   {
+ *     "type": "BarChart",
+ *     "title": "Title of the chart",
+ *     "data": [
+ *       {
+ *         "key1": "value1",
+ *         "key2": "value2"
+ *       },
+ *       {
+ *         "key1": "value3",
+ *         "key2": "value4"
+ *       }
+ *     ],
+ *     "xKey": "key1",
+ *     "yKey": "key2"
+ *   }
+ * ]
+ *
+ * @param llmResponse - The response from the LLM as a string
+ * @returns The parsed and validated chart data as a JavaScript object
+ * @throws An error if the response doesn't contain valid JSON data or if the structure is invalid
  */
-export async function assertIsValidReactComponent(
-  componentCode: string
-): Promise<void> {
-  console.log(
-    "Validating React component code...",
-    multiline`${componentCode}`
-  );
-  if (!componentCode || typeof componentCode !== "string") {
-    throw new Error("Component code must be a non-empty string.");
-  }
-
-  // Basic checks to ensure the code references React and expected libraries
-  if (!componentCode.includes("React")) {
-    throw new Error("Component code must include a reference to 'React'.");
-  }
-
-  // Check for import statements for `recharts`
-  if (!componentCode.includes("recharts")) {
-    throw new Error(
-      "Component code must include import statements for 'recharts'."
+function extractJsonStringifiedDataFromResponse(
+  llmResponse: string
+): ChartConfig[] {
+  const findOutputKeyWord = "Output is the following:";
+  // Extract the portion of the response after the keyword
+  let outputStartIndex = llmResponse.indexOf(findOutputKeyWord);
+  if (outputStartIndex === -1) {
+    outputStartIndex = `Output is the following: ${llmResponse}`.indexOf(
+      findOutputKeyWord
     );
+    if (outputStartIndex === -1) {
+      throw new Error(
+        `Failed to find the output keyword "${findOutputKeyWord}" in the response.`
+      );
+    }
   }
 
-  // Check if the code defines a React component
-  if (
-    !/function\s+\w+\s*\(.*\)\s*{/.test(componentCode) &&
-    !/const\s+\w+\s*=\s*\(.*\)\s*=>/.test(componentCode)
-  ) {
-    throw new Error(
-      "Component code must define a valid React component using 'function' or 'const'."
-    );
+  let jsonString = llmResponse
+    .slice(outputStartIndex + findOutputKeyWord.length)
+    .trim();
+
+  // Remove markdown code block markers (```json and ```)
+  jsonString = jsonString.replace(/```json|```/g, "").trim();
+
+  let chartConfig: {
+    type: "BarChart" | "LineChart" | "PieChart";
+    title: string;
+    data: Array<Record<string, unknown>>;
+    xKey: string;
+    yKey: string;
+  }[];
+
+  try {
+    chartConfig = JSON.parse(jsonString);
+  } catch (error) {
+    throw new Error(`Failed to parse JSON stringified data: ${error}`);
   }
 
-  // Ensure the component renders JSX
-  if (!componentCode.includes("return") || !componentCode.includes("<")) {
-    throw new Error("Component code must include a JSX 'return' statement.");
-  }
-}
-
-function extractJsxCodeFromResponse(response: string): string | null {
-  // Regular expression to match `jsx` or `javascript` code blocks
-  const jsxBlockRegex = /```jsx\s*([\s\S]*?)\s*```/g;
-  const jsBlockRegex = /```javascript\s*([\s\S]*?)\s*```/g;
-
-  // Match all code blocks
-  const matches = response.match(jsxBlockRegex) || response.match(jsBlockRegex);
-
-  if (!matches) {
-    return null;
-  }
-
-  // Extract the first code block
-  const firstMatch = matches[0];
-
-  // Extract the code block
-  const codeBlock = firstMatch.replace(/```jsx/g, "").replace("```", "");
-
-  console.log("Extracted JSX code block:", codeBlock);
-  return codeBlock;
+  return chartConfig;
 }

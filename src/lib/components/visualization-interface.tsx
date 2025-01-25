@@ -10,68 +10,23 @@ import { Inline } from "./inline";
 import { Stack } from "./stack";
 import { Button } from "./button";
 import { useState } from "react";
-import { getResponseAction } from "@sql-copilot/app/get-llm-response-action";
-import { DynamicVisualization } from "./dynamic-visualization";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "shadcn/lib/utils";
 import { Text } from "./text";
-
-const html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coffee Roast Level Chart</title>
-  <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
-</head>
-<body>
-  <div id="root"></div>
-  <script>
-    const React = window.React;
-    const ReactDOM = window.ReactDOM;
-    const Recharts = window.Recharts;
-
-    const CoffeeRoastLevelChart = () => {
-      const data = [
-        { roast_level: "low acidity", average_price: 21.01 },
-        { roast_level: "Honey", average_price: 23.00 },
-      ];
-
-      return (
-        <Recharts.ResponsiveContainer width="100%" height={400}>
-          <Recharts.BarChart data={data}>
-            <Recharts.CartesianGrid strokeDasharray="3 3" />
-            <Recharts.XAxis dataKey="roast_level" />
-            <Recharts.YAxis />
-            <Recharts.Tooltip />
-            <Recharts.Bar dataKey="average_price" fill="#4F46E5" />
-          </Recharts.BarChart>
-        </Recharts.ResponsiveContainer>
-      );
-    };
-    ReactDOM.render(<CoffeeRoastLevelChart />, document.getElementById("root"));
-  </script>
-</body>
-</html>
-`;
+import { ChartType, DynamicChart } from "./dynamic-chart";
+import { getResponseAction } from "@sql-copilot/app/get-llm-response-action";
+import { camelCase } from "lodash";
 
 export default function VisualizationInterface() {
-  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
-  const [response, setResponse] = useState<{
-    success: boolean;
-    llmResponse: string;
-    isReactComponent: boolean;
+  const [config, setconfig] = useState<{
+    type: "BarChart" | "LineChart" | "PieChart";
+    title: string;
+    data: Array<{ [key: string]: any }>;
+    xKey: string;
+    yKey: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const createHtmlBlobUrl = (htmlContent: string): string => {
-    const blob = new Blob([htmlContent], { type: "text/html" });
-    return URL.createObjectURL(blob);
-  };
 
   const form = useForm({
     schema: uploadFileSchema,
@@ -94,24 +49,17 @@ export default function VisualizationInterface() {
         }
 
         // Step 2: Get the visualization
-        const serverResponse = await getResponseAction({
+        const serverconfig = await getResponseAction({
           url: fileUrl,
           story: values.story,
         });
 
-        if (!serverResponse.success) {
+        if (!serverconfig.success) {
           setError("Error getting visualization");
           return;
         }
-
-        if (serverResponse.isReactComponent) {
-          const iframeUrl = createHtmlBlobUrl(html);
-          setIframeUrl(iframeUrl);
-          setLoading(false);
-        } else {
-          setResponse(serverResponse);
-          setLoading(false);
-        }
+        setconfig(serverconfig.chartConfig);
+        setLoading(false);
       } catch (error) {
         return { success: false, fileUrl: "" };
       }
@@ -170,60 +118,46 @@ export default function VisualizationInterface() {
             <LoaderCircle className={cn("animate-spin")} />
           </Inline>
         )}
-        {iframeUrl && !loading && (
-          <DynamicVisualization iframeUrl={iframeUrl ?? ""} />
-        )}
-        {response && !loading && (
-          <LLMResponseChat response={response.llmResponse} />
+
+        {config && !loading && (
+          <DynamicChart
+            chartConfig={{
+              ...config,
+              type: config.type as ChartType,
+              data: config.data.map((item) => {
+                const newItem: { [key: string]: any } = {};
+                Object.keys(item).forEach((key) => {
+                  newItem[camelCase(key)] = item[key];
+                });
+                return newItem;
+              }),
+              xKey: camelCase(config.xKey),
+              yKey: camelCase(config.yKey),
+            }}
+          />
         )}
       </Stack>
     </form>
   );
 }
 
-interface LLMResponseChatProps {
-  response: string;
+interface LLMconfigChatProps {
+  config: string;
 }
 
 /**
  * TODO: Enable Additional Chat Features With a Form Input to re-run the LLM
  * This is currently read-only and does not allow users to re-run the LLM with new inputs.
  */
-export function LLMResponseChat({ response }: LLMResponseChatProps) {
+export function LLMconfigChat({ config }: LLMconfigChatProps) {
   return (
     <div className="bg-white rounded-lg p-6 shadow-md space-y-4">
-      <h2 className="text-lg font-semibold text-gray-800">AI Response</h2>
+      <h2 className="text-lg font-semibold text-gray-800">AI config</h2>
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 overflow-y-auto max-h-96">
         <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">
-          {response || "No response available."}
+          {config || "No config available."}
         </p>
       </div>
     </div>
   );
-}
-
-/**
- * This function checks for ```jsx``` code in the response and extracts it.
- * When extracting, you want to extract everything between the first pair of JSX tags.
- *
- */
-export function extractJsxCodeFromResponse(response: string): string | null {
-  // Regular expression to match `jsx` code blocks
-  const jsxBlockRegex = /```jsx\s*([\s\S]*?)\s*```/g;
-
-  // Match all code blocks
-  const matches = response.match(jsxBlockRegex);
-
-  if (!matches) {
-    return null;
-  }
-
-  // Extract the first code block
-  const firstMatch = matches[0];
-
-  // Extract the code block
-  const codeBlock = firstMatch.replace(/```jsx/g, "").replace("```", "");
-
-  console.log("Extracted JSX code block:", codeBlock);
-  return codeBlock;
 }
