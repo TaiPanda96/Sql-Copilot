@@ -4,10 +4,7 @@ import VisualizationInterface from "@sql-copilot/lib/components/visualization-in
 export default async function Page() {
   return (
     <div className="min-h-screen bg-[#faf9f6]">
-      {/* Brownian Motion Lines */}
       <BrownianLine />
-
-      {/* Content */}
       <div className="relative container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto space-y-12">
           <h1 className="text-[40px] leading-tight font-semibold text-center text-gray-900">
