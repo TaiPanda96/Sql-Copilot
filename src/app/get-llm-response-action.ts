@@ -6,6 +6,7 @@ import { uploadFileSchema } from "./upload-file-input";
 import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
 import multiline from "multiline-ts";
+import * as babel from "@babel/core";
 
 export async function getResponseAction(
   input: z.input<typeof uploadFileSchema>
@@ -168,26 +169,15 @@ export async function assertIsValidReactComponent(
     "Validating React component code...",
     multiline`${componentCode}`
   );
-  if (!componentCode || typeof componentCode !== "string") {
+  const strippedCode = stripImports(componentCode);
+  if (!strippedCode || typeof strippedCode !== "string") {
     throw new Error("Component code must be a non-empty string.");
-  }
-
-  // Basic checks to ensure the code references React and expected libraries
-  if (!componentCode.includes("React")) {
-    throw new Error("Component code must include a reference to 'React'.");
-  }
-
-  // Check for import statements for `recharts`
-  if (!componentCode.includes("recharts")) {
-    throw new Error(
-      "Component code must include import statements for 'recharts'."
-    );
   }
 
   // Check if the code defines a React component
   if (
-    !/function\s+\w+\s*\(.*\)\s*{/.test(componentCode) &&
-    !/const\s+\w+\s*=\s*\(.*\)\s*=>/.test(componentCode)
+    !/function\s+\w+\s*\(.*\)\s*{/.test(strippedCode) &&
+    !/const\s+\w+\s*=\s*\(.*\)\s*=>/.test(strippedCode)
   ) {
     throw new Error(
       "Component code must define a valid React component using 'function' or 'const'."
@@ -195,8 +185,27 @@ export async function assertIsValidReactComponent(
   }
 
   // Ensure the component renders JSX
-  if (!componentCode.includes("return") || !componentCode.includes("<")) {
+  if (!strippedCode.includes("return") || !strippedCode.includes("<")) {
     throw new Error("Component code must include a JSX 'return' statement.");
+  }
+
+  // Ensure the component exports a default component
+  if (!/export default \w+/.test(strippedCode)) {
+    throw new Error("Default export must reference a valid component name.");
+  }
+
+  // Transpile JSX to plain JavaScript
+  const transpiledCode = transpileJSX(strippedCode);
+
+  // Validate syntax using the Function constructor
+  // Need to wrap the code in a function to avoid syntax errors like `const x = 1; const y = 2;`
+  // Modern JavaScript syntax like `const` and `let` are not allowed in dynamic code evaluation
+  try {
+    new Function(`return (${transpiledCode});`);
+  } catch (error) {
+    throw new Error(
+      `Component code contains invalid syntax: ${error as string}`
+    );
   }
 }
 
@@ -217,7 +226,32 @@ function extractJsxCodeFromResponse(response: string): string | null {
 
   // Extract the code block
   const codeBlock = firstMatch.replace(/```jsx/g, "").replace("```", "");
-
-  console.log("Extracted JSX code block:", codeBlock);
   return codeBlock;
+}
+
+/**
+ * Strips import statements from the given component code.
+ * @param {string} componentCode - The React component code as a string.
+ * @returns {string} - The component code with imports removed.
+ */
+export function stripImports(componentCode: string): string {
+  return componentCode.replace(/^import\s+.*?;$/gm, "").trim();
+}
+
+/**
+ * Transpiles JSX code to plain JavaScript using Babel.
+ * @param {string} jsxCode - The component code containing JSX.
+ * @returns {string} - Transpiled JavaScript code.
+ * @throws {Error} If Babel fails to transpile the code.
+ */
+export function transpileJSX(jsxCode: string): string {
+  try {
+    const result = babel.transform(jsxCode, {
+      presets: ["@babel/preset-react", "@babel/preset-typescript"],
+    });
+
+    return result?.code || "";
+  } catch (error) {
+    throw new Error(`Failed to transpile JSX: ${error}`);
+  }
 }

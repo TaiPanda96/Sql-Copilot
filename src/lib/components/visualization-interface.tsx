@@ -16,50 +16,7 @@ import { LoaderCircle } from "lucide-react";
 import { cn } from "shadcn/lib/utils";
 import { Text } from "./text";
 
-const html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coffee Roast Level Chart</title>
-  <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
-</head>
-<body>
-  <div id="root"></div>
-  <script>
-    const React = window.React;
-    const ReactDOM = window.ReactDOM;
-    const Recharts = window.Recharts;
-
-    const CoffeeRoastLevelChart = () => {
-      const data = [
-        { roast_level: "low acidity", average_price: 21.01 },
-        { roast_level: "Honey", average_price: 23.00 },
-      ];
-
-      return (
-        <Recharts.ResponsiveContainer width="100%" height={400}>
-          <Recharts.BarChart data={data}>
-            <Recharts.CartesianGrid strokeDasharray="3 3" />
-            <Recharts.XAxis dataKey="roast_level" />
-            <Recharts.YAxis />
-            <Recharts.Tooltip />
-            <Recharts.Bar dataKey="average_price" fill="#4F46E5" />
-          </Recharts.BarChart>
-        </Recharts.ResponsiveContainer>
-      );
-    };
-    ReactDOM.render(<CoffeeRoastLevelChart />, document.getElementById("root"));
-  </script>
-</body>
-</html>
-`;
-
 export default function VisualizationInterface() {
-  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [response, setResponse] = useState<{
     success: boolean;
     llmResponse: string;
@@ -105,8 +62,7 @@ export default function VisualizationInterface() {
         }
 
         if (serverResponse.isReactComponent) {
-          const iframeUrl = createHtmlBlobUrl(html);
-          setIframeUrl(iframeUrl);
+          setResponse(serverResponse);
           setLoading(false);
         } else {
           setResponse(serverResponse);
@@ -170,11 +126,8 @@ export default function VisualizationInterface() {
             <LoaderCircle className={cn("animate-spin")} />
           </Inline>
         )}
-        {iframeUrl && !loading && (
-          <DynamicVisualization iframeUrl={iframeUrl ?? ""} />
-        )}
-        {response && !loading && (
-          <LLMResponseChat response={response.llmResponse} />
+        {response && response.success && response.llmResponse && (
+          <DynamicVisualization componentCode={response.llmResponse} />
         )}
       </Stack>
     </form>
@@ -223,7 +176,5 @@ export function extractJsxCodeFromResponse(response: string): string | null {
 
   // Extract the code block
   const codeBlock = firstMatch.replace(/```jsx/g, "").replace("```", "");
-
-  console.log("Extracted JSX code block:", codeBlock);
   return codeBlock;
 }
