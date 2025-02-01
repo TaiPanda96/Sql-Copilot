@@ -5,7 +5,8 @@ import { z } from "zod";
 import { uploadFileSchema } from "./upload-file-input";
 import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
-import { json } from "stream/consumers";
+import fetch from "node-fetch";
+import multiline from "multiline-ts";
 
 export interface ChartConfig {
   type: "BarChart" | "LineChart" | "PieChart";
@@ -20,6 +21,7 @@ export async function getResponseAction(
 ): Promise<{
   success: boolean;
   chartConfig: ChartConfig | null;
+  message?: string;
 }> {
   const ctx = await createContext(["prisma", "model"]);
   const validation = validateActionInput(input, uploadFileSchema);
@@ -29,20 +31,41 @@ export async function getResponseAction(
   const { url, story } = validation.data;
 
   try {
-    // Fetch and parse the file content
     const fileContent = await fetchAndParseFile(url);
+    assertType(story, z.string());
+    assertType(
+      fileContent,
+      z.union([
+        z.string(),
+        z.instanceof(Blob),
+        z.instanceof(ArrayBuffer),
+        z.array(z.any()),
+      ])
+    );
 
-    // Fetch the response from the LLM
     const response = await fetchLLMResponse(ctx, fileContent, story);
+
+    const isEmptyChart =
+      !response.llmResponse.data || response.llmResponse.data.length === 0;
+    if (isEmptyChart) {
+      return {
+        success: false,
+        chartConfig: null,
+        message: "No data available for visualization.",
+      };
+    }
     return {
       success: true,
       chartConfig: response.llmResponse,
+      message: "Successfully fetched the chart data.",
     };
   } catch (error) {
-    console.error("Error processing files:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     return {
       success: false,
       chartConfig: null,
+      message: errorMessage,
     };
   }
 }
@@ -60,12 +83,19 @@ async function fetchAndParseFile(url: string): Promise<unknown> {
     }
 
     const contentType = response.headers.get("Content-Type");
-
     if (contentType?.includes("application/json")) {
       return await response.json(); // Parse JSON files
     } else if (contentType?.includes("text/csv")) {
       const text = await response.text();
       return parseCSV(text); // Parse CSV files
+    }
+    // PNGs, JPGs, etc.
+    else if (
+      contentType?.includes("image/png") ||
+      contentType?.includes("image/jpeg")
+    ) {
+      // Parse image files
+      return await response.blob();
     } else {
       throw new Error(
         "Unsupported file type. Only JSON and CSV are supported."
@@ -97,7 +127,11 @@ function parseCSV(csv: string): Array<Record<string, string>> {
 
 async function fetchLLMResponse(
   ctx: ContextWith<"prisma" | "model">,
-  fileContent: any,
+  fileContent:
+    | string
+    | Blob
+    | ArrayBuffer
+    | Array<{ key: string; value: string }>,
   query: string
 ): Promise<{
   llmResponse: {
@@ -108,6 +142,13 @@ async function fetchLLMResponse(
     yKey: string;
   };
 }> {
+  const emptyChartConfig = {
+    type: "BarChart",
+    title: "Title of the chart",
+    data: [],
+    xKey: "key1",
+    yKey: "key2",
+  } as ChartConfig;
   const readableStream = createReadableStream(fileContent);
 
   const llmResponse = getQueryResponseIo(ctx, {
@@ -126,9 +167,12 @@ async function fetchLLMResponse(
     throw new Error("Failed to get a response from the model.");
   }
 
-  console.log("LLM Response:", "Raw response from the model:", response);
   // Parse and validate the response
   const parsedResponse = extractJsonStringifiedDataFromResponse(response);
+
+  if (!parsedResponse || !parsedResponse[0]) {
+    return { llmResponse: emptyChartConfig };
+  }
 
   return { llmResponse: parsedResponse[0] };
 }
@@ -180,23 +224,24 @@ function createReadableStream(data: any): ReadableStream {
 function extractJsonStringifiedDataFromResponse(
   llmResponse: string
 ): ChartConfig[] {
-  const findOutputKeyWord = "Output is the following:";
-  // Extract the portion of the response after the keyword
-  let outputStartIndex = llmResponse.indexOf(findOutputKeyWord);
-  if (outputStartIndex === -1) {
-    outputStartIndex = `Output is the following: ${llmResponse}`.indexOf(
-      findOutputKeyWord
-    );
-    if (outputStartIndex === -1) {
-      throw new Error(
-        `Failed to find the output keyword "${findOutputKeyWord}" in the response.`
-      );
+  const jsonRegex = /```json\s*([\s\S]*?)\s*```/; // Capture JSON within ```json ... ```
+  let jsonString = "";
+  const jsonMatch = llmResponse.match(jsonRegex);
+  if (jsonMatch && jsonMatch[1]) {
+    jsonString = jsonMatch[1].trim();
+  } else {
+    // Fallback: If no markdown block found, try to match any array-like JSON pattern
+    const fallbackJsonMatch = llmResponse.match(/\[.*\]/s); // Matches first JSON array
+    if (fallbackJsonMatch) {
+      jsonString = fallbackJsonMatch[0].trim();
     }
   }
 
-  let jsonString = llmResponse
-    .slice(outputStartIndex + findOutputKeyWord.length)
-    .trim();
+  console.log(multiline(llmResponse));
+
+  if (!jsonString || !jsonString.trim() || !jsonString.startsWith("[")) {
+    throw new Error("No JSON data found in the response.");
+  }
 
   // Remove markdown code block markers (```json and ```)
   jsonString = jsonString.replace(/```json|```/g, "").trim();
@@ -216,4 +261,19 @@ function extractJsonStringifiedDataFromResponse(
   }
 
   return chartConfig;
+}
+
+/**
+ * Utility function to assert the type of a value using Zod.
+ * If the value doesn't match the expected type, it throws an error.
+ * @param value - The value to assert the type of
+ * @param type - The Zod type to assert against
+ * @throws An error if the value doesn't match the expected type
+ * example:
+ * ```ts
+ * assertType(value, z.string());
+ * ```
+ */
+function assertType<T>(value: unknown, type: z.ZodType<T>): asserts value is T {
+  type.parse(value);
 }

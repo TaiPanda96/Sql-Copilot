@@ -1,4 +1,3 @@
-import { camelCase } from "lodash";
 import React from "react";
 import {
   BarChart,
@@ -33,6 +32,8 @@ interface DynamicChartProps {
   chartConfig: ChartConfig;
 }
 
+const barChartColors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#d8c4b3"];
+
 export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
   if (!chartConfig) {
     return <p>No data available for visualization.</p>;
@@ -49,7 +50,12 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey={yKey} fill="#8884d8" />
+        <Bar
+          dataKey={yKey}
+          fill={
+            barChartColors[Math.floor(Math.random() * barChartColors.length)]
+          }
+        />
       </BarChart>
     ),
     [ChartType.LineChart]: (

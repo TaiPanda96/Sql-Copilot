@@ -17,8 +17,8 @@ import { ChartType, DynamicChart } from "./dynamic-chart";
 import { getResponseAction } from "@sql-copilot/app/get-llm-response-action";
 import { camelCase } from "lodash";
 
-export default function VisualizationInterface() {
-  const [config, setconfig] = useState<{
+export default function Visualization() {
+  const [config, setConfig] = useState<{
     type: "BarChart" | "LineChart" | "PieChart";
     title: string;
     data: Array<{ [key: string]: any }>;
@@ -49,16 +49,18 @@ export default function VisualizationInterface() {
         }
 
         // Step 2: Get the visualization
-        const serverconfig = await getResponseAction({
+        const response = await getResponseAction({
           url: fileUrl,
           story: values.story,
         });
 
-        if (!serverconfig.success) {
-          setError("Error getting visualization");
+        if (!response.success) {
+          const message = response.message || "Error getting visualization";
+          setError(message);
           return;
         }
-        setconfig(serverconfig.chartConfig);
+
+        setConfig(response.chartConfig);
         setLoading(false);
       } catch (error) {
         return { success: false, fileUrl: "" };
@@ -138,26 +140,5 @@ export default function VisualizationInterface() {
         )}
       </Stack>
     </form>
-  );
-}
-
-interface LLMconfigChatProps {
-  config: string;
-}
-
-/**
- * TODO: Enable Additional Chat Features With a Form Input to re-run the LLM
- * This is currently read-only and does not allow users to re-run the LLM with new inputs.
- */
-export function LLMconfigChat({ config }: LLMconfigChatProps) {
-  return (
-    <div className="bg-white rounded-lg p-6 shadow-md space-y-4">
-      <h2 className="text-lg font-semibold text-gray-800">AI config</h2>
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 overflow-y-auto max-h-96">
-        <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">
-          {config || "No config available."}
-        </p>
-      </div>
-    </div>
   );
 }

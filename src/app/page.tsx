@@ -1,5 +1,5 @@
 import { BrownianLine } from "@sql-copilot/lib/components/brownian-line";
-import VisualizationInterface from "@sql-copilot/lib/components/visualization-interface";
+import Visualization from "@sql-copilot/lib/components/visualization";
 
 export default async function Page() {
   return (
@@ -14,7 +14,7 @@ export default async function Page() {
             Build beautiful charts with AI
           </h1>
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
-            <VisualizationInterface />
+            <Visualization />
           </div>
         </div>
       </div>
