@@ -5,7 +5,6 @@ import { z } from "zod";
 import { uploadFileSchema } from "./upload-file-input";
 import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
-import { json } from "stream/consumers";
 
 export interface ChartConfig {
   type: "BarChart" | "LineChart" | "PieChart";
@@ -39,7 +38,7 @@ export async function getResponseAction(
       chartConfig: response.llmResponse,
     };
   } catch (error) {
-    console.error("Error processing files:", error);
+    console.error(error);
     return {
       success: false,
       chartConfig: null,
@@ -73,6 +72,7 @@ async function fetchAndParseFile(url: string): Promise<unknown> {
     }
   } catch (error) {
     if (error instanceof Error) {
+      console.error(error);
       throw new Error(`Error parsing file from URL: ${error.message}`);
     } else {
       throw new Error("Error parsing file from URL: unknown error");

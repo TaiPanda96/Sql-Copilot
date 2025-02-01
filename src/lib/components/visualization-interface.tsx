@@ -49,16 +49,16 @@ export default function VisualizationInterface() {
         }
 
         // Step 2: Get the visualization
-        const serverconfig = await getResponseAction({
+        const response = await getResponseAction({
           url: fileUrl,
           story: values.story,
         });
 
-        if (!serverconfig.success) {
+        if (!response.success) {
           setError("Error getting visualization");
           return;
         }
-        setconfig(serverconfig.chartConfig);
+        setconfig(response.chartConfig);
         setLoading(false);
       } catch (error) {
         return { success: false, fileUrl: "" };
