@@ -5,6 +5,7 @@ import { z } from "zod";
 import { uploadFileSchema } from "./upload-file-input";
 import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
 import { getQueryResponseIo } from "@sql-copilot/lib/large-language-models/open-ai/get-open-ai-client";
+import fetch from "node-fetch";
 
 export interface ChartConfig {
   type: "BarChart" | "LineChart" | "PieChart";
@@ -30,7 +31,6 @@ export async function getResponseAction(
   try {
     // Fetch and parse the file content
     const fileContent = await fetchAndParseFile(url);
-
     // Fetch the response from the LLM
     const response = await fetchLLMResponse(ctx, fileContent, story);
     return {
@@ -126,7 +126,6 @@ async function fetchLLMResponse(
     throw new Error("Failed to get a response from the model.");
   }
 
-  console.log("LLM Response:", "Raw response from the model:", response);
   // Parse and validate the response
   const parsedResponse = extractJsonStringifiedDataFromResponse(response);
 
@@ -180,23 +179,22 @@ function createReadableStream(data: any): ReadableStream {
 function extractJsonStringifiedDataFromResponse(
   llmResponse: string
 ): ChartConfig[] {
-  const findOutputKeyWord = "Output is the following:";
-  // Extract the portion of the response after the keyword
-  let outputStartIndex = llmResponse.indexOf(findOutputKeyWord);
-  if (outputStartIndex === -1) {
-    outputStartIndex = `Output is the following: ${llmResponse}`.indexOf(
-      findOutputKeyWord
-    );
-    if (outputStartIndex === -1) {
-      throw new Error(
-        `Failed to find the output keyword "${findOutputKeyWord}" in the response.`
-      );
+  const jsonRegex = /```json\s*([\s\S]*?)\s*```/; // Capture JSON within ```json ... ```
+  let jsonString = "";
+  const jsonMatch = llmResponse.match(jsonRegex);
+  if (jsonMatch && jsonMatch[1]) {
+    jsonString = jsonMatch[1].trim();
+  } else {
+    // Fallback: If no markdown block found, try to match any array-like JSON pattern
+    const fallbackJsonMatch = llmResponse.match(/\[.*\]/s); // Matches first JSON array
+    if (fallbackJsonMatch) {
+      jsonString = fallbackJsonMatch[0].trim();
     }
   }
 
-  let jsonString = llmResponse
-    .slice(outputStartIndex + findOutputKeyWord.length)
-    .trim();
+  if (!jsonString || !jsonString.trim() || !jsonString.startsWith("[")) {
+    throw new Error("No JSON data found in the response.");
+  }
 
   // Remove markdown code block markers (```json and ```)
   jsonString = jsonString.replace(/```json|```/g, "").trim();

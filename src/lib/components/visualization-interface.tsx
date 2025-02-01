@@ -58,6 +58,12 @@ export default function VisualizationInterface() {
           setError("Error getting visualization");
           return;
         }
+
+        if (!response.chartConfig?.data) {
+          setError("No data available for visualization");
+          return;
+        }
+
         setconfig(response.chartConfig);
         setLoading(false);
       } catch (error) {
