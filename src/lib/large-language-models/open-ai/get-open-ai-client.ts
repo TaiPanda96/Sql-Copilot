@@ -52,9 +52,8 @@ export async function* getQueryResponseIo(
     Your goal is to understand the data passed by the user, either in csv or json format, and return
     a chartData json array that best represents the data. If data file is uploaded, you will parse the data and return the chartData json array in the specified format below.
     When processing any data, always remove nulls, undefined, and empty values. Don't return any data that is not necessary.
-    Remember, 
-
-    Your goal is to always return a chartData jsonArray compatible to the following format:
+    Secondarily, if the data provided by the user is already nicely formatted, you can skip the parsing step and proceed to the chartData json array creation.
+    Remember, your goal is to always return a chartData jsonArray compatible to the following format:
     [
       {
         "type": "BarChart",
