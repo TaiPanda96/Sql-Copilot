@@ -5,8 +5,6 @@ import OpenAI from "openai";
 export type OpenAiClient = OpenAI;
 
 let openAiClient: OpenAiClient | null = null;
-let maxTokens = 16384;
-
 /**
  * Get OpenAI Client as a Singleton.
  * @returns OpenAI Client
@@ -46,153 +44,52 @@ export async function* getQueryResponseIo(
   const model = getModelClient() as OpenAiClient;
   assertIsOpenAiClient(model);
 
-  // Remove the base prompt for now
-  // Remove the base prompt for now
   const basePrompt = multiline`
-    You are a helpful data scientist who is assisting the user with understanding their data. 
-    Your goal is to understand the data passed by the user, either in csv or json format, and return
-    a chartData json array that best represents the data.
-    You will make a function call to the getChartData function with the data passed by the user.
-    You will only answer the user's questions and provide the necessary information to help them understand the data.
-    If data file is uploaded, you will parse the data and return the chartData json array.
+  You are a highly skilled data scientist and AI assistant specializing in data visualization.
+  **Your Role:** Given a dataset in CSV or JSON format, analyze its structure and return a valid \`chartData\` JSON array for visualization.
 
-    Your goal is to always return a chartData jsonArray compatible to the following format:
-    [
-      {
-        "type": "BarChart",
-        "title": "Title of the chart",
-        "data": [
-          {
-            "key1": "value1",
-            "key2": "value2",
-            "key3": "value3"
-          },
-          {
-            "key1": "value4",
-            "key2": "value5",
-            "key3": "value6"
-          }
-        ],
-        "xKey": "key1",
-        "yKey": "key2"
-      }
-    ]
+  **Strict Guidelines:**
+  - Identify categorical vs. numerical data automatically.
+  - Ensure the \`xKey\` is categorical and \`yKey\` is numerical.
+  - If data contains missing values, exclude incomplete rows from the output.
+  - Do **not** invent data. If an error occurs, return an appropriate message.
+  
+  **Example Input:**
+  \`\`\`json
+  [
+    {"Country": "USA", "GDP": 21.4},
+    {"Country": "China", "GDP": 14.3},
+    {"Country": "India", "GDP": 2.9}
+  ]
+  \`\`\`
 
-    The reason is, your response will be rendered in a dynamically generated chart component.
-    Here's the actual component code that you will be generating the response for:
-
-    import React from "react";
-    import {
-      BarChart,
-      Bar,
-      LineChart,
-      Line,
-      PieChart,
-      Pie,
-      XAxis,
-      YAxis,
-      CartesianGrid,
-      Tooltip,
-      Legend,
-      ResponsiveContainer,
-    } from "recharts";
-    
-    interface ChartData {
-      type: "BarChart" | "LineChart" | "PieChart";
-      title: string;
-      data: Array<{ [key: string]: any }>;
-      xKey: string;
-      yKey: string;
+  **Expected Output:**
+  \`\`\`json
+  [
+    {
+      "type": "BarChart",
+      "title": "GDP by Country",
+      "data": [
+        {"Country": "USA", "GDP": 21.4},
+        {"Country": "China", "GDP": 14.3},
+        {"Country": "India", "GDP": 2.9}
+      ],
+      "xKey": "Country",
+      "yKey": "GDP"
     }
-    
-    interface DynamicChartProps {
-      chartData: ChartData;
-    }
-    
-    export const DynamicChart: React.FC<DynamicChartProps> = ({ chartData }) => {
-      if (!chartData) {
-        return <p>No data available for visualization.</p>;
-      }
-    
-      const { type, title, data, xKey, yKey } = chartData;
-    
-      return (
-        <div className="w-full space-y-6">
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">{title}</h2>
-            <div className="h-96">
-              <ResponsiveContainer width="100%" height="100%">
-                <>
-                  {type === "BarChart" && (
-                    <BarChart
-                      data={data}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey={xKey} />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey={yKey} fill="#82ca9d" />
-                    </BarChart>
-                  )}
-                  {type === "LineChart" && (
-                    <LineChart
-                      data={data}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey={xKey} />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line type="monotone" dataKey={yKey} stroke="#8884d8" />
-                    </LineChart>
-                  )}
-                  {type === "PieChart" && (
-                    <PieChart>
-                      <Pie
-                        data={data}
-                        dataKey={yKey}
-                        nameKey={xKey}
-                        fill="#82ca9d"
-                        label
-                      />
-                      <Tooltip />
-                    </PieChart>
-                  )}
-                </>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      );
-    };
+  ]
+  \`\`\`
 
-    When returning a response, always ensure you respond with the standard output format:
-    "Output is the following: [
-      {
-        "type": "BarChart",
-        "title": "Title of the chart",
-        "data": [
-          {
-            "key1": "value1",
-            "key2": "value2",
-            "key3": "value3"
-          },
-          {
-            "key1": "value4",
-            "key2": "value5",
-            "key3": "value6"
-          }
-        ],
-        "xKey": "key1",
-        "yKey": "key2"
-      }
-  ]"`;
+  **If the data is not suitable for visualization, return:**
+  \`\`\`json
+  { "error": "Insufficient data for meaningful visualization." }
+  \`\`\`
+`;
   const fileStreamString = await new Response(fileStream).text();
-  const fullQuery = multiline`The user has submitted the following story: ${query} 
-  with the following streamed context: ${fileStreamString}`;
+
+  // Token limit is 4096 tokens
+  const estimatedTokens = query.length / 4; // Rough estimate: 1 token ≈ 4 chars
+  const tokenLimit = Math.min(estimatedTokens * 2, 4096); // Cap at 4096 tokens
 
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o",
@@ -203,7 +100,8 @@ export async function* getQueryResponseIo(
       },
       {
         role: "system",
-        content: fullQuery,
+        content: multiline`The user has submitted the following story: ${query} 
+        with the following streamed context: ${fileStreamString}`,
       },
 
       {
@@ -211,13 +109,15 @@ export async function* getQueryResponseIo(
         content: query,
       },
     ],
-    max_tokens: maxTokens,
+    max_tokens: tokenLimit,
     n: 1,
   });
 
   if (!streamResponse) {
     throw new Error("Failed to get a response from the model.");
   }
+
+  assertIsChatCompletion(streamResponse);
 
   if (streamResponse.choices && streamResponse.choices.length > 0) {
     for (const choice of streamResponse.choices) {
@@ -244,5 +144,17 @@ function assertIsOpenAiClient(
 ): asserts client is OpenAiClient {
   if (!client) {
     throw new Error("OpenAI client is not initialized.");
+  }
+}
+
+/**
+ * Utility function to assert that the response is a valid
+ * OpenAi Chat Completion.
+ */
+export function assertIsChatCompletion(
+  response: OpenAI.Chat.Completions.ChatCompletion | undefined
+): asserts response is OpenAI.Chat.Completions.ChatCompletion {
+  if (!response) {
+    throw new Error("Invalid Chat Completion response.");
   }
 }
