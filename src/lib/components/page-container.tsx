@@ -13,7 +13,6 @@ interface PageContainerProps {
     level?: "h1" | "h2" | "h3"; // Heading level
     className?: string; // Custom class for styling the title
   };
-  optionalBackground?: boolean; // Enable ASCII background by default
 }
 
 export function PageContainer({
@@ -24,7 +23,6 @@ export function PageContainer({
   centerVertically = true, // Center content vertically by default
   fullHeight = true, // Full viewport height by default
   pageTitle, // Optional title
-  optionalBackground = true, // Enable ASCII background by default
 }: PageContainerProps) {
   return (
     <div

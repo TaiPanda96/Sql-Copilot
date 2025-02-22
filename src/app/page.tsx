@@ -1,20 +1,27 @@
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { Button } from "@sql-copilot/lib/components/button";
+import { PageContainer } from "@sql-copilot/lib/components/page-container";
+import { Stack } from "@sql-copilot/lib/components/stack";
+import "./rainbow.css";
 import { BrownianLine } from "@sql-copilot/lib/components/brownian-line";
-import Visualization from "@sql-copilot/lib/components/visualization";
 
 export default async function Page() {
   return (
-    <div className="min-h-screen bg-[#faf9f6]">
-      <BrownianLine />
-      <div className="relative container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto space-y-12">
-          <h1 className="text-[40px] leading-tight font-semibold text-center text-gray-900">
-            Build beautiful charts with AI
-          </h1>
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg">
-            <Visualization />
-          </div>
-        </div>
-      </div>
-    </div>
+    <PageContainer className="min-h-screen bg-[#faf9f6]">
+      <Stack gap={4} align="center">
+        <h1 className="rainbow-text text-[40px] leading-tight font-semibold text-center text-gray-900">
+          Build beautiful charts with AI
+        </h1>
+        <BrownianLine />
+        <LoginLink>
+          <Button
+            label="Get Started"
+            className="rounded"
+            color="brand"
+            variant="ghost"
+          />
+        </LoginLink>
+      </Stack>
+    </PageContainer>
   );
 }

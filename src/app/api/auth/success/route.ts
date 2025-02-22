@@ -29,7 +29,7 @@ export async function GET() {
       });
     }
 
-    return NextResponse.redirect(`${process.env.KINDE_SITE_URL}/chat`);
+    return NextResponse.redirect(`${process.env.KINDE_SITE_URL}/visualization`);
   } catch (error) {
     console.error("User verification and creation failed:", error);
     const authError = error as ApiAuthenticationError;

@@ -69,10 +69,7 @@ export default function Visualization() {
   });
 
   return (
-    <form
-      onSubmit={form.handleSubmit}
-      className="space-y-6 bg-white rounded-lg p-6 shadow-sm"
-    >
+    <form onSubmit={form.handleSubmit} className="space-y-6 p-6">
       {/* Story Input Section */}
       <Stack gap={6}>
         <Label htmlFor="story" className="text-base font-normal text-gray-900">
