@@ -18,7 +18,7 @@ export interface ChartConfig {
   yKey: string;
 }
 
-export async function getResponseAction(
+export async function postUserQueryAction(
   input: z.input<typeof uploadFileSchema>
 ): Promise<{
   success: boolean;
@@ -30,11 +30,11 @@ export async function getResponseAction(
   if (!validation.success) {
     return { success: false, chartConfig: null };
   }
-  const { url, story } = validation.data;
+  const { url, query } = validation.data;
 
   try {
     const fileContent = await processFileInputs(url);
-    assertType(story, z.string());
+    assertType(query, z.string());
     assertType(
       fileContent,
       z.union([
@@ -45,7 +45,28 @@ export async function getResponseAction(
       ])
     );
 
-    const response = await getResponseIo(ctx, fileContent, story);
+    // Fetch any additional user message threads from the database to feed into the model
+    const hasUserEmail = !!validation.data.userEmail;
+    let messageHistory = [];
+    if (hasUserEmail) {
+      assertType(validation.data.userEmail, z.string());
+      const user = await ctx.prisma.user.findUnique({
+        where: { email: validation.data.userEmail },
+      });
+
+      if (!user) {
+        return {
+          success: false,
+          chartConfig: null,
+          message: "User not found.",
+        };
+      }
+    }
+
+    const response = await getResponseIo(ctx, {
+      fileContent,
+      query,
+    });
 
     const isEmptyChart =
       !response.llmResponse.data || response.llmResponse.data.length === 0;
@@ -74,12 +95,15 @@ export async function getResponseAction(
 
 async function getResponseIo(
   ctx: ContextWith<"prisma" | "model">,
-  fileContent:
-    | string
-    | Blob
-    | ArrayBuffer
-    | Array<{ key: string; value: string }>,
-  query: string
+  {
+    fileContent,
+    query,
+    messageHistory = [],
+  }: {
+    fileContent: string | Blob | ArrayBuffer | Array<unknown>;
+    query: string;
+    messageHistory?: string[];
+  }
 ): Promise<{
   llmResponse: {
     type: "BarChart" | "LineChart" | "PieChart";
@@ -100,6 +124,7 @@ async function getResponseIo(
   const modelResponse = getQueryResponseIo(ctx, {
     fileStream: readableStream,
     query,
+    messageHistory,
   });
 
   // Convert LLM stream to string

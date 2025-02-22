@@ -3,5 +3,6 @@ import { z } from "zod";
 export const uploadFileSchema = z.object({
   url: z.string(),
   fileName: z.string().optional(),
-  story: z.string(),
+  query: z.string(),
+  userEmail: z.string().nullable(),
 });

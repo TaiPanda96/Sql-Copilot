@@ -1,4 +1,4 @@
-import { ChartConfig } from "@sql-copilot/app/get-response-action";
+import { ChartConfig } from "@sql-copilot/app/post-user-query-action";
 
 /**
  * Extracts and validates the JSON stringified data from the LLM response.
