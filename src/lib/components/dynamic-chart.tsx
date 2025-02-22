@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 
 export const enum ChartType {
@@ -33,6 +34,7 @@ interface DynamicChartProps {
 }
 
 const barChartColors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#d8c4b3"];
+const pieChartColors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
 export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
   if (!chartConfig) {
@@ -73,7 +75,14 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
     ),
     [ChartType.PieChart]: (
       <PieChart>
-        <Pie data={data} dataKey={yKey} nameKey={xKey} fill="#8884d8" label />
+        <Pie data={data} dataKey={yKey} nameKey={xKey} label>
+          {data.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={pieChartColors[index % pieChartColors.length]}
+            />
+          ))}
+        </Pie>
         <Tooltip />
       </PieChart>
     ),

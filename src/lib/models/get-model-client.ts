@@ -1,6 +1,5 @@
-import { Decimal } from "@sql-copilot/gen/prisma/runtime/library";
 import OpenAI from "openai";
-import { modelConfigRegistry } from "./model-config-registry";
+import { modelConfigRegistry } from "../services/model-config-registry";
 
 export type BasePrompt = string;
 export type ModelClient = Record<string, unknown> | null | undefined | OpenAI;
@@ -11,13 +10,6 @@ export interface LLMConfigRegistry {
    */
   getModelClient(): ModelClient;
 }
-
-export type LLMCostBreakdown = {
-  cost: Decimal;
-  tokensConsumed: string;
-  currency: string;
-  duration: number;
-};
 
 /**
  * Generic function to get an LLM client.

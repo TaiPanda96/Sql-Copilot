@@ -33,7 +33,7 @@ export async function uploadFileAction(
       fileUrl: newFile.url,
     };
   } catch (error) {
-    console.error("Error uploading file action:", error);
+    console.error("Error uploading file:", error);
     return {
       success: false,
       fileUrl: "",

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@sql-copilot/gen/prisma";
-import { getModelClient } from "@sql-copilot/lib/model-interface/get-model-client";
+import { getModelClient } from "@sql-copilot/lib/models/get-model-client";
 import { getPrismaClient } from "@sql-copilot/lib/prisma/get-prisma-client";
 
 export interface Context {

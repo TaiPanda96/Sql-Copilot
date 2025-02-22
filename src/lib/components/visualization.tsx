@@ -14,7 +14,7 @@ import { LoaderCircle } from "lucide-react";
 import { cn } from "shadcn/lib/utils";
 import { Text } from "./text";
 import { ChartType, DynamicChart } from "./dynamic-chart";
-import { getResponseAction } from "@sql-copilot/app/get-llm-response-action";
+import { getResponseAction } from "@sql-copilot/app/get-response-action";
 import { camelCase } from "lodash";
 
 export default function Visualization() {
@@ -76,7 +76,7 @@ export default function Visualization() {
       {/* Story Input Section */}
       <Stack gap={6}>
         <Label htmlFor="story" className="text-base font-normal text-gray-900">
-          What's the TL;DR of your data and who's your audience?
+          What would you like to visualize?
         </Label>
         <Input
           id="story"

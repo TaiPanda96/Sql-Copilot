@@ -1,4 +1,5 @@
 import { ContextWith } from "@sql-copilot/lib/create-context";
+import { basePrompt } from "@sql-copilot/lib/models/llms/base-prompt";
 import multiline from "multiline-ts";
 import OpenAI from "openai";
 
@@ -44,52 +45,14 @@ export async function* getQueryResponseIo(
   const model = getModelClient() as OpenAiClient;
   assertIsOpenAiClient(model);
 
-  const basePrompt = multiline`
-  You are a highly skilled data scientist and AI assistant specializing in data visualization.
-  **Your Role:** Given a dataset in CSV or JSON format, analyze its structure and return a valid \`chartData\` JSON array for visualization.
+  if (!fileStream) {
+    throw new Error("File stream is required for this operation.");
+  }
 
-  **Strict Guidelines:**
-  - Identify categorical vs. numerical data automatically.
-  - Ensure the \`xKey\` is categorical and \`yKey\` is numerical.
-  - If data contains missing values, exclude incomplete rows from the output.
-  - Do **not** invent data. If an error occurs, return an appropriate message.
-  
-  **Example Input:**
-  \`\`\`json
-  [
-    {"Country": "USA", "GDP": 21.4},
-    {"Country": "China", "GDP": 14.3},
-    {"Country": "India", "GDP": 2.9}
-  ]
-  \`\`\`
-
-  **Expected Output:**
-  \`\`\`json
-  [
-    {
-      "type": "BarChart",
-      "title": "GDP by Country",
-      "data": [
-        {"Country": "USA", "GDP": 21.4},
-        {"Country": "China", "GDP": 14.3},
-        {"Country": "India", "GDP": 2.9}
-      ],
-      "xKey": "Country",
-      "yKey": "GDP"
-    }
-  ]
-  \`\`\`
-
-  **If the data is not suitable for visualization, return:**
-  \`\`\`json
-  { "error": "Insufficient data for meaningful visualization." }
-  \`\`\`
-`;
-  const fileStreamString = await new Response(fileStream).text();
-
+  const dataContext = await new Response(fileStream).text();
   // Token limit is 4096 tokens
   const estimatedTokens = query.length / 4; // Rough estimate: 1 token ≈ 4 chars
-  const tokenLimit = Math.min(estimatedTokens * 2, 4096); // Cap at 4096 tokens
+  const tokenLimit = Math.round(Math.min(estimatedTokens * 2, 4096)); // Cap at 4096 tokens
 
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o",
@@ -100,10 +63,9 @@ export async function* getQueryResponseIo(
       },
       {
         role: "system",
-        content: multiline`The user has submitted the following story: ${query} 
-        with the following streamed context: ${fileStreamString}`,
+        content: multiline`The user has submitted the following question: ${query} 
+        with the following streamed data context: ${dataContext}. Please return a suitable chartData json array.`,
       },
-
       {
         role: "user",
         content: query,
