@@ -3,12 +3,16 @@
 import { LogoutLink, useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import { PageContainer } from "@sql-copilot/lib/components/page-container";
 import { Text } from "@sql-copilot/lib/components/text";
-import Visualization from "@sql-copilot/lib/components/visualization";
-import "../rainbow.css";
 import { redirect } from "next/navigation";
+import "../rainbow.css";
+import ChatInterface from "@sql-copilot/lib/components/chat-interface";
 
-export default async function VisualizationPage() {
-  const { user } = useKindeAuth();
+export default function VisualizationPage() {
+  const { user, isLoading } = useKindeAuth();
+
+  if (isLoading) {
+    return <PageContainer>Loading...</PageContainer>;
+  }
 
   if (!user) {
     redirect("/");
@@ -24,7 +28,7 @@ export default async function VisualizationPage() {
       <h1 className="rainbow-text text-[40px] leading-tight font-semibold text-center text-gray-900">
         Let's Dive Deep Into Your Data
       </h1>
-      <Visualization user={user} />
+      <ChatInterface user={user} />
     </PageContainer>
   );
 }

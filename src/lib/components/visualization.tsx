@@ -16,6 +16,7 @@ import { Text } from "./text";
 import { ChartType, DynamicChart } from "./dynamic-chart";
 import { camelCase } from "lodash";
 import { postUserQueryAction } from "@sql-copilot/app/post-user-query-action";
+import { Threads } from "@sql-copilot/gen/prisma";
 
 export default function Visualization({
   user,
@@ -37,6 +38,7 @@ export default function Visualization({
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentThread, setCurrentThread] = useState<Threads | null>(null);
 
   const form = useForm({
     schema: uploadFileSchema,
@@ -52,10 +54,20 @@ export default function Visualization({
 
       try {
         // Step 1: Upload the file
-        const { success, fileUrl } = await uploadFileAction(values);
+        const { success, fileUrl, thread } = await uploadFileAction(values);
 
         if (!success) {
           setError("Error uploading file");
+          return;
+        }
+
+        if (!fileUrl) {
+          setError("Error uploading file");
+          return;
+        }
+
+        if (!thread) {
+          setError("Error returning thread");
           return;
         }
 
@@ -63,7 +75,7 @@ export default function Visualization({
         const response = await postUserQueryAction({
           url: fileUrl,
           query: values.query,
-          userEmail: values.userEmail,
+          threadId: thread?.id,
         });
 
         if (!response.success) {
@@ -74,6 +86,7 @@ export default function Visualization({
 
         setConfig(response.chartConfig);
         setLoading(false);
+        setCurrentThread(thread);
       } catch (error) {
         return { success: false, fileUrl: "" };
       }
@@ -82,7 +95,7 @@ export default function Visualization({
 
   return (
     <form onSubmit={form.handleSubmit} className="space-y-6 p-6">
-      {/* Story Input Section */}
+      {/* Conversation Component */}
       <Stack gap={6}>
         <Label htmlFor="story" className="text-base font-normal text-gray-900">
           What would you like to visualize?

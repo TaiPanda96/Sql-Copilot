@@ -2,13 +2,12 @@
 
 import { validateActionInput } from "@sql-copilot/lib/components/use-form-action";
 import { z } from "zod";
-import { uploadFileSchema } from "./upload-file-input";
-import { ContextWith, createContext } from "@sql-copilot/lib/create-context";
-import { getQueryResponseIo } from "@sql-copilot/lib/services/get-query-response-io";
-import { processFileInputs } from "@sql-copilot/lib/services/process-file-inputs";
-import { createReadableStream } from "@sql-copilot/lib/utils/create-readable-stream";
-import { extractJsonResponse } from "@sql-copilot/lib/utils/extract-json-response";
+import { createContext } from "@sql-copilot/lib/create-context";
+import { processFileInputs } from "@sql-copilot/lib/utils/process-file-inputs";
 import { assertType } from "@sql-copilot/lib/utils/assertions";
+import { postUserInputSchema } from "./post-user-query-input";
+import { getChartConfigResponseIo } from "@sql-copilot/lib/services/get-chart-config-response-io";
+import { Threads, Messages } from "@sql-copilot/gen/prisma";
 
 export interface ChartConfig {
   type: "BarChart" | "LineChart" | "PieChart";
@@ -19,16 +18,21 @@ export interface ChartConfig {
 }
 
 export async function postUserQueryAction(
-  input: z.input<typeof uploadFileSchema>
+  input: z.input<typeof postUserInputSchema>
 ): Promise<{
   success: boolean;
   chartConfig: ChartConfig | null;
   message?: string;
+  thread:
+    | (Threads & {
+        messages: Messages[];
+      })
+    | null;
 }> {
   const ctx = await createContext(["prisma", "model"]);
-  const validation = validateActionInput(input, uploadFileSchema);
+  const validation = validateActionInput(input, postUserInputSchema);
   if (!validation.success) {
-    return { success: false, chartConfig: null };
+    return { success: false, chartConfig: null, thread: null };
   }
   const { url, query } = validation.data;
 
@@ -45,27 +49,61 @@ export async function postUserQueryAction(
       ])
     );
 
-    // Fetch any additional user message threads from the database to feed into the model
-    const hasUserEmail = !!validation.data.userEmail;
-    let messageHistory = [];
-    if (hasUserEmail) {
-      assertType(validation.data.userEmail, z.string());
-      const user = await ctx.prisma.user.findUnique({
-        where: { email: validation.data.userEmail },
+    // Assess if there's an existing thread
+    // If there is a thread, get all the historical messages in the thread
+    // This is to provide context to the model
+    let thread:
+      | (Threads & {
+          messages: Messages[];
+        })
+      | null = null;
+    let messageHistory: string[] = [];
+    const hasThread = !!validation.data.threadId;
+    if (hasThread) {
+      assertType(validation.data.threadId, z.string());
+      // Get all the thread's messages
+      thread = await ctx.prisma.threads.findUnique({
+        where: { id: validation.data.threadId },
+        include: { messages: true },
       });
 
-      if (!user) {
-        return {
-          success: false,
-          chartConfig: null,
-          message: "User not found.",
-        };
+      if (!thread) {
+        return { success: false, chartConfig: null, thread: null };
       }
+
+      const newMessage = await ctx.prisma.messages.create({
+        data: {
+          message: query,
+          threadId: thread.id,
+        },
+      });
+      messageHistory = thread.messages
+        .map((messageObj) => messageObj.message)
+        .concat(newMessage.message);
+    } else {
+      await ctx.prisma.threads.create({
+        data: {
+          title: query,
+          messages: {
+            create: {
+              message: query,
+            },
+          },
+        },
+      });
+
+      const newThread = await ctx.prisma.threads.findFirst({
+        where: { title: query },
+        include: { messages: true },
+      });
+
+      thread = newThread;
     }
 
-    const response = await getResponseIo(ctx, {
+    const response = await getChartConfigResponseIo(ctx, {
       fileContent,
       query,
+      messageHistory,
     });
 
     const isEmptyChart =
@@ -75,12 +113,14 @@ export async function postUserQueryAction(
         success: false,
         chartConfig: null,
         message: "No data available for visualization.",
+        thread,
       };
     }
     return {
       success: true,
       chartConfig: response.llmResponse,
       message: "Successfully fetched the chart data.",
+      thread,
     };
   } catch (error) {
     const errorMessage =
@@ -89,59 +129,7 @@ export async function postUserQueryAction(
       success: false,
       chartConfig: null,
       message: errorMessage,
+      thread: null,
     };
   }
-}
-
-async function getResponseIo(
-  ctx: ContextWith<"prisma" | "model">,
-  {
-    fileContent,
-    query,
-    messageHistory = [],
-  }: {
-    fileContent: string | Blob | ArrayBuffer | Array<unknown>;
-    query: string;
-    messageHistory?: string[];
-  }
-): Promise<{
-  llmResponse: {
-    type: "BarChart" | "LineChart" | "PieChart";
-    title: string;
-    data: Array<Record<string, unknown>>;
-    xKey: string;
-    yKey: string;
-  };
-}> {
-  const emptyChartConfig = {
-    type: "BarChart",
-    title: "Title of the chart",
-    data: [],
-    xKey: "key1",
-    yKey: "key2",
-  } as ChartConfig;
-  const readableStream = createReadableStream(fileContent);
-  const modelResponse = getQueryResponseIo(ctx, {
-    fileStream: readableStream,
-    query,
-    messageHistory,
-  });
-
-  // Convert LLM stream to string
-  let response = "";
-  for await (const chunk of modelResponse) {
-    response += chunk;
-  }
-
-  // If the response is empty, throw an error
-  if (!response) {
-    throw new Error("Failed to get a response from the model.");
-  }
-
-  // Parse and validate the response
-  const parsedResponse = extractJsonResponse(response);
-  if (!parsedResponse || !parsedResponse[0]) {
-    return { llmResponse: emptyChartConfig };
-  }
-  return { llmResponse: parsedResponse[0] };
 }

@@ -23,7 +23,7 @@ export interface QueryInputOptions {
  */
 export async function* getQueryResponseIo(
   ctx: ContextWith<"prisma" | "model">,
-  { query, fileStream }: QueryInputOptions
+  { query, fileStream, messageHistory }: QueryInputOptions
 ): AsyncGenerator<string> {
   const { getModelClient } = ctx.model;
   const model = getModelClient() as OpenAiClient;

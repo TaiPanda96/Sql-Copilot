@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { modelConfigRegistry } from "../services/model-config-registry";
+import { modelConfigRegistry } from "./model-config-registry";
 
 export type BasePrompt = string;
 export type ModelClient = Record<string, unknown> | null | undefined | OpenAI;
