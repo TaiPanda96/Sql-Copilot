@@ -60,7 +60,7 @@ export async function postUserQueryAction(
     let messageHistory: string[] = [];
     const hasThread = !!validation.data.threadId;
     if (hasThread) {
-      assertType(validation.data.threadId, z.string());
+      console.log("Thread ID exists", validation.data.threadId);
       // Get all the thread's messages
       thread = await ctx.prisma.threads.findUnique({
         where: { id: validation.data.threadId },
@@ -77,6 +77,7 @@ export async function postUserQueryAction(
           threadId: thread.id,
         },
       });
+
       messageHistory = thread.messages
         .map((messageObj) => messageObj.message)
         .concat(newMessage.message);

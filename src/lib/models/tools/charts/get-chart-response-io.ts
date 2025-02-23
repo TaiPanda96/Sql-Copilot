@@ -1,13 +1,13 @@
 import multiline from "multiline-ts";
-import { ContextWith } from "../../create-context";
-import { basePrompt } from "../llms/base-prompt";
-import { parseCSV } from "../../utils/parse-csv";
+import { ContextWith } from "../../../create-context";
+import { basePrompt } from "../../llms/base-prompt";
+import { parseCSV } from "../../../utils/parse-csv";
 import { ChartConfig, chartConfigSchema } from "./chart-config-schema";
 import {
   assertIsChatCompletion,
   assertIsOpenAiClient,
-} from "../../utils/assertions";
-import { OpenAiClient } from "../llms/open-ai/get-open-ai-client";
+} from "../../../utils/assertions";
+import { OpenAiClient } from "../../llms/open-ai/get-open-ai-client";
 
 const tokenLimit = 4096;
 

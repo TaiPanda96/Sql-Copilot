@@ -33,6 +33,19 @@ export async function* getQueryResponseIo(
     throw new Error("File stream is required for this operation.");
   }
   const dataContext = await new Response(fileStream).text();
+
+  let messageContext: {
+    role: "user" | "system";
+    content: string;
+  }[] = [];
+  if (Array.isArray(messageHistory) && messageHistory.length > 0) {
+    messageContext = messageHistory.map((message) => ({
+      role: "user",
+      content: message,
+    }));
+
+    console.log("Message Context:", messageContext);
+  }
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o",
     messages: [
@@ -45,6 +58,7 @@ export async function* getQueryResponseIo(
         content: multiline`The user has submitted the following question: ${query} 
         with the following streamed data context: ${dataContext}. Please return a suitable chartData json array.`,
       },
+      ...messageContext,
       {
         role: "user",
         content: query,

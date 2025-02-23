@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button, buttonVariants } from "./button";
-import { FileIcon, SendIcon } from "lucide-react";
+import { SendIcon } from "lucide-react";
 import { DynamicChart, ChartType } from "./dynamic-chart";
 import { camelCase } from "lodash";
 import { postUserQueryAction } from "@sql-copilot/app/post-user-query-action";
@@ -11,6 +11,10 @@ import { Stack } from "./stack";
 import { Inline } from "./inline";
 import AttachmentButton from "./attachment-button";
 import { cn } from "shadcn/lib/utils";
+import { LoaderCircle } from "./loading-circle";
+import { RenderAnimationContainer } from "./render-animation-container";
+import { MessageList } from "./message-list";
+import { FileNameDisplay } from "./file-name";
 
 export default function ChatInterface({
   user,
@@ -65,7 +69,7 @@ export default function ChatInterface({
 
       if (!response.success) {
         setLoading(false);
-        setError(`Error posting query: ${response.message}`);
+        setError(`${response.message}`);
         return;
       }
 
@@ -82,7 +86,6 @@ export default function ChatInterface({
 
       // Clear the input and file attachment for subsequent messages.
       setQuery("");
-      setFileUrl("");
     } catch (error) {
       console.error("Error posting query:", error);
     } finally {
@@ -99,28 +102,33 @@ export default function ChatInterface({
         <div>
           {messages.length
             ? messages.map((msg) => (
-                <Message key={msg.id} message={msg.message} />
+                <MessageList key={msg.id} message={msg.message} />
               ))
             : null}
         </div>
 
+        {/* Loading Indicator */}
+        {loading && <LoaderCircle />}
+
         {/* Visualization */}
-        {chartConfig && (
-          <DynamicChart
-            chartConfig={{
-              ...chartConfig,
-              type: chartConfig.type as ChartType,
-              data: chartConfig.data.map((item) => {
-                const newItem: { [key: string]: any } = {};
-                Object.keys(item).forEach((key) => {
-                  newItem[camelCase(key)] = item[key];
-                });
-                return newItem;
-              }),
-              xKey: camelCase(chartConfig.xKey),
-              yKey: camelCase(chartConfig.yKey),
-            }}
-          />
+        {chartConfig && !loading && (
+          <RenderAnimationContainer>
+            <DynamicChart
+              chartConfig={{
+                ...chartConfig,
+                type: chartConfig.type as ChartType,
+                data: chartConfig.data.map((item) => {
+                  const newItem: { [key: string]: any } = {};
+                  Object.keys(item).forEach((key) => {
+                    newItem[camelCase(key)] = item[key];
+                  });
+                  return newItem;
+                }),
+                xKey: camelCase(chartConfig.xKey),
+                yKey: camelCase(chartConfig.yKey),
+              }}
+            />
+          </RenderAnimationContainer>
         )}
       </div>
 
@@ -129,12 +137,7 @@ export default function ChatInterface({
         {/* Query / Follow-Up Input */}
         {url && (
           <Stack gap={2} align="left">
-            <Inline gap={2} align="center">
-              <FileIcon className="w-5 h-5 text-gray-600" />
-              <span className="text-sm text-gray-600 truncate">
-                {url.split("/").pop()}
-              </span>
-            </Inline>
+            <FileNameDisplay url={url} />
           </Stack>
         )}
         <Inline gap={4} justify="between" align="top">
@@ -170,14 +173,6 @@ export default function ChatInterface({
           </Stack>
         </Inline>
       </Stack>
-    </div>
-  );
-}
-
-function Message({ message }: { message: string }) {
-  return (
-    <div className="p-2 bg-gray-100 rounded-md mb-2">
-      <p className="text-sm text-gray-800">{message}</p>
     </div>
   );
 }

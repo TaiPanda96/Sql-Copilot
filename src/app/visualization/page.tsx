@@ -6,12 +6,18 @@ import { Text } from "@sql-copilot/lib/components/text";
 import { redirect } from "next/navigation";
 import "../rainbow.css";
 import ChatInterface from "@sql-copilot/lib/components/chat-interface";
+import { Skeleton } from "@/components/ui/skeleton";
+import { LoaderCircle } from "@sql-copilot/lib/components/loading-circle";
 
 export default function VisualizationPage() {
   const { user, isLoading } = useKindeAuth();
 
   if (isLoading) {
-    return <PageContainer>Loading...</PageContainer>;
+    return (
+      <Skeleton>
+        <LoaderCircle />
+      </Skeleton>
+    );
   }
 
   if (!user) {
@@ -25,9 +31,6 @@ export default function VisualizationPage() {
           <Text value="Logout" size="md" color="brand" />
         </LogoutLink>
       </div>
-      <h1 className="rainbow-text text-[40px] leading-tight font-semibold text-center text-gray-900">
-        Let's Dive Deep Into Your Data
-      </h1>
       <ChatInterface user={user} />
     </PageContainer>
   );

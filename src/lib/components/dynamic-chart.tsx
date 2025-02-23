@@ -33,6 +33,7 @@ interface DynamicChartProps {
   chartConfig: ChartConfig;
 }
 
+const lineChartColors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#d8c4b3"];
 const barChartColors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#d8c4b3"];
 const pieChartColors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
@@ -70,7 +71,13 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey={yKey} stroke="#8884d8" />
+        <Line
+          type="monotone"
+          dataKey={yKey}
+          stroke={
+            lineChartColors[Math.floor(Math.random() * lineChartColors.length)]
+          }
+        />
       </LineChart>
     ),
     [ChartType.PieChart]: (
