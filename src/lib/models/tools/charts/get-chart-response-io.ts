@@ -2,7 +2,7 @@ import multiline from "multiline-ts";
 import { ContextWith } from "../../../create-context";
 import { basePrompt } from "../../llms/base-prompt";
 import { parseCSV } from "../../../utils/parse-csv";
-import { ChartConfig, chartConfigSchema } from "./chart-config-schema";
+import { ChartConfig, chartConfigSchema } from "./charts-schema";
 import {
   assertIsChatCompletion,
   assertIsOpenAiClient,
