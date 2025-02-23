@@ -1,11 +1,29 @@
 "use client";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
+
+import { LogoutLink, useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import { PageContainer } from "@sql-copilot/lib/components/page-container";
 import { Text } from "@sql-copilot/lib/components/text";
-import Visualization from "@sql-copilot/lib/components/visualization";
+import { redirect } from "next/navigation";
 import "../rainbow.css";
+import ChatInterface from "@sql-copilot/lib/components/chat-interface";
+import { Skeleton } from "@/components/ui/skeleton";
+import { LoaderCircle } from "@sql-copilot/lib/components/loading-circle";
 
-export default async function VisualizationPage() {
+export default function VisualizationPage() {
+  const { user, isLoading } = useKindeAuth();
+
+  if (isLoading) {
+    return (
+      <Skeleton>
+        <LoaderCircle />
+      </Skeleton>
+    );
+  }
+
+  if (!user) {
+    redirect("/");
+  }
+
   return (
     <PageContainer className="min-h-screen bg-[#faf9f6]">
       <div className="fixed top-0 right-0 p-4">
@@ -13,10 +31,7 @@ export default async function VisualizationPage() {
           <Text value="Logout" size="md" color="brand" />
         </LogoutLink>
       </div>
-      <h1 className="rainbow-text text-[40px] leading-tight font-semibold text-center text-gray-900">
-        Let's Dive Deep Into Your Data
-      </h1>
-      <Visualization />
+      <ChatInterface user={user} />
     </PageContainer>
   );
 }

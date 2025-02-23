@@ -1,8 +1,8 @@
-import { parseStreamingCsv } from "../utils/parse-streaming-csv";
+import { parseStreamingCsv } from "./parse-streaming-csv";
 
 /**
  * Fetches and parses the file content from a URL.
- * Supports JSON, CSV, Images (PNG, JPEG, WebP, GIF, TIFF), and PDFs.
+ * Supports JSON, CSV, Images (PNG, JPEG, WebP, GIF, TIFF).
  */
 export async function processFileInputs(url: string): Promise<unknown> {
   try {
@@ -24,7 +24,7 @@ export async function processFileInputs(url: string): Promise<unknown> {
         return await convertImageToBase64(response);
       default:
         throw new Error(
-          "Unsupported file type. Supported types: JSON, CSV, PDF, PNG, JPEG, WebP, GIF, TIFF."
+          "Unsupported file type. Supported types: JSON, CSV, PNG, JPEG, WebP, GIF, TIFF."
         );
     }
   } catch (error) {

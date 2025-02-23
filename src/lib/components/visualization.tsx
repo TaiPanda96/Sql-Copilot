@@ -14,10 +14,21 @@ import { LoaderCircle } from "lucide-react";
 import { cn } from "shadcn/lib/utils";
 import { Text } from "./text";
 import { ChartType, DynamicChart } from "./dynamic-chart";
-import { getResponseAction } from "@sql-copilot/app/get-response-action";
 import { camelCase } from "lodash";
+import { postUserQueryAction } from "@sql-copilot/app/post-user-query-action";
+import { Threads } from "@sql-copilot/gen/prisma";
 
-export default function Visualization() {
+export default function Visualization({
+  user,
+}: {
+  user: {
+    id: string;
+    email: string | null;
+    given_name: string | null;
+    family_name: string | null;
+    picture: string | null;
+  };
+}) {
   const [config, setConfig] = useState<{
     type: "BarChart" | "LineChart" | "PieChart";
     title: string;
@@ -27,13 +38,15 @@ export default function Visualization() {
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentThread, setCurrentThread] = useState<Threads | null>(null);
 
   const form = useForm({
     schema: uploadFileSchema,
     initialValues: {
-      story: "",
+      query: "",
       url: "",
       fileName: "",
+      userEmail: user.email,
     },
     onValidSubmit: async (values) => {
       setLoading(true);
@@ -41,17 +54,28 @@ export default function Visualization() {
 
       try {
         // Step 1: Upload the file
-        const { success, fileUrl } = await uploadFileAction(values);
+        const { success, fileUrl, thread } = await uploadFileAction(values);
 
         if (!success) {
           setError("Error uploading file");
           return;
         }
 
-        // Step 2: Get the visualization
-        const response = await getResponseAction({
+        if (!fileUrl) {
+          setError("Error uploading file");
+          return;
+        }
+
+        if (!thread) {
+          setError("Error returning thread");
+          return;
+        }
+
+        // Step 2: Get the response
+        const response = await postUserQueryAction({
           url: fileUrl,
-          story: values.story,
+          query: values.query,
+          threadId: thread?.id,
         });
 
         if (!response.success) {
@@ -62,6 +86,7 @@ export default function Visualization() {
 
         setConfig(response.chartConfig);
         setLoading(false);
+        setCurrentThread(thread);
       } catch (error) {
         return { success: false, fileUrl: "" };
       }
@@ -70,15 +95,15 @@ export default function Visualization() {
 
   return (
     <form onSubmit={form.handleSubmit} className="space-y-6 p-6">
-      {/* Story Input Section */}
+      {/* Conversation Component */}
       <Stack gap={6}>
         <Label htmlFor="story" className="text-base font-normal text-gray-900">
           What would you like to visualize?
         </Label>
         <Input
-          id="story"
-          value={form.values.story}
-          onChange={(e) => form.setValue("story", e.target.value)}
+          id="query"
+          value={form.values.query}
+          onChange={(e) => form.setValue("query", e.target.value)}
           placeholder="I want to report Q3 sales to my CEO"
           className="h-[52px] px-4 bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-500 rounded-lg"
         />

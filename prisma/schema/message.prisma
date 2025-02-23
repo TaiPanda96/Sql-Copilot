@@ -8,6 +8,7 @@ model Messages {
   createdAt                DateTime   @default(now())
   updatedAt                DateTime   @updatedAt
 
+  // Associate messages with threads
   thread                   Threads?    @relation(fields: [threadId], references: [id])
   threadId                 String?     @map("thread_id") @db.Uuid
 

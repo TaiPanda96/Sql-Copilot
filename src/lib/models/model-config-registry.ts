@@ -1,4 +1,4 @@
-import { getOpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
+import { getOpenAiClient } from "./llms/open-ai/get-open-ai-client";
 
 /**
  * This LLM config registry is used to determine which large language model to use.
