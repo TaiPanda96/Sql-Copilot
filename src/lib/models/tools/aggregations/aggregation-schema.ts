@@ -1,4 +1,3 @@
-import { assertType } from "@sql-copilot/lib/utils/assertions";
 import { z } from "zod";
 
 export enum AggregationType {
