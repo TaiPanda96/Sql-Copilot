@@ -81,6 +81,11 @@ export async function postUserQueryAction(
       messageHistory = thread.messages
         .map((messageObj) => messageObj.message)
         .concat(newMessage.message);
+
+      thread = {
+        ...thread,
+        messages: [...thread.messages, newMessage],
+      };
     } else {
       await ctx.prisma.threads.create({
         data: {
