@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import "../rainbow.css";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoaderCircle } from "@sql-copilot/lib/components/loading-circle";
-import Visualization from "@sql-copilot/lib/components/visualization";
+import ChatInterface from "@sql-copilot/lib/components/chat-interface";
 
 export default function VisualizationPage() {
   const { user, isLoading } = useKindeAuth();
@@ -31,7 +31,7 @@ export default function VisualizationPage() {
           <Text value="Logout" size="md" color="brand" />
         </LogoutLink>
       </div>
-      <Visualization user={user} />
+      <ChatInterface user={user} />
     </PageContainer>
   );
 }

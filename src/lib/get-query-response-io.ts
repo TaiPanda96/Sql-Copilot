@@ -1,12 +1,12 @@
 import multiline from "multiline-ts";
 import OpenAI from "openai";
-import { ContextWith } from "../create-context";
+import { ContextWith } from "./create-context";
 import {
   assertIsOpenAiClient,
   assertIsChatCompletion,
-} from "../utils/assertions";
-import { basePrompt } from "../models/llms/base-prompt";
-import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
+} from "./utils/assertions";
+import { basePrompt } from "./models/llms/base-prompt";
+import { OpenAiClient } from "./models/llms/open-ai/get-open-ai-client";
 
 const tokenLimit = 4096;
 
@@ -43,8 +43,6 @@ export async function* getQueryResponseIo(
       role: "user",
       content: message,
     }));
-
-    console.log("Message Context:", messageContext);
   }
   const streamResponse = await model?.chat.completions.create({
     model: "gpt-4o",

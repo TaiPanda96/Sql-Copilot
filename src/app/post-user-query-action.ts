@@ -6,7 +6,7 @@ import { createContext } from "@sql-copilot/lib/create-context";
 import { processFileInputs } from "@sql-copilot/lib/utils/process-file-inputs";
 import { assertType } from "@sql-copilot/lib/utils/assertions";
 import { postUserInputSchema } from "./post-user-query-input";
-import { getChartConfigResponseIo } from "@sql-copilot/lib/services/get-chart-config-response-io";
+import { getChartConfigResponseIo } from "@sql-copilot/lib/get-chart-config-response-io";
 import { Threads, Messages } from "@sql-copilot/gen/prisma";
 
 export interface ChartConfig {

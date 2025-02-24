@@ -1,8 +1,8 @@
 import { ChartConfig } from "@sql-copilot/app/post-user-query-action";
-import { ContextWith } from "../create-context";
+import { ContextWith } from "./create-context";
 import { getQueryResponseIo } from "./get-query-response-io";
-import { createReadableStream } from "../utils/create-readable-stream";
-import { extractJsonResponse } from "../utils/extract-json-response";
+import { createReadableStream } from "./utils/create-readable-stream";
+import { extractJsonResponse } from "./utils/extract-json-response";
 
 /**
  * Get the model response from the LLM model.
