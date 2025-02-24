@@ -16,7 +16,7 @@ import { RenderAnimationContainer } from "./render-animation-container";
 import { MessageList } from "./message-list";
 import { FileNameDisplay } from "./file-name";
 
-export default function ChatInterface({
+export default async function ChatInterface({
   user,
 }: {
   user: {
