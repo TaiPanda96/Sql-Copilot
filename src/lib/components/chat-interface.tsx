@@ -73,18 +73,15 @@ export default function ChatInterface({
         return;
       }
 
-      // Update the chart configuration from the LLM response.
-      setChartConfig(response.chartConfig);
-
       // Update or set the thread if it's the first message.
       if (!thread) {
         setThread(response.thread);
       }
-
       // Update the conversation history.
       setMessages(response.thread?.messages || []);
-
-      // Clear the input and file attachment for subsequent messages.
+      // Update the chart configuration from the LLM response.
+      setChartConfig(response.chartConfig);
+      // Clear the query input.
       setQuery("");
     } catch (error) {
       console.error("Error posting query:", error);

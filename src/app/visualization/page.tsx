@@ -5,9 +5,9 @@ import { PageContainer } from "@sql-copilot/lib/components/page-container";
 import { Text } from "@sql-copilot/lib/components/text";
 import { redirect } from "next/navigation";
 import "../rainbow.css";
-import ChatInterface from "@sql-copilot/lib/components/chat-interface";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoaderCircle } from "@sql-copilot/lib/components/loading-circle";
+import Visualization from "@sql-copilot/lib/components/visualization";
 
 export default function VisualizationPage() {
   const { user, isLoading } = useKindeAuth();
@@ -31,7 +31,7 @@ export default function VisualizationPage() {
           <Text value="Logout" size="md" color="brand" />
         </LogoutLink>
       </div>
-      <ChatInterface user={user} />
+      <Visualization user={user} />
     </PageContainer>
   );
 }
