@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { Button, buttonVariants } from "./button";
-import { SendIcon } from "lucide-react";
+import { FileIcon, SendIcon, XIcon } from "lucide-react";
 import { DynamicChart, ChartType } from "./dynamic-chart";
 import { camelCase } from "lodash";
-import { postUserQueryAction } from "@sql-copilot/app/post-user-query-action";
 import { Messages, Threads } from "@sql-copilot/gen/prisma";
 import { Stack } from "./stack";
 import { Inline } from "./inline";
@@ -14,7 +13,8 @@ import { cn } from "shadcn/lib/utils";
 import { LoaderCircle } from "./loading-circle";
 import { RenderAnimationContainer } from "./render-animation-container";
 import { MessageList } from "./message-list";
-import { FileNameDisplay } from "./file-name";
+import { postUserChartQueryAction } from "@sql-copilot/app/quick-chart/post-user-chart-query-action";
+import { Text } from "./text";
 
 export default function ChatInterface({
   user,
@@ -60,11 +60,15 @@ export default function ChatInterface({
     }
 
     try {
-      const response = await postUserQueryAction({
+      const response = await postUserChartQueryAction({
         query,
-        url: url,
+        url,
         threadId: thread?.id,
         userEmail: user.email || "",
+        chartType: "BarChart",
+        title: "Title of the chart",
+        xKey: "key1",
+        yKey: "key2",
       });
 
       if (!response.success) {
@@ -77,11 +81,8 @@ export default function ChatInterface({
       if (!thread) {
         setThread(response.thread);
       }
-      // Update the conversation history.
       setMessages(response.thread?.messages || []);
-      // Update the chart configuration from the LLM response.
       setChartConfig(response.chartConfig);
-      // Clear the query input.
       setQuery("");
     } catch (error) {
       console.error("Error posting query:", error);
@@ -91,10 +92,57 @@ export default function ChatInterface({
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Conversation & Visualization Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* Conversation history */}
+    <Stack gap={4}>
+      <Stack gap={4}>
+        <Text value="Project Files" bold color="light" size="lg" />
+        {url && (
+          <RenderAnimationContainer>
+            <Inline gap={2}>
+              <FileIcon className="text-white" />
+              <Text value={url} color="light" />
+              <Button
+                onClick={() => setFileUrl("")}
+                variant="solid"
+                IconRight={XIcon}
+                className={cn(
+                  "p-2",
+                  buttonVariants({
+                    disabled: false,
+                    loading: false,
+                    noPadding: true,
+                    variant: "solid",
+                  })
+                )}
+                value="Remove File"
+              />
+            </Inline>
+          </RenderAnimationContainer>
+        )}
+        <Stack gap={2}>
+          <Text value="Chart Type" color="light" />
+          <div className="dropdown">
+            <select
+              className="overflow-x-auto p-2 text-white bg-inherit border rounded-lg border-gray-500"
+              onChange={(e) => {
+                if (chartConfig) {
+                  setChartConfig({
+                    ...chartConfig,
+                    type: e.target.value as
+                      | "BarChart"
+                      | "LineChart"
+                      | "PieChart",
+                  });
+                }
+              }}
+            >
+              <option value="BarChart">Bar Chart</option>
+              <option value="LineChart">Line Chart</option>
+              <option value="PieChart">Pie Chart</option>
+            </select>
+          </div>
+        </Stack>
+      </Stack>
+      <div className="flex-1 overflow-y-auto">
         {error && <p className="text-red-500">{error}</p>}
         <div>
           {messages.length
@@ -103,10 +151,7 @@ export default function ChatInterface({
               ))
             : null}
         </div>
-
-        {/* Loading Indicator */}
         {loading && <LoaderCircle />}
-
         {/* Visualization */}
         {chartConfig && !loading && (
           <RenderAnimationContainer>
@@ -127,49 +172,102 @@ export default function ChatInterface({
             />
           </RenderAnimationContainer>
         )}
-      </div>
 
-      {/* Unified Toolbar */}
-      <Stack className="border-gray-800 rounded p-6" gap={4}>
-        {/* Query / Follow-Up Input */}
-        {url && (
-          <Stack gap={2} align="left">
-            <FileNameDisplay url={url} />
-          </Stack>
-        )}
-        <Inline gap={4} justify="between" align="top">
+        <Stack gap={4}>
           <textarea
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask a question about your data..."
-            className="w-full h-24 p-2 text-gray-800 bg-gray-100 border border-gray-200 rounded-md"
+            className="w-full h-36 p-2 text-white bg-inherit border rounded-lg border-gray-500"
           />
 
-          <Stack gap={2}>
-            {/* File Upload */}
-            <AttachmentButton
-              onAttachment={(fileUrl) => setFileUrl(fileUrl.url)}
-              className={cn(
-                buttonVariants({
-                  disabled: false,
-                  loading: false,
-                  noPadding: true,
-                  variant: "solid",
-                })
-              )}
-            />
+          <Inline gap={4} justify="between">
+            <Text value="Prompts to Get Started" bold color="light" size="lg" />
+            <Inline gap={2} justify="right">
+              {/* File Upload */}
+              <AttachmentButton
+                onAttachment={(fileUrl) => setFileUrl(fileUrl.url)}
+                className={cn(
+                  buttonVariants({
+                    disabled: false,
+                    loading: false,
+                    noPadding: true,
+                    variant: "solid",
+                  })
+                )}
+              />
 
-            {/* Submit Button */}
-            <Button
-              onClick={handleSubmit}
-              disabled={loading}
-              IconRight={SendIcon}
-            >
-              {loading ? "Processing..." : "Send"}
-            </Button>
-          </Stack>
-        </Inline>
-      </Stack>
-    </div>
+              {/* Submit Button */}
+              <Button
+                onClick={handleSubmit}
+                disabled={loading}
+                IconRight={SendIcon}
+                variant="solid"
+              >
+                {loading ? "Processing..." : "Send"}
+              </Button>
+            </Inline>
+          </Inline>
+
+          <div className="flex justify-between">
+            <Inline gap={4} justify="left">
+              <Button
+                variant="outline"
+                value={"I'd like to create a quick chart for my uploaded data."}
+                onClick={() =>
+                  setQuery(
+                    `I'd like to create a quick chart for my uploaded data.`
+                  )
+                }
+                className={cn(
+                  "p-3 text-white bg-gray-500 border rounded-lg border-gray-700",
+                  buttonVariants({
+                    disabled: false,
+                    loading: false,
+                    noPadding: true,
+                    variant: "ghost",
+                  })
+                )}
+                label="I'd like to create a quick chart for my uploaded data."
+              />
+              <Button
+                variant="outline"
+                value={"I'd like to filter my data then create a chart."}
+                onClick={() =>
+                  setQuery(`I'd like to filter my data then create a chart.`)
+                }
+                className={cn(
+                  "p-3 text-white bg-gray-500 border rounded-lg border-gray-700",
+                  buttonVariants({
+                    disabled: false,
+                    loading: false,
+                    noPadding: true,
+                    variant: "ghost",
+                  })
+                )}
+                label="I'd like to filter my data before chart creation."
+              />
+              <Button
+                variant="outline"
+                value={"I'd like to join two datasets and create a chart."}
+                onClick={() =>
+                  setQuery(`I'd like to join two datasets and create a chart.`)
+                }
+                className={cn(
+                  "p-3 text-white bg-gray-500 border rounded-lg border-gray-700",
+                  buttonVariants({
+                    disabled: false,
+                    loading: false,
+                    noPadding: true,
+                    variant: "ghost",
+                  })
+                )}
+                label="I'd like to join two datasets and create a chart."
+              />
+            </Inline>
+          </div>
+        </Stack>
+      </div>
+    </Stack>
   );
 }

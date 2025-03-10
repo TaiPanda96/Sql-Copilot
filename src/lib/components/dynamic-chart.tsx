@@ -97,10 +97,14 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
 
   return (
     <div className="w-full space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow-sm">
+      <div className="p-6 rounded-lg shadow-sm">
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         <div className="h-96">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            className={"bg-inherit"}
+          >
             {chartRenderers[type] || <p>Unsupported chart type</p>}
           </ResponsiveContainer>
         </div>

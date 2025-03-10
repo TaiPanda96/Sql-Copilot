@@ -14,7 +14,6 @@ export async function middleware(req: NextRequest) {
    * If the access token is not found, redirect the user to the home page.
    */
   if (!accessToken) {
-    console.warn("User is not authenticated.");
     return NextResponse.redirect(new URL("/", req.url));
   }
 
