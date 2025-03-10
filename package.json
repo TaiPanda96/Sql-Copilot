@@ -8,7 +8,8 @@
     "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "node --max-old-space-size=16384 next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "predict": "ts-node src/bin/predict.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.13",

@@ -25,10 +25,13 @@ export default function VisualizationPage() {
   }
 
   return (
-    <PageContainer className="min-h-screen bg-[#faf9f6]">
+    <PageContainer
+      className="min-h-screen bg-[#424949]"
+      contentContainerClassName="bg-[#515a5a] rounded-lg"
+    >
       <div className="fixed top-0 right-0 p-4">
         <LogoutLink>
-          <Text value="Logout" size="md" color="brand" />
+          <Text value="Logout" size="md" color="inverted-light" />
         </LogoutLink>
       </div>
       <ChatInterface user={user} />

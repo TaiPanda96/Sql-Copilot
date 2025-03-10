@@ -13,6 +13,7 @@ interface PageContainerProps {
     level?: "h1" | "h2" | "h3"; // Heading level
     className?: string; // Custom class for styling the title
   };
+  contentContainerClassName?: string; // Custom class for styling the content container
 }
 
 export function PageContainer({
@@ -23,11 +24,11 @@ export function PageContainer({
   centerVertically = true, // Center content vertically by default
   fullHeight = true, // Full viewport height by default
   pageTitle, // Optional title
+  contentContainerClassName, // Optional custom class for content
 }: PageContainerProps) {
   return (
     <div
       className={classNames(
-        "bg-gray-50", // Light background
         "flex", // Flexbox for alignment
         "justify-center", // Horizontally center content
         centerVertically && "items-center", // Optionally vertically center
@@ -39,11 +40,10 @@ export function PageContainer({
     >
       <div
         className={classNames(
-          "bg-white", // White background for the content
           "rounded-lg", // Rounded corners
-          "shadow-lg", // Drop shadow for elevation
           maxWidth, // Responsive max width
-          "w-full" // Full width up to max width
+          "w-full", // Full width up to max width
+          contentContainerClassName
         )}
       >
         <Stack

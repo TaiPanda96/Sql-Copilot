@@ -1,3 +1,4 @@
+import { filterInputSchema } from "@sql-copilot/lib/models/tools/filter-config";
 import { z } from "zod";
 
 export enum AggregationType {
@@ -32,29 +33,11 @@ export const aggregationSchema = z.object({
   groupByField: z.string().optional(),
   groupByCountField: z.string().optional(),
   groupBySumField: z.string().optional(),
+  groupBySelect: z.object({
+    from: z.number(),
+    to: z.number(),
+  }),
+  filters: z.array(filterInputSchema).optional(),
 });
 
-export type Aggregation = z.infer<typeof aggregationSchema>;
-
-/**
- * Defines the OpenAI tool for generating chart configurations.
- */
-export const aggregationTool = {
-  type: "function" as const,
-  function: {
-    name: "aggregationCalc",
-    description:
-      "Generates an aggregation from structured data based on AggregationType.",
-    parameters: {
-      type: "object",
-      properties: {
-        inputData: {
-          type: "json",
-          description: "The structured data to be aggregated.",
-        },
-        aggregation: aggregationSchema,
-      },
-      required: ["inputData", "aggregation"],
-    },
-  },
-};
+export type AggregationConfig = z.infer<typeof aggregationSchema>;

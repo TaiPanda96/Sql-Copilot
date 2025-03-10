@@ -10,6 +10,10 @@ interface SectionCardProps {
   titleRight?: boolean;
   image?: string;
   description?: string;
+  actions?: Array<{
+    label: string;
+    onClick: () => void;
+  }>;
 }
 
 export function SectionCard({
@@ -18,6 +22,7 @@ export function SectionCard({
   titleLeft,
   titleRight,
   className,
+  actions,
 }: SectionCardProps) {
   return (
     <Stack
@@ -30,6 +35,29 @@ export function SectionCard({
       )}
       gap={5}
     >
+      {actions && (
+        <Inline gap={2}>
+          {actions.map((action) => (
+            <button
+              key={action.label}
+              onClick={action.onClick}
+              className={classNames(
+                "text-sm",
+                "font-semibold",
+                "text-gray-600",
+                "hover:text-gray-900",
+                "transition-colors",
+                "focus:outline-none",
+                "focus-visible:ring-2",
+                "focus-visible:ring-gray-500",
+                "focus-visible:ring-opacity-50"
+              )}
+            >
+              {action.label}
+            </button>
+          ))}
+        </Inline>
+      )}
       {(title || titleRight) && (
         <Inline>
           {title && (
