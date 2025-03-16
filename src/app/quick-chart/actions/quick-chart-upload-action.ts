@@ -56,10 +56,10 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
   }
 
   // TO DO: Add the "Action Abstraction"
-  const streamedData = streamDataInput(csvFile.url);
-  const sampledData: Record<string, unknown>[] = [];
   let sampleIter = 0;
   let sampleCount = 30;
+  const streamedData = streamDataInput(csvFile.url);
+  const sampledData: Record<string, unknown>[] = [];
   for await (const data of streamedData) {
     if (sampleIter <= sampleCount) {
       sampledData.push(
@@ -111,14 +111,22 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
   if (filteredOutput.length > 0 && chartConfig) {
     chartConfigOutput = buildChartConfig({ chartConfig, filteredOutput });
   } else {
-    // Invoke the chart generation tool
     chartConfigOutput = await getChartToolIo(ctx, {
       query,
       sampleColumns: Object.keys(sampledData[0]),
       sampleRows: sampledData,
-      // If the user has
       presetChartConfig: chartConfig,
     });
+
+    if (!chartConfigOutput) {
+      return {
+        success: false,
+        chartConfig: null,
+        message: "Failed to generate chart configuration.",
+        thread: null,
+      };
+    }
+    chartConfigOutput.data = filteredOutput;
   }
 
   try {
@@ -136,19 +144,9 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
       };
     }
 
-    const isEmptyChart = true;
-
-    if (isEmptyChart) {
-      return {
-        success: false,
-        chartConfig: null,
-        message: "No data available for visualization.",
-        thread: threadOutput.thread,
-      };
-    }
     return {
       success: true,
-      chartConfig: null,
+      chartConfig: chartConfigOutput,
       message: "Successfully fetched the chart data.",
       thread: threadOutput.thread,
     };

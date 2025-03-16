@@ -9,7 +9,8 @@
     "start": "node --max-old-space-size=16384 next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "predict": "ts-node src/bin/predict.ts"
+    "predict": "ts-node src/bin/predict.ts",
+    "chart": "ts-node src/bin/chart.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.13",

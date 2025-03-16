@@ -4,7 +4,6 @@ import {
 } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
 import { ContextWith } from "../create-context";
 import { z } from "zod";
-import { basePrompt } from "../models/llms/base-prompt";
 import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
 import { assertIsOpenAiClient } from "../utils/assertions";
 import multiline from "multiline-ts";
@@ -50,24 +49,14 @@ export async function getChartToolIo(
   });
 
   const hasUserSpecifiedChartConfig = presetChartConfig !== undefined;
-
-  const emptyChartConfig = {
-    type: "BarChart",
-    title: "Title of the chart",
-    data: [],
-    xKey: "key1",
-    yKey: "key2",
-  };
+  console.log("presetChartConfig", presetChartConfig);
+  console.log("dataContext", dataContext);
 
   const response = await model.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
         role: "system",
-        content: basePrompt,
-      },
-      {
-        role: "user",
         content: multiline`The user has submitted the following question: ${query} 
           with the following dataset context: ${dataContext}. ${
           hasUserSpecifiedChartConfig
@@ -91,9 +80,9 @@ export async function getChartToolIo(
 
   // Execute tool function
   let chartConfigResponse: z.infer<typeof chartConfigSchema> =
-    emptyChartConfig as ChartConfig;
+    {} as ChartConfig;
   for (const tool of toolCalls) {
-    if (tool.function.name === "FilterByCalc") {
+    if (tool.function.name === "ChartConfig") {
       let parsedResponse;
       try {
         parsedResponse = JSON.parse(tool.function.arguments);
@@ -102,9 +91,18 @@ export async function getChartToolIo(
       }
 
       // Validate using safe-parse
-      const filterSchemaResponse = chartConfigSchema.safeParse(parsedResponse);
+      const filterSchemaResponse = chartConfigSchema
+        .omit({
+          data: true,
+        })
+        .safeParse(parsedResponse);
       if (filterSchemaResponse.success) {
         Object.assign(chartConfigResponse, filterSchemaResponse.data);
+      } else {
+        console.log(
+          "Error parsing chart config response",
+          filterSchemaResponse.error
+        );
       }
     }
   }
