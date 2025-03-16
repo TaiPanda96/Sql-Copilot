@@ -10,6 +10,9 @@ export const basePrompt = multiline`
     For example, if the data involves time-series information, a LineChart may be more suitable, 
     whereas for part-to-whole relationships, a PieChart might be best.
 
+    The user MAY provide a chart configuration object, if so, you should use that configuration to generate the chart.
+    If the user does not provide a chart configuration object, you should generate a chart based on the data context provided.
+
     Your goal is to always return a chartData jsonArray compatible to the following format:
     [
       {

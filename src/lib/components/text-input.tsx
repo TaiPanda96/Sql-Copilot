@@ -3,14 +3,18 @@
 import { cva } from "class-variance-authority";
 import { ReactNode } from "react";
 import { Input, InputProps } from "./input";
+import { cn } from "shadcn/lib/utils";
+import { isString } from "lodash";
 
 export interface TextInputProps extends InputProps {
   value?: string;
   onChange?: (value: string) => void;
+  label?: string;
   error?: string;
   children?: ReactNode;
   disabled?: boolean;
   multiline?: boolean;
+  className?: string;
 }
 
 export const textInputVariants = cva(
@@ -41,27 +45,52 @@ export const textInputVariants = cva(
 
 export function TextInput({
   value,
+  label,
   onChange,
   error,
   children,
   disabled,
   multiline,
+  className,
   ...inputProps
 }: TextInputProps) {
   const classNames = textInputVariants({ hasError: Boolean(error), disabled });
 
   return (
-    <Input error={error} disabled={disabled} {...inputProps}>
+    <Input
+      error={error}
+      disabled={disabled}
+      {...inputProps}
+      className="relative"
+    >
+      {label && (
+        <div className="flex flex-grow">
+          {isString(label) ? (
+            <label className="text-sm text-white">{label}</label>
+          ) : (
+            label
+          )}
+        </div>
+      )}
+
       {multiline ? (
         <textarea
-          className={classNames}
+          aria-label={label}
+          className={`${classNames} resize-none w-full h-32 max-h-32 overflow-y-auto ${className}`}
           onChange={(event) => onChange?.(event.target.value)}
           value={value ?? undefined}
           disabled={disabled}
         />
       ) : (
         <input
-          className={classNames}
+          aria-label={label}
+          className={cn(
+            "resize-x",
+            "rounded-lg",
+            "p-1.5",
+            "focus-visible:outline",
+            className
+          )}
           onChange={(event) => onChange?.(event.target.value)}
           value={value ?? undefined}
           disabled={disabled}
