@@ -4,6 +4,7 @@ import { LoaderCircle } from "lucide-react";
 import { DynamicChart, ChartType } from "../../../lib/components/dynamic-chart";
 import { MessageList } from "../../../lib/components/message-list";
 import { RenderAnimationContainer } from "../../../lib/components/render-animation-container";
+import { ChartConfig } from "../actions/quick-chart-upload-action";
 
 export function QuickChartVisualization({
   chartConfig,
@@ -11,13 +12,7 @@ export function QuickChartVisualization({
   messages,
   error,
 }: {
-  chartConfig: {
-    type: "BarChart" | "LineChart" | "PieChart";
-    title: string;
-    data: Array<{ [key: string]: any }>;
-    xKey: string;
-    yKey: string;
-  } | null;
+  chartConfig: ChartConfig | null;
   loading: boolean;
   messages: Messages[];
   error: string | null;

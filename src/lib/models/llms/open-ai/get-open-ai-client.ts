@@ -1,6 +1,3 @@
-import { ContextWith } from "@sql-copilot/lib/create-context";
-import { basePrompt } from "@sql-copilot/lib/models/llms/base-prompt";
-import multiline from "multiline-ts";
 import OpenAI from "openai";
 
 export type OpenAiClient = OpenAI;

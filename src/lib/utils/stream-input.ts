@@ -23,42 +23,45 @@ export async function* streamDataInput(
   let partialChunk = "";
   let count = 0;
 
-  // Yield AsyncGenerator for each row
-  let { value, done } = await reader.read();
-  while (!done) {
-    const chunk = decoder.decode(value, { stream: true });
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
 
-    // Parse the CSV chunk
-    const results = Papa.parse(partialChunk + chunk, {
+    const chunk = decoder.decode(value, { stream: true });
+    partialChunk += chunk;
+
+    const results = Papa.parse(partialChunk, {
       header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
       transformHeader: camelCase,
     });
 
-    // Store unprocessed part (last incomplete row)
-    partialChunk = chunk.slice(chunk.lastIndexOf("\n") + 1);
+    // Reset partialChunk to store only the last incomplete line
+    const lastNewlineIndex = partialChunk.lastIndexOf("\n");
+    partialChunk =
+      lastNewlineIndex !== -1 ? partialChunk.slice(lastNewlineIndex + 1) : "";
 
-    for (const row of (results.data as Record<string, unknown>[]).map(
-      (row: Record<string, unknown>) => {
-        const transformedRow = Object.entries(row).map(([key, value]) => {
-          return {
-            [camelCase(key)]: value,
-          };
-        });
-        const validation = z.record(z.any()).safeParse(transformedRow);
-        return validation.success ? validation.data : null;
+    for (const row of results.data as Record<string, unknown>[]) {
+      // Ensure the row is properly formatted
+      const transformedRow = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [camelCase(key), value])
+      );
+
+      const validation = rowSchema.safeParse(transformedRow);
+      if (validation.success) {
+        yield validation.data;
+        count++;
+
+        if (maxSamples !== undefined && count >= maxSamples) return;
+      } else {
+        console.log("Skipping invalid row:", validation.error);
       }
-    )) {
-      if (row) yield row as z.AnyZodObject;
-      if (maxSamples !== undefined && count >= maxSamples) return;
-      count++;
     }
-    ({ value, done } = await reader.read());
   }
 
-  // Parse the remaining chunk
-  if (partialChunk) {
+  // Process any remaining data in `partialChunk`
+  if (partialChunk.trim()) {
     const finalResults = Papa.parse(partialChunk, {
       header: true,
       dynamicTyping: true,
@@ -67,13 +70,17 @@ export async function* streamDataInput(
     });
 
     for (const row of finalResults.data as Record<string, unknown>[]) {
-      const validation = z.record(z.any()).safeParse(row);
+      const transformedRow = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [camelCase(key), value])
+      );
+
+      const validation = rowSchema.safeParse(transformedRow);
       if (validation.success) {
         yield validation.data;
         count++;
-      }
 
-      if (maxSamples !== undefined && count >= maxSamples) return;
+        if (maxSamples !== undefined && count >= maxSamples) return;
+      }
     }
   }
 }

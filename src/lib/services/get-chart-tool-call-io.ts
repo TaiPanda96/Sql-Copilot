@@ -1,20 +1,18 @@
-import {
-  ChartConfig,
-  chartConfigSchema,
-} from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
+import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
 import { ContextWith } from "../create-context";
 import { z } from "zod";
 import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
 import { assertIsOpenAiClient } from "../utils/assertions";
 import multiline from "multiline-ts";
 import zodToJsonSchema from "zod-to-json-schema";
+import { chartConfigSchema } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
+import { basePrompt } from "../models/llms/base-prompt";
 
 export const chartConfigTool = {
   type: "function" as const,
   function: {
     name: "ChartConfig",
-    description:
-      "Creates a chart configuration based on user-defined conditions.",
+    description: "Creates a chart configuration provided a user question.",
     parameters: zodToJsonSchema(chartConfigSchema),
   },
 };
@@ -49,23 +47,26 @@ export async function getChartToolIo(
   });
 
   const hasUserSpecifiedChartConfig = presetChartConfig !== undefined;
-  console.log("presetChartConfig", presetChartConfig);
-  console.log("dataContext", dataContext);
-
-  const response = await model.chat.completions.create({
+  const toolCallResponse = await model.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
         role: "system",
-        content: multiline`The user has submitted the following question: ${query} 
-          with the following dataset context: ${dataContext}. ${
+        content: basePrompt,
+      },
+      {
+        role: "user",
+        content: multiline`This is my question: ${query} 
+          with the following dataset context: ${dataContext}.${
           hasUserSpecifiedChartConfig
-            ? `The user has also specified a chart configuration. ${JSON.stringify(
+            ? `I have also specified a chart configuration. ${JSON.stringify(
                 presetChartConfig
               )}`
             : ""
-        }
-          Please return a structured filter configuration in the tool call.`,
+        } Please return a chart configuration JSON object with the fields:
+          - type, title, xKey, yKey
+          - (optional) aggregation: a full aggregation config that describes how to prepare the data from the sampleRows, using filters, groupBy, and sum/avg/count/min/max as needed.
+          Ensure the aggregation config transforms the sampleRows into a structure that matches the xKey/yKey expectations for the selected chart type.`,
       },
     ],
     tools: [chartConfigTool],
@@ -73,7 +74,7 @@ export async function getChartToolIo(
     max_tokens: 4096,
   });
 
-  const toolCalls = response.choices[0]?.message?.tool_calls;
+  const toolCalls = toolCallResponse.choices[0]?.message?.tool_calls;
   if (!toolCalls) {
     throw new Error("No tool call generated.");
   }
@@ -83,25 +84,24 @@ export async function getChartToolIo(
     {} as ChartConfig;
   for (const tool of toolCalls) {
     if (tool.function.name === "ChartConfig") {
-      let parsedResponse;
+      let toolCallResponse;
       try {
-        parsedResponse = JSON.parse(tool.function.arguments);
+        toolCallResponse = JSON.parse(tool.function.arguments);
       } catch (e) {
         console.log("Error parsing tool response", e);
       }
-
       // Validate using safe-parse
-      const filterSchemaResponse = chartConfigSchema
+      const chartResponseSchema = chartConfigSchema
         .omit({
           data: true,
         })
-        .safeParse(parsedResponse);
-      if (filterSchemaResponse.success) {
-        Object.assign(chartConfigResponse, filterSchemaResponse.data);
+        .safeParse(toolCallResponse);
+      if (chartResponseSchema.success) {
+        Object.assign(chartConfigResponse, chartResponseSchema.data);
       } else {
         console.log(
           "Error parsing chart config response",
-          filterSchemaResponse.error
+          chartResponseSchema.error
         );
       }
     }

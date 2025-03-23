@@ -8,7 +8,10 @@ import { Stack } from "../../../lib/components/stack";
 import { Inline } from "../../../lib/components/inline";
 import AttachmentButton from "../../../lib/components/attachment-button";
 import { cn } from "shadcn/lib/utils";
-import { quickChartUploadAction } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
+import {
+  ChartConfig,
+  quickChartUploadAction,
+} from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
 import { Text } from "../../../lib/components/text";
 import { FileAttachmentInput } from "../../../lib/components/file-attachment-input";
 import { SelectInput } from "../../../lib/components/select-input";
@@ -38,7 +41,7 @@ export default function QuickChartContainer({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [chartConfig, setChartConfig] = useState<{
-    type: "BarChart" | "LineChart" | "PieChart";
+    type: ChartConfig["type"];
     title: string;
     data: Array<{ [key: string]: any }>;
     xKey: string;
@@ -71,6 +74,7 @@ export default function QuickChartContainer({
         attachments,
         threadId: thread?.id,
         userEmail: user.email || "",
+        chartConfig: chartConfig ?? undefined,
       });
 
       if (!response.success) {
@@ -114,13 +118,13 @@ export default function QuickChartContainer({
           color="light"
         />
       </Stack>
+      <QuickChartVisualization
+        chartConfig={chartConfig}
+        loading={loading}
+        messages={messages}
+        error={error}
+      />
       <Inline gap={4} align="top" justify="between">
-        <QuickChartVisualization
-          chartConfig={chartConfig}
-          loading={loading}
-          messages={messages}
-          error={error}
-        />
         <Stack gap={0} className="flex-grow">
           <textarea
             value={query}
