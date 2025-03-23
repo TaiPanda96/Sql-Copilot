@@ -1,87 +1,64 @@
-import classNames from "classnames";
+import { cn } from "shadcn/lib/utils";
 import { Stack } from "./stack";
 
-interface PageContainerProps {
+export interface PageContainerProps {
   children: React.ReactNode;
-  className?: string; // Custom additional styles
-  maxWidth?: string; // Maximum width for content
-  padding?: string; // Padding inside the container
-  centerVertically?: boolean; // Option to center content vertically
-  fullHeight?: boolean; // Option to make the container span full height
+  className?: string;
+  maxWidth?: string;
+  padding?: string;
+  centerVertically?: boolean;
+  fullHeight?: boolean;
   pageTitle?: {
-    text: string; // Title text
-    level?: "h1" | "h2" | "h3"; // Heading level
-    className?: string; // Custom class for styling the title
+    text: string;
+    level?: "h1" | "h2" | "h3";
+    className?: string;
   };
+  contentContainerClassName?: string;
 }
 
 export function PageContainer({
   children,
   className,
-  maxWidth = "max-w-screen-lg", // Default max width for responsiveness
-  padding = "p-6", // Default internal padding
-  centerVertically = true, // Center content vertically by default
-  fullHeight = true, // Full viewport height by default
-  pageTitle, // Optional title
+  maxWidth = "max-w-screen-xl", // Increased width for better spacing
+  padding = "p-6",
+  fullHeight = true,
+  pageTitle,
+  contentContainerClassName,
 }: PageContainerProps) {
   return (
     <div
-      className={classNames(
-        "bg-gray-50", // Light background
-        "flex", // Flexbox for alignment
-        "justify-center", // Horizontally center content
-        centerVertically && "items-center", // Optionally vertically center
-        fullHeight && "min-h-screen", // Full viewport height if enabled
-        "overflow-hidden", // Prevent overflowing
-        padding, // Internal padding
-        className // Allow additional custom styles
+      className={cn(
+        "flex",
+        "justify-center", // Keep center for horizontal layout
+        "items-start", // Align content to the top instead of centering it
+        fullHeight && "min-h-screen",
+        padding,
+        className
       )}
     >
       <div
-        className={classNames(
-          "bg-white", // White background for the content
-          "rounded-lg", // Rounded corners
-          "shadow-lg", // Drop shadow for elevation
-          maxWidth, // Responsive max width
-          "w-full" // Full width up to max width
+        className={cn(
+          "rounded-lg",
+          maxWidth, // Increased width to prevent squishing
+          "w-full", // Ensure full width usage
+          contentContainerClassName
         )}
       >
-        <Stack
-          gap={6}
-          className="
-            flex flex-col
-            p-4
-            w-full
-            h-full
-        "
-        >
+        <Stack gap={6} className="flex flex-col w-full h-full">
           {pageTitle && (
             <div className="text-center">
               {pageTitle.level === "h2" ? (
                 <h2
-                  className={classNames(
-                    "text-3xl font-semibold",
-                    pageTitle.className
-                  )}
+                  className={cn("text-3xl font-semibold", pageTitle.className)}
                 >
                   {pageTitle.text}
                 </h2>
               ) : pageTitle.level === "h3" ? (
-                <h3
-                  className={classNames(
-                    "text-2xl font-medium",
-                    pageTitle.className
-                  )}
-                >
+                <h3 className={cn("text-2xl font-medium", pageTitle.className)}>
                   {pageTitle.text}
                 </h3>
               ) : (
-                <h1
-                  className={classNames(
-                    "text-4xl font-bold",
-                    pageTitle.className
-                  )}
-                >
+                <h1 className={cn("text-4xl font-bold", pageTitle.className)}>
                   {pageTitle.text}
                 </h1>
               )}

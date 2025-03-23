@@ -7,7 +7,7 @@ import { BrownianLine } from "@sql-copilot/lib/components/brownian-line";
 
 export default async function Page() {
   return (
-    <PageContainer className="min-h-screen bg-[#faf9f6]">
+    <PageContainer className="min-h-screen bg-[#424242] flex items-center justify-center">
       <Stack gap={4} align="center">
         <h1 className="rainbow-text text-[40px] leading-tight font-semibold text-center text-gray-900">
           Build beautiful charts with AI
@@ -16,7 +16,7 @@ export default async function Page() {
         <LoginLink>
           <Button
             label="Get Started"
-            className="rounded"
+            className="rounded text-white"
             color="brand"
             variant="ghost"
           />

@@ -38,3 +38,5 @@ next-env.d.ts
 
 # ignore generated files
 src/gen/
+
+src/bin/

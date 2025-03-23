@@ -72,9 +72,9 @@ export default function AttachmentButton({
       <Button
         onClick={() => fileInputRef.current?.click()}
         disabled={isUploading}
-        variant="outline"
+        variant="ghost"
         className={cn(
-          "border border-gray-300 rounded-md p-2 text-sm",
+          "border border-gray-300 rounded-md p-3 text-sm",
           isUploading ? "cursor-not-allowed" : "cursor-pointer",
           className
         )}

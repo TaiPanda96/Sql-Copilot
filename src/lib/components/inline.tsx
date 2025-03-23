@@ -15,6 +15,7 @@ export function Inline({
   children,
   className,
   gap = 6,
+  direction = "row",
   justify = "left",
   grow = false,
 }: InlineProps) {
@@ -22,22 +23,23 @@ export function Inline({
     <div
       className={classNames(
         "flex",
-        "flex-row",
         {
+          "flex-row": direction === "row",
+          "flex-col": direction === "column",
           "justify-center": justify === "center",
           "justify-end": justify === "right",
           "justify-start": justify === "left",
           "justify-between": justify === "between",
           "justify-around": justify === "around",
-          "justify-items-stretch": justify === "stretch",
+          "items-stretch": justify === "stretch",
           "items-center": align === "center",
           "items-end": align === "bottom",
           "items-start": align === "top",
           "flex-grow": grow,
         },
+        `gap-${gap}`,
         className
       )}
-      style={{ gap: `${gap * 0.25}rem` }}
     >
       {children}
     </div>
