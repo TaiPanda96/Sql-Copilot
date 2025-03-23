@@ -1,10 +1,11 @@
 import { assertType } from "@sql-copilot/lib/utils/assertions";
 import { zodDecimal } from "@sql-copilot/lib/utils/zod-decimal";
 import { isBefore, isAfter, isSameDay, parse, isValid } from "date-fns";
-import { isNil } from "lodash";
+import { isNil, isString } from "lodash";
 import { z } from "zod";
 import { ComparisonType, FieldType } from "../filter-config";
 import { AggregationConfig } from "./aggregation-schema";
+import Decimal from "decimal.js";
 
 const supportedDateFormats = [
   "yyyy-MM-dd",
@@ -79,10 +80,45 @@ export function aggregationFilter<T>(
         case ComparisonType.CONTAINS:
           return value < filter.value;
         case ComparisonType.IN:
+          if (!Array.isArray(filter.value)) return false;
+
+          if (filter.fieldType === FieldType.DATETIME) {
+            const dateToCheck = zodDateParser.parse(value);
+            return filter.value.some((date) => {
+              const dateToFilter = zodDateParser.parse(date);
+              return dateToCheck.getTime() === dateToFilter.getTime();
+            });
+          }
+
+          if (filter.fieldType === FieldType.DECIMAL) {
+            const decimalToCheck = zodDecimal.parse(value);
+            const decimalToFilter = filter.value
+              .map((d) => zodDecimal.parse(d))
+              .find((d) => d.eq(decimalToCheck));
+            return !!decimalToFilter;
+          }
           assertType(filter.value, z.array(z.string()));
           assertType(value, z.string().optional());
           return filter.value.includes(value ?? "");
         case ComparisonType.NOT_IN:
+          if (filter.fieldType === FieldType.DATETIME) {
+            const dateToCheck = zodDateParser.parse(value);
+            return !filter.value.some((date: unknown) => {
+              const dateToFilter = zodDateParser.parse(date);
+              return dateToCheck.getTime() === dateToFilter.getTime();
+            });
+          }
+
+          if (filter.fieldType === FieldType.DECIMAL) {
+            const decimalToCheck = zodDecimal.parse(value);
+            const decimalToFilter = filter.value
+              .map((d: unknown) => zodDecimal.parse(d))
+              .find((d: { eq: (arg0: Decimal) => any }) =>
+                d.eq(decimalToCheck)
+              );
+            return !decimalToFilter;
+          }
+
           assertType(filter.value, z.array(z.string()));
           assertType(value, z.string().optional());
           return !filter.value.includes(value ?? "");
@@ -171,19 +207,20 @@ export function aggregationFilter<T>(
 export function groupBy<T>(array: T[], key: string): Record<string, T[]> {
   return array.reduce((acc, item) => {
     if (!item[key as keyof typeof item]) return acc;
-    const groupKey = item[key as keyof typeof item] as string;
+    const groupByValue = item[key as keyof typeof item];
+    if (!groupByValue) return acc;
     // If the key contains "," then split it and group by each value
-    const cleanedKey = groupKey.trim();
+    const cleanedKey = groupByValue.toString().trim();
     if (cleanedKey.includes(",") && cleanedKey.split(",").length > 1) {
-      const keys = groupKey.split(",");
+      const keys = cleanedKey.split(",");
       keys.forEach((k) => {
         if (!acc[k]) acc[k] = [];
         acc[k].push(item);
       });
       return acc;
     }
-    if (!acc[groupKey]) acc[groupKey] = [];
-    acc[groupKey].push(item);
+    if (!acc[cleanedKey]) acc[cleanedKey] = [];
+    acc[cleanedKey].push(item);
     return acc;
   }, {} as Record<string, T[]>);
 }

@@ -5,21 +5,14 @@ import { createContext } from "@sql-copilot/lib/create-context";
 import { Threads, Messages } from "@sql-copilot/gen/prisma";
 import { threadUpsertIo } from "@sql-copilot/lib/entities/threads/thread-upsert-io";
 import { streamDataInput } from "@sql-copilot/lib/utils/stream-input";
-import { QuickChartInput, quickChartInputSchema } from "./quick-chart-input";
+import {
+  ChartConfig,
+  QuickChartInput,
+  quickChartInputSchema,
+} from "./quick-chart-input";
 import { getChartToolIo } from "@sql-copilot/lib/services/get-chart-tool-call-io";
-import { z } from "zod";
-import { aggregationSchema } from "@sql-copilot/lib/models/tools/aggregations/aggregation-schema";
 import { aggregateData } from "@sql-copilot/lib/models/tools/aggregations/aggregate-data";
 import { normalizeAggregatedData } from "@sql-copilot/lib/models/tools/aggregations/normalize-aggregated-data";
-
-export interface ChartConfig {
-  type: "BarChart" | "LineChart" | "PieChart" | "Histogram";
-  title: string;
-  data: Array<Record<string, unknown>>;
-  xKey: string;
-  yKey: string;
-  aggregationSteps?: z.infer<typeof aggregationSchema>;
-}
 
 export async function quickChartUploadAction(input: QuickChartInput): Promise<{
   success: boolean;
@@ -45,6 +38,18 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
       chartConfig: null,
       thread: null,
       message: "Non csv uploads not supported in free tier.",
+    };
+  }
+
+  // Check if the file size exceeds 5MB
+  const exceedsFileSize =
+    csvFile.fileSize && csvFile.fileSize > 5 * 1024 * 1024;
+  if (exceedsFileSize) {
+    return {
+      success: false,
+      chartConfig: null,
+      thread: null,
+      message: "File size exceeds 5MB limit.",
     };
   }
 
@@ -95,7 +100,8 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
       data: normalizeAggregatedData(
         chartData,
         chartConfigSchema.xKey,
-        chartConfigSchema.yKey
+        chartConfigSchema.yKey,
+        chartConfigSchema.expressAsPercent === true
       ),
     });
 
@@ -133,13 +139,14 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
   }
 }
 
-function buildChartConfig({
+export function buildChartConfig({
   chartConfig,
   data,
 }: {
   chartConfig: ChartConfig;
   data: Record<string, unknown>[];
 }): ChartConfig {
+  console.log("sample", data[0]);
   const xKeyMismatch = !data[0].hasOwnProperty(chartConfig.xKey);
   const yKeyMismatch = !data[0].hasOwnProperty(chartConfig.yKey);
   if (xKeyMismatch || yKeyMismatch) {
@@ -147,12 +154,8 @@ function buildChartConfig({
     chartConfig.xKey = Object.keys(data[0])[0];
     chartConfig.yKey = Object.keys(data[0])[1];
   }
-  const { type, title, xKey, yKey } = chartConfig;
   return {
-    type,
-    title,
+    ...chartConfig,
     data,
-    xKey,
-    yKey,
   };
 }

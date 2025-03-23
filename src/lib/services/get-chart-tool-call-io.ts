@@ -1,11 +1,13 @@
-import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
 import { ContextWith } from "../create-context";
 import { z } from "zod";
 import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
 import { assertIsOpenAiClient } from "../utils/assertions";
 import multiline from "multiline-ts";
 import zodToJsonSchema from "zod-to-json-schema";
-import { chartConfigSchema } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
+import {
+  ChartConfig,
+  chartConfigSchema,
+} from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
 import { basePrompt } from "../models/llms/base-prompt";
 
 export const chartConfigTool = {

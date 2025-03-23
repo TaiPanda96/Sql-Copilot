@@ -13,7 +13,7 @@ export async function* streamDataInput(
   inputUrl: string,
   maxSamples?: number
 ): AsyncGenerator<z.infer<typeof rowSchema>> {
-  const readableStream = await fetch(inputUrl);
+  const readableStream = await fetch(inputUrl, { next: { revalidate: 0 } });
   if (!readableStream.body) {
     throw new Error("No stream available");
   }
