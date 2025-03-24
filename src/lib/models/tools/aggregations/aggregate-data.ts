@@ -8,6 +8,7 @@ export function aggregateData<T>(
   config: AggregationConfig
 ): unknown {
   const filteredData = aggregationFilter(data, config.filters);
+  console.log("releaseYear sample:", filteredData.slice(0, 20));
   switch (config.type) {
     case AggregationType.NoAggregation:
       return filteredData;

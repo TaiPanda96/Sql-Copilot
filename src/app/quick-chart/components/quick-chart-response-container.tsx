@@ -4,9 +4,9 @@ import { LoaderCircle } from "lucide-react";
 import { DynamicChart, ChartType } from "../../../lib/components/dynamic-chart";
 import { MessageList } from "../../../lib/components/message-list";
 import { RenderAnimationContainer } from "../../../lib/components/render-animation-container";
-import { ChartConfig } from "../actions/quick-chart-upload-action";
+import { ChartConfig } from "../actions/quick-chart-input";
 
-export function QuickChartVisualization({
+export function QuickChartResponseContainer({
   chartConfig,
   loading,
   messages,

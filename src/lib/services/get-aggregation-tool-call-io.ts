@@ -1,5 +1,4 @@
 import { ContextWith } from "../create-context";
-import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
 import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
 import { assertIsOpenAiClient } from "../utils/assertions";
 import multiline from "multiline-ts";
@@ -9,6 +8,7 @@ import {
   aggregationConfigPrompt,
   aggregationSchema,
 } from "../models/tools/aggregations/aggregation-schema";
+import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
 
 export const aggregationTool = {
   type: "function" as const,

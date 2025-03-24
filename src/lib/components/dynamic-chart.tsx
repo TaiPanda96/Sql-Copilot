@@ -1,3 +1,4 @@
+import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
 import React from "react";
 import {
   BarChart,
@@ -22,14 +23,6 @@ export const enum ChartType {
   Histogram = "Histogram",
 }
 
-interface ChartConfig {
-  type: ChartType;
-  title: string;
-  data: Array<{ [key: string]: any }>;
-  xKey: string;
-  yKey: string;
-}
-
 interface DynamicChartProps {
   chartConfig: ChartConfig;
 }
@@ -44,7 +37,7 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
     return <p>No data available for visualization.</p>;
   }
 
-  const { type, title, data, xKey, yKey } = chartConfig;
+  const { type, title, data, xKey, yKey, legend, toolTip } = chartConfig;
 
   // Chart rendering logic encapsulated in a mapping object
   const chartRenderers: Record<ChartType, JSX.Element> = {
@@ -53,7 +46,16 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={xKey} />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          viewBox={{
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          }}
+          animationDuration={1000}
+          label={toolTip}
+        />
         <Legend />
         <Bar
           dataKey={yKey}
@@ -71,7 +73,16 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={xKey} />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          viewBox={{
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          }}
+          animationDuration={1000}
+          label={toolTip}
+        />
         <Legend />
         <Line
           type="monotone"
@@ -84,7 +95,14 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
     ),
     [ChartType.PieChart]: (
       <PieChart>
-        <Pie data={data} dataKey={yKey} nameKey={xKey} label>
+        <Pie
+          data={data}
+          dataKey={yKey}
+          nameKey={xKey}
+          label={({ name, percent }) =>
+            `${name} ${(percent * 100).toFixed(2)}%`
+          }
+        >
           {data.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
@@ -92,7 +110,11 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
             />
           ))}
         </Pie>
-        <Tooltip />
+        <Tooltip
+          formatter={(value: number) => `${value.toFixed(1)}%`}
+          labelFormatter={(label) => `${label}`}
+        />
+        <Legend formatter={(value) => `${value}`} />
       </PieChart>
     ),
     [ChartType.Histogram]: (
@@ -109,8 +131,11 @@ export const DynamicChart: React.FC<DynamicChartProps> = ({ chartConfig }) => {
           }}
         />
         <YAxis allowDecimals={false} />
-        <Tooltip />
-        <Legend />
+        <Tooltip
+          formatter={(value: number) => `${value.toFixed(1)}%`}
+          labelFormatter={(label) => `${label}`}
+        />
+        <Legend formatter={(value) => `${value}`} />
         <Bar
           dataKey={yKey}
           fill={

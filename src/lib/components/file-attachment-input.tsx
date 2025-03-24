@@ -15,7 +15,9 @@ import { LoaderCircle } from "./loading-circle";
 
 type FileAttachmentInputProps = {
   className?: string;
-  onChange: (files: { url: string; fileName: string }[]) => void;
+  onChange: (
+    files: { url: string; fileName: string; fileSize: number }[]
+  ) => void;
 };
 
 export function FileAttachmentInput({
@@ -24,12 +26,13 @@ export function FileAttachmentInput({
 }: FileAttachmentInputProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [attachments, setAttachments] = useState<
-    { url: string; fileName: string }[]
+    { url: string; fileName: string; fileSize: number }[]
   >([]);
 
   const handleFilesUpload = async (files: File[]) => {
     setIsUploading(true);
-    const uploadedFiles: { url: string; fileName: string }[] = [];
+    const uploadedFiles: { url: string; fileName: string; fileSize: number }[] =
+      [];
 
     for (const file of files) {
       try {
@@ -39,7 +42,11 @@ export function FileAttachmentInput({
           multipart: true,
         });
 
-        uploadedFiles.push({ url: blob.url, fileName: file.name });
+        uploadedFiles.push({
+          url: blob.url,
+          fileName: file.name,
+          fileSize: file.size,
+        });
       } catch (error) {
         console.error("File upload failed:", error);
       }

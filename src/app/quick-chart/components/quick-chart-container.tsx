@@ -8,17 +8,15 @@ import { Stack } from "../../../lib/components/stack";
 import { Inline } from "../../../lib/components/inline";
 import AttachmentButton from "../../../lib/components/attachment-button";
 import { cn } from "shadcn/lib/utils";
-import {
-  ChartConfig,
-  quickChartUploadAction,
-} from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
+import { quickChartUploadAction } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
 import { Text } from "../../../lib/components/text";
 import { FileAttachmentInput } from "../../../lib/components/file-attachment-input";
 import { SelectInput } from "../../../lib/components/select-input";
-import { QuickChartVisualization } from "./quick-chart-visualization";
+import { QuickChartResponseContainer } from "./quick-chart-response-container";
 import { TextInput } from "@sql-copilot/lib/components/text-input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RenderAnimationContainer } from "@sql-copilot/lib/components/render-animation-container";
+import { ChartConfig } from "../actions/quick-chart-input";
 
 export default function QuickChartContainer({
   user,
@@ -36,17 +34,12 @@ export default function QuickChartContainer({
     {
       url: string;
       fileName: string;
+      fileSize?: number;
     }[]
   >([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [chartConfig, setChartConfig] = useState<{
-    type: ChartConfig["type"];
-    title: string;
-    data: Array<{ [key: string]: any }>;
-    xKey: string;
-    yKey: string;
-  } | null>(null);
+  const [chartConfig, setChartConfig] = useState<ChartConfig | null>(null);
   const [thread, setThread] = useState<
     | (Threads & {
         messages: Messages[];
@@ -118,7 +111,7 @@ export default function QuickChartContainer({
           color="light"
         />
       </Stack>
-      <QuickChartVisualization
+      <QuickChartResponseContainer
         chartConfig={chartConfig}
         loading={loading}
         messages={messages}
