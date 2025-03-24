@@ -1,5 +1,4 @@
-import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-upload-action";
-
+import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
 /**
  * Extracts and validates the JSON stringified data from the LLM response.
  * It detects JSON-like structures, deserializes them, and validates that they match the expected chart data format.
@@ -58,13 +57,7 @@ export function extractJsonResponse(llmResponse: string): ChartConfig[] {
     throw new Error("No JSON data found in the response.");
   }
 
-  let chartConfig: {
-    type: "BarChart" | "LineChart" | "PieChart";
-    title: string;
-    data: Array<Record<string, unknown>>;
-    xKey: string;
-    yKey: string;
-  }[];
+  let chartConfig: ChartConfig[];
 
   try {
     chartConfig = JSON.parse(jsonString);
