@@ -1,7 +1,7 @@
 import { assertType } from "@sql-copilot/lib/utils/assertions";
 import { zodDecimal } from "@sql-copilot/lib/utils/zod-decimal";
 import { isBefore, isAfter, isSameDay, parse, isValid } from "date-fns";
-import { isNil, isString } from "lodash";
+import { isNil } from "lodash";
 import { z } from "zod";
 import { ComparisonType, FieldType } from "../filter-config";
 import { AggregationConfig } from "./aggregation-schema";

@@ -4,7 +4,7 @@ import { validateActionInput } from "@sql-copilot/lib/components/use-form-action
 import { createContext } from "@sql-copilot/lib/create-context";
 import { Threads, Messages } from "@sql-copilot/gen/prisma";
 import { threadUpsertIo } from "@sql-copilot/lib/entities/threads/thread-upsert-io";
-import { streamDataInput } from "@sql-copilot/lib/utils/stream-input";
+import { streamDataInput } from "@sql-copilot/lib/utils/stream-data-input";
 import {
   ChartConfig,
   QuickChartInput,
@@ -55,8 +55,11 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
 
   const streamedData = streamDataInput(csvFile.url);
   const inputDataArray: Record<string, unknown>[] = [];
+  let sampleIter = 0;
+  let sampleLimit = 15;
   for await (const data of streamedData) {
     inputDataArray.push(data);
+    if (sampleIter < sampleLimit) sampleIter++;
   }
 
   try {
@@ -78,13 +81,16 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
     }
 
     const aggregationStepConfig = chartConfigSchema.aggregationSteps;
-    console.log("aggregationStepConfig", aggregationStepConfig);
-
+    if (!aggregationStepConfig) {
+      return {
+        success: false,
+        chartConfig: null,
+        thread: null,
+        message: "Aggregation steps are undefined.",
+      };
+    }
     // Aggregate the Data
-    const chartData = aggregationStepConfig
-      ? aggregateData(inputDataArray, aggregationStepConfig)
-      : inputDataArray;
-
+    const chartData = aggregateData(inputDataArray, aggregationStepConfig);
     if (!chartData) {
       return {
         success: false,
@@ -139,7 +145,7 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
   }
 }
 
-export function buildChartConfig({
+function buildChartConfig({
   chartConfig,
   data,
 }: {
