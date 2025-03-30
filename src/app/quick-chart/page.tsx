@@ -14,9 +14,11 @@ export default function VisualizationPage() {
 
   if (isLoading) {
     return (
-      <Skeleton>
-        <LoaderCircle />
-      </Skeleton>
+      <PageContainer className="bg-[#424242] flex-col flex items-center">
+        <Skeleton className="bg-[#424242] flex-col flex items-center">
+          <LoaderCircle />
+        </Skeleton>
+      </PageContainer>
     );
   }
 
