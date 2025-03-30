@@ -15,6 +15,27 @@ export const chartConfigSchema = z.object({
     ),
   xKey: z.string().describe("The key to be used for the x-axis."),
   yKey: z.string().describe("The key to be used for the y-axis."),
+  toolTip: z
+    .string()
+    .optional()
+    .describe("The tooltip to be displayed on the chart."),
+  legend: z.object({
+    show: z
+      .boolean()
+      .optional()
+      .describe("Whether to show the legend on the chart."),
+    position: z
+      .enum(["top", "bottom", "left", "right"])
+      .optional()
+      .describe("The position of the legend on the chart."),
+  }),
+  expressAsPercent: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to express the data as a percentage for PieChart or Histogram."
+    )
+    .default(false),
   aggregationSteps: aggregationSchema
     .optional()
     .describe(
@@ -28,6 +49,7 @@ export const quickChartInputSchema = z.object({
       z.object({
         url: z.string(),
         fileName: z.string(),
+        fileSize: z.number().optional(),
       })
     )
     .optional(),
@@ -39,3 +61,4 @@ export const quickChartInputSchema = z.object({
 });
 
 export type QuickChartInput = z.infer<typeof quickChartInputSchema>;
+export type ChartConfig = z.infer<typeof chartConfigSchema>;

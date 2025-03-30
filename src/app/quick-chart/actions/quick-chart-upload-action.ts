@@ -4,22 +4,15 @@ import { validateActionInput } from "@sql-copilot/lib/components/use-form-action
 import { createContext } from "@sql-copilot/lib/create-context";
 import { Threads, Messages } from "@sql-copilot/gen/prisma";
 import { threadUpsertIo } from "@sql-copilot/lib/entities/threads/thread-upsert-io";
-import { streamDataInput } from "@sql-copilot/lib/utils/stream-input";
-import { QuickChartInput, quickChartInputSchema } from "./quick-chart-input";
+import { streamDataInput } from "@sql-copilot/lib/utils/stream-data-input";
+import {
+  ChartConfig,
+  QuickChartInput,
+  quickChartInputSchema,
+} from "./quick-chart-input";
 import { getChartToolIo } from "@sql-copilot/lib/services/get-chart-tool-call-io";
-import { z } from "zod";
-import { aggregationSchema } from "@sql-copilot/lib/models/tools/aggregations/aggregation-schema";
 import { aggregateData } from "@sql-copilot/lib/models/tools/aggregations/aggregate-data";
 import { normalizeAggregatedData } from "@sql-copilot/lib/models/tools/aggregations/normalize-aggregated-data";
-
-export interface ChartConfig {
-  type: "BarChart" | "LineChart" | "PieChart" | "Histogram";
-  title: string;
-  data: Array<Record<string, unknown>>;
-  xKey: string;
-  yKey: string;
-  aggregationSteps?: z.infer<typeof aggregationSchema>;
-}
 
 export async function quickChartUploadAction(input: QuickChartInput): Promise<{
   success: boolean;
@@ -48,10 +41,25 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
     };
   }
 
+  // Check if the file size exceeds 5MB
+  const exceedsFileSize =
+    csvFile.fileSize && csvFile.fileSize > 5 * 1024 * 1024;
+  if (exceedsFileSize) {
+    return {
+      success: false,
+      chartConfig: null,
+      thread: null,
+      message: "File size exceeds 5MB limit.",
+    };
+  }
+
   const streamedData = streamDataInput(csvFile.url);
   const inputDataArray: Record<string, unknown>[] = [];
+  let sampleIter = 0;
+  let sampleLimit = 15;
   for await (const data of streamedData) {
     inputDataArray.push(data);
+    if (sampleIter < sampleLimit) sampleIter++;
   }
 
   try {
@@ -73,13 +81,16 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
     }
 
     const aggregationStepConfig = chartConfigSchema.aggregationSteps;
-    console.log("aggregationStepConfig", aggregationStepConfig);
-
+    if (!aggregationStepConfig) {
+      return {
+        success: false,
+        chartConfig: null,
+        thread: null,
+        message: "Aggregation steps are undefined.",
+      };
+    }
     // Aggregate the Data
-    const chartData = aggregationStepConfig
-      ? aggregateData(inputDataArray, aggregationStepConfig)
-      : inputDataArray;
-
+    const chartData = aggregateData(inputDataArray, aggregationStepConfig);
     if (!chartData) {
       return {
         success: false,
@@ -95,7 +106,8 @@ export async function quickChartUploadAction(input: QuickChartInput): Promise<{
       data: normalizeAggregatedData(
         chartData,
         chartConfigSchema.xKey,
-        chartConfigSchema.yKey
+        chartConfigSchema.yKey,
+        chartConfigSchema.expressAsPercent === true
       ),
     });
 
@@ -140,6 +152,7 @@ function buildChartConfig({
   chartConfig: ChartConfig;
   data: Record<string, unknown>[];
 }): ChartConfig {
+  console.log("sample", data[0]);
   const xKeyMismatch = !data[0].hasOwnProperty(chartConfig.xKey);
   const yKeyMismatch = !data[0].hasOwnProperty(chartConfig.yKey);
   if (xKeyMismatch || yKeyMismatch) {
@@ -147,12 +160,8 @@ function buildChartConfig({
     chartConfig.xKey = Object.keys(data[0])[0];
     chartConfig.yKey = Object.keys(data[0])[1];
   }
-  const { type, title, xKey, yKey } = chartConfig;
   return {
-    type,
-    title,
+    ...chartConfig,
     data,
-    xKey,
-    yKey,
   };
 }
