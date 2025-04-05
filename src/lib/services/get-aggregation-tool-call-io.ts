@@ -1,14 +1,14 @@
-import { ContextWith } from "../create-context";
-import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
-import { assertIsOpenAiClient } from "../utils/assertions";
 import multiline from "multiline-ts";
+import { ChartConfig } from "types/chart";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
+import { ContextWith } from "../create-context";
+import { OpenAiClient } from "../models/llms/open-ai/get-open-ai-client";
 import {
   aggregationConfigPrompt,
   aggregationSchema,
 } from "../models/tools/aggregations/aggregation-schema";
-import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
+import { assertIsOpenAiClient } from "../utils/assertions";
 
 export const aggregationTool = {
   type: "function" as const,

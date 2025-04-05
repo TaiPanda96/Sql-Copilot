@@ -1,4 +1,5 @@
-import { ChartConfig } from "@sql-copilot/app/quick-chart/actions/quick-chart-input";
+import { ChartConfig } from "types/chart";
+
 /**
  * Extracts and validates the JSON stringified data from the LLM response.
  * It detects JSON-like structures, deserializes them, and validates that they match the expected chart data format.
