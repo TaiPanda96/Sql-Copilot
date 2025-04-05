@@ -165,7 +165,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/src/gen/prisma",
+      "value": "/Users/aditdaga/Desktop/Code/Sql-Copilot/src/gen/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -188,12 +188,11 @@ const config = {
       "views",
       "prismaSchemaFolder"
     ],
-    "sourceFilePath": "/Users/taishanlin/Desktop/SQLBUILDER/sql-copilot/prisma/schema/schema.prisma",
+    "sourceFilePath": "/Users/aditdaga/Desktop/Code/Sql-Copilot/prisma/schema/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma/schema",
   "clientVersion": "6.2.1",
@@ -202,7 +201,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {

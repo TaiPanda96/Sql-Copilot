@@ -1,28 +1,30 @@
-"use-client";
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
+import { SheetProvider } from "@/contexts/sheet-context"
 
-import { Inter } from "next/font/google";
-import "./globals.css";
-import AuthProvider from "./auth-provider";
+const inter = Inter({ subsets: ["latin"] })
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Data Storyteller",
-  description: "Turn your data into compelling visual stories",
-};
+export const metadata: Metadata = {
+  title: "Quick Charts - AI Chart Generator",
+  description: "Let AI build you the perfect chart",
+}
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body className={`${inter.className} bg-white text-gray-900`}>
-          <main className="min-h-screen relative">{children}</main>
-        </body>
-      </html>
-    </AuthProvider>
-  );
+    <html lang="en">
+      <body className={`${inter.className} overflow-hidden h-screen`}>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <SheetProvider>{children}</SheetProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
 }
+
